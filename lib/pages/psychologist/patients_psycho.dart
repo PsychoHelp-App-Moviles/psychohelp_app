@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:psychohelp_app/pages/psychologist/publication_list.dart';
+import 'package:psychohelp_app/pages/psychologist/list_patients.dart';
 
-class Home_psycho extends StatefulWidget {
+class Patients_psycho extends StatefulWidget {
+  static const String routeName = "/patients_psycho";
   @override
-  State<Home_psycho> createState() => _Home_psychoState();
+  State<Patients_psycho> createState() => _Patients_psychoState();
 }
 
-class _Home_psychoState extends State<Home_psycho> {
+class _Patients_psychoState extends State<Patients_psycho> {
   Drawer getDrawer(BuildContext context) {
     var header = new DrawerHeader(
       child: new Text("PsychoHelp"),
@@ -33,7 +34,7 @@ class _Home_psychoState extends State<Home_psycho> {
         getItem(new Icon(Icons.home), "Home", "/"),
         getItem(
             new Icon(Icons.person_off_outlined), "Profile", "/profile_psycho"),
-        getItem(new Icon(Icons.people), "List patients", "/patients_psycho"),
+        getItem(new Icon(Icons.people), "List patients", "/list_patients"),
         getItem(new Icon(Icons.date_range), "Dating dates", "/dating_dates"),
       ],
     );
@@ -47,9 +48,9 @@ class _Home_psychoState extends State<Home_psycho> {
   Widget build(BuildContext context) {
     return new Scaffold(
       appBar: new AppBar(
-        title: new Text("Home_psycho"),
+        title: new Text("List of Patients"),
       ),
-      body: PublicationList(),
+      body: List_patients(),
       drawer: new Drawer(
         child: getDrawer(context),
       ),
