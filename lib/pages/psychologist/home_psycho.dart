@@ -33,7 +33,7 @@ class _Home_psychoState extends State<Home_psycho> {
         getItem(new Icon(Icons.home), "Home", "/"),
         getItem(
             new Icon(Icons.person_off_outlined), "Profile", "/profile_psycho"),
-        getItem(new Icon(Icons.people), "List patients", "/patients_psycho"),
+        getItem(new Icon(Icons.people), "List patients", "/list_patients"),
         getItem(new Icon(Icons.date_range), "Dating dates", "/dating_dates"),
       ],
     );

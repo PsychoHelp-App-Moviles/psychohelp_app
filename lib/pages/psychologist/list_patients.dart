@@ -3,6 +3,7 @@ import 'package:psychohelp_app/utils/http_helper.dart';
 import 'package:psychohelp_app/models/patient.dart';
 
 class List_patients extends StatefulWidget {
+  static const String routeName = "/list_patients";
   @override
   State<List_patients> createState() => _List_patientsState();
 }
@@ -18,23 +19,30 @@ class _List_patientsState extends State<List_patients> {
     fetchPatients();
     super.initState();
   }
-
-  @override
- Widget build(BuildContext context) {
-    return ListView.builder(
-      itemCount: patients.length,
-      itemBuilder: (context, index) {
-        return PatientRow(patient: patients[index]);
-      },
-    );
-  }
-
+  
   void fetchPatients() {
     httpHelper.fetchPatientsByPsychologistId(1).then((value) {
       setState(() {
         this.patients = value;
       });
     });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: new AppBar(
+        title: new Text("List of Patients"),
+      ),
+      body: new Container(
+        child: new ListView.builder(
+          itemCount: patients.length,
+          itemBuilder: (context, index) {
+        return PatientRow(patient: patients[index]);
+      },
+      ),
+      ),
+    );
   }
 }
 
