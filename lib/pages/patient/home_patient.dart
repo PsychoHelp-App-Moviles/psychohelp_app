@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:psychohelp_app/pages/psychologist/publication_list.dart';
 
 class Home_patient extends StatefulWidget {
   @override
@@ -48,11 +49,7 @@ class _Home_patientState extends State<Home_patient> {
       appBar: new AppBar(
         title: new Text("Home_patient"),
       ),
-      body: new Container(
-        child: new Center(
-          child: new Text("Home_patient"),
-        ),
-      ),
+      body: PublicationList(),
       drawer: new Drawer(
         child: getDrawer(context),
       ),
