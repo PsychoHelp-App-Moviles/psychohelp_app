@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:psychohelp_app/pages/psychologist/logbook_psycho.dart';
 import 'package:psychohelp_app/utils/http_helper.dart';
 import 'package:psychohelp_app/models/patient.dart';
 
@@ -54,15 +55,19 @@ class PatientRow extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       margin: EdgeInsetsDirectional.only(top: 20, bottom: 15, start: 75, end: 75),
-      child: Column(children: <Widget>[
+      child: new InkWell(
+        onTap: () {
+          Navigator.pushNamed(context, "/logbook_psycho", arguments: patient);
+        },
+        child: Column(children: <Widget>[
         Container(
           margin: EdgeInsetsDirectional.only(top: 10, bottom: 10, start: 30, end: 30),
-          child:
-          Image.network(patient.img)),
-          
+          child: Image.network(patient.img)),
+        
         Text(patient.firstName),
         Text(patient.lastName),
       ]),
+      )
     );
   }
 }
