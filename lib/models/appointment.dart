@@ -1,5 +1,5 @@
 class Appointment {
-   
+
   int id;
   String meetUrl;
   String motive;
@@ -7,7 +7,7 @@ class Appointment {
   String testRealized;
   String treatment;
   String scheduleDate;
- 
+
   Appointment({
     required this.id,
     required this.meetUrl,
