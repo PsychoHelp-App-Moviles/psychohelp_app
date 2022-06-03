@@ -20,7 +20,7 @@ class Appointment {
 
   factory Appointment.fromJson(Map<String, dynamic> json) {
     return Appointment(
-        id: json["id"],
+      id: json["id"],
       meetUrl: json["meetUrl"],
       motive: json["motive"],
       personalHistory: json["personalHistory"],
