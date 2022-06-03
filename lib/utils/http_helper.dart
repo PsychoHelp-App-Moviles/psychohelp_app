@@ -58,7 +58,8 @@ class HttpHelper {
   }
 
   Future<List> fetchPublicationByPsychoId(int id) async {
-    String urlString = '';
+    String urlString =
+        'https://psychohelp-open.mybluemix.net/api/v1/publications/psychologist/${id}';
     Uri url = Uri.parse(urlString);
 
     http.Response response = await http.get(url);
@@ -71,5 +72,26 @@ class HttpHelper {
     }
 
     return [];
+  }
+
+  Future<Publication?> createPublication(String title, String tags,
+      String description, String photoUrl, String content, int id) async {
+    String urlString =
+        'https://psychohelp-open.mybluemix.net/api/v1/publications/psychologist/${id}';
+    Uri url = Uri.parse(urlString);
+
+    http.Response response = await http.post(url, body: {
+      "title": title,
+      "tags": tags,
+      "description": description,
+      "photoUrl": photoUrl,
+      "content": content,
+    });
+
+    if (response.statusCode == 201) {
+      final String responseString = response.body;
+      return Publication.fromJson(json.decode(responseString));
+    }
+    return null;
   }
 }
