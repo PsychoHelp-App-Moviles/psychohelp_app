@@ -29,7 +29,8 @@ class _PublicationListState extends State<PublicationList> {
             child: Center(
                 child: Column(
               children: [
-                PublicationRow(publication: publications[index]),
+                //PublicationCard(publication: publications[index]),
+                PublicationCard(publication: publications[index]),
               ],
             )));
       },
@@ -42,6 +43,50 @@ class _PublicationListState extends State<PublicationList> {
         this.publications = value;
       });
     });
+  }
+}
+
+class PublicationCard extends StatefulWidget {
+  final Publication publication;
+  const PublicationCard({Key? key, required this.publication})
+      : super(key: key);
+
+  @override
+  _PublicationCardState createState() => _PublicationCardState();
+}
+
+class _PublicationCardState extends State<PublicationCard> {
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      elevation: 8,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+      child: Container(
+        child: Column(children: <Widget>[
+          ClipRRect(
+            borderRadius: BorderRadius.only(
+                topRight: Radius.circular(20), topLeft: Radius.circular(20)),
+            child: Image.network(
+              widget.publication.photoUrl,
+              fit: BoxFit.cover,
+              height: 200,
+              width: double.infinity,
+            ),
+          ),
+          SizedBox(height: 5),
+          Text(widget.publication.title,
+              style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold)),
+          // Padding(
+          //     padding: const EdgeInsets.all(8.8),
+          //     child: Text(publication.title)),
+          Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: Text(widget.publication.description,
+                textAlign: TextAlign.justify),
+          ),
+        ]),
+      ),
+    );
   }
 }
 

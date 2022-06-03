@@ -8,7 +8,8 @@ import 'package:psychohelp_app/pages/patient/appointments.dart';
 
 class HttpHelper {
   Future<List> fetchPublications() async {
-    String urlString = 'https://psychohelp.herokuapp.com/api/v1/publications';
+    String urlString =
+        'https://psychohelp-open.mybluemix.net/api/v1/publications';
     Uri url = Uri.parse(urlString);
 
     http.Response response = await http.get(url);
@@ -24,21 +25,21 @@ class HttpHelper {
   }
 
   Future<List> fetchPatientsByPsychologistId(int id) async {
-    String urlString = 'https://psychohelp-open.mybluemix.net/api/v1/appointment/psychologist/${id}/patient';
+    String urlString =
+        'https://psychohelp-open.mybluemix.net/api/v1/appointment/psychologist/${id}/patient';
     Uri url = Uri.parse(urlString);
     http.Response response = await http.get(url);
     if (response.statusCode == HttpStatus.ok) {
       final jsonResponse = json.decode(response.body);
-      List patients =
-          jsonResponse.map((map) => Patient.fromJson(map)).toList();
+      List patients = jsonResponse.map((map) => Patient.fromJson(map)).toList();
       return patients;
     }
     return [];
   }
-    
-    
+
   Future<List> fetchAppointmentsByPsychologistId(int id) async {
-    String urlString = 'https://psychohelp.herokuapp.com/api/v1/appointment/psychologist/${id}';
+    String urlString =
+        'https://psychohelp-open.mybluemix.net/api/v1/appointment/psychologist/${id}';
     Uri url = Uri.parse(urlString);
     http.Response response = await http.get(url);
     if (response.statusCode == HttpStatus.ok) {
@@ -49,24 +50,24 @@ class HttpHelper {
     }
     return [];
   }
-
 
   Future<List> fetchPatientAppointments(int id) async {
-    String urlString = 'https://psychohelp-open.mybluemix.net/api/v1/appointment/patient/${id}';
+    String urlString =
+        'https://psychohelp-open.mybluemix.net/api/v1/appointment/patient/${id}';
     Uri url = Uri.parse(urlString);
 
     http.Response response = await http.get(url);
-     if (response.statusCode == HttpStatus.ok) {
+    if (response.statusCode == HttpStatus.ok) {
       final jsonResponse = json.decode(response.body);
-      List patients =
-          jsonResponse.map((map) => Patient.fromJson(map)).toList();
+      List patients = jsonResponse.map((map) => Patient.fromJson(map)).toList();
       return patients;
-     }
-  return [];
-}
+    }
+    return [];
+  }
 
   Future<List> fetchAppointmentsByPatientId(int id) async {
-    String urlString = 'https://psychohelp.herokuapp.com/api/v1/appointment/patient/${id}';
+    String urlString =
+        'https://psychohelp-open.mybluemix.net/api/v1/appointment/patient/${id}';
     Uri url = Uri.parse(urlString);
 
     http.Response response = await http.get(url);
@@ -79,5 +80,43 @@ class HttpHelper {
     }
 
     return [];
+  }
+
+  Future<List> fetchPublicationByPsychoId(int id) async {
+    String urlString =
+        'https://psychohelp-open.mybluemix.net/api/v1/publications/psychologist/${id}';
+    Uri url = Uri.parse(urlString);
+
+    http.Response response = await http.get(url);
+
+    if (response.statusCode == HttpStatus.ok) {
+      final jsonResponse = json.decode(response.body);
+      List publications =
+          jsonResponse.map((map) => Publication.fromJson(map)).toList();
+      return publications;
+    }
+
+    return [];
+  }
+
+  Future<Publication?> createPublication(String title, String tags,
+      String description, String photoUrl, String content, int id) async {
+    String urlString =
+        'https://psychohelp-open.mybluemix.net/api/v1/publications/psychologist/${id}';
+    Uri url = Uri.parse(urlString);
+
+    http.Response response = await http.post(url, body: {
+      "title": title,
+      "tags": tags,
+      "description": description,
+      "photoUrl": photoUrl,
+      "content": content,
+    });
+
+    if (response.statusCode == 201) {
+      final String responseString = response.body;
+      return Publication.fromJson(json.decode(responseString));
+    }
+    return null;
   }
 }
