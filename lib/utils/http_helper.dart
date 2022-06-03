@@ -99,6 +99,7 @@ class HttpHelper {
     return [];
   }
 
+//ESTO ES UN EJEMPLO DE COMO HACER UNA PETICION POST (NO SALIO)
   Future<Publication?> createPublication(String title, String tags,
       String description, String photoUrl, String content, int id) async {
     String urlString =

@@ -73,21 +73,9 @@ class _CreatePublicationState extends State<CreatePublication> {
           ),
         ),
         SizedBox(height: 16),
-        RaisedButton(
+        FlatButton(
           child: Text('Create'),
           onPressed: () {},
-        ),
-        FlatButton(
-          child: Text('Cancel'),
-          onPressed: () async {
-            final String title = controllerTitle.text;
-            final String description = controllerDescription.text;
-            final String tag = controllerTag.text;
-            final String content = controllerContent.text;
-            final String photoUrl = controllerPhotoUrl.text;
-
-            final CreatePublication publication = await CreatePublication();
-          },
         ),
       ],
     );
