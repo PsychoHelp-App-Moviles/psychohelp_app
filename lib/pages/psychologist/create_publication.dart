@@ -30,6 +30,7 @@ class _CreatePublicationState extends State<CreatePublication> {
 
   Widget getBody() {
     return new ListView(
+      controller: ScrollController(),
       padding: const EdgeInsets.all(16.0),
       children: <Widget>[
         SizedBox(height: 16),
@@ -75,7 +76,16 @@ class _CreatePublicationState extends State<CreatePublication> {
         SizedBox(height: 16),
         FlatButton(
           child: Text('Create'),
-          onPressed: () {},
+          onPressed: () async {
+            String title = controllerTitle.text;
+            String description = controllerDescription.text;
+            String tags = controllerTag.text;
+            String content = controllerContent.text;
+            String photoUrl = controllerPhotoUrl.text;
+
+            await httpHelper.createPublication(title, description, tags, photoUrl, content, 1);
+            Navigator.pop(context);
+          },
         ),
       ],
     );

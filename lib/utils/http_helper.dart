@@ -102,22 +102,29 @@ class HttpHelper {
 //ESTO ES UN EJEMPLO DE COMO HACER UNA PETICION POST (NO SALIO)
   Future<Publication?> createPublication(String title, String tags,
       String description, String photoUrl, String content, int id) async {
-    String urlString =
-        'https://psychohelp-open.mybluemix.net/api/v1/publications/psychologist/${id}';
-    Uri url = Uri.parse(urlString);
-
-    http.Response response = await http.post(url, body: {
+    final String urlString = "https://psychohelp-open.mybluemix.net/api/v1/publications/psychologists/${id}";
+    Uri url = Uri.parse(urlString);    
+    
+    final body = {
       "title": title,
       "tags": tags,
       "description": description,
       "photoUrl": photoUrl,
       "content": content,
-    });
+    };
+      
+    var headers = {
+      'Content-Type':'application/json',
+    }; 
+
+    final response = await http.post(url, headers: headers, body: jsonEncode(body));
+
+    print(response.body);
 
     if (response.statusCode == 201) {
-      final String responseString = response.body;
-      return Publication.fromJson(json.decode(responseString));
+      final String responseString = response.body;  
+      return publicationFromJson(responseString);  
     }
-    return null;
+    else return null;    
   }
 }
