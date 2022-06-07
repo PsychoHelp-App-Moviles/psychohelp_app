@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:psychohelp_app/models/publication.dart';
 import 'package:psychohelp_app/models/patient.dart';
+import 'package:psychohelp_app/models/appointment.dart';
 
 class HttpHelper {
   Future<List> fetchPublications() async {
@@ -45,9 +46,9 @@ class HttpHelper {
 
     if (response.statusCode == HttpStatus.ok) {
       final jsonResponse = json.decode(response.body);
-      List patients =
-          jsonResponse.map((map) => Patient.fromJson(map)).toList();
-      return patients;
+      List appointments =
+          jsonResponse.map((map) => Appointment.fromJson(map)).toList();
+      return appointments;
     }
 
     return [];

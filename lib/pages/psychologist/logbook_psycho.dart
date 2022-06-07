@@ -13,26 +13,21 @@ class _Logbook_psychoState extends State<Logbook_psycho> {
   List appointments = [];
   HttpHelper httpHelper = HttpHelper();
 
-  @override
+ @override
   void initState() {
     appointments = [];
     httpHelper = HttpHelper();
-    fetchAppointments();
     super.initState();
+    Future.delayed(Duration.zero, () {
+      setState(() {
+        patient = ModalRoute.of(context)?.settings.arguments as Patient;
+      });
+      fetchAppointments(patient!.id);
+      });
   }
-
-  @override
-  /*Widget build(BuildContext context) {
-    return ListView.builder(
-      itemCount: appointments.length,
-      itemBuilder: (context, index) {
-        return PublicationRow(publication: appointments[index]);
-      },
-    );
-  }*/
-
-  void fetchAppointments() {
-    httpHelper.fetchPatientAppointments(patient!.id).then((value) {
+  
+  void fetchAppointments(int id) {
+    httpHelper.fetchPatientAppointments(id).then((value) {
       setState(() {
         this.appointments = value;
       });
@@ -41,7 +36,6 @@ class _Logbook_psychoState extends State<Logbook_psycho> {
 
   @override
   Widget build(BuildContext context) {
-    patient = ModalRoute.of(context)?.settings.arguments as Patient;
     return Scaffold(
       appBar: new AppBar(
         title: new Text("Logbook of the patient"),
@@ -72,15 +66,50 @@ class _Logbook_psychoState extends State<Logbook_psycho> {
                 style: TextStyle(fontSize: 20),
               ),
             ),
-            Container(
+            /*Container(
               margin: EdgeInsetsDirectional.only(top: 10, bottom: 10, start: 30, end: 30),
-              child: Image.network(patient!.img)),
-            Card(
+              child: Image.network(patient!.img)),*/
+            new Flex(direction: Axis.horizontal, children: <Widget>[
+              new Flexible(
+                flex: 3,
+                child: new Container(
+                  margin: EdgeInsetsDirectional.only(top: 10, bottom: 10, start: 30, end: 30),
+                  child: Image.network(patient!.img),
+                ),
+              ),
+              new Flexible(
+                flex: 1,
+                child: new Container(
+                  child: ListView.builder(
+                    shrinkWrap:true,
+                    itemCount: appointments.length,         
+                    itemBuilder: (context, index) {                                          
+                  return AppointmentsRow(appointment: appointments[index]);
+                  },),)
+                ),]
+              ),
+            ]),                
+      )
+    );
+  }
+}
 
-            ),
-            ]
-        ),
-      ),
+class AppointmentsRow extends StatelessWidget {
+  final Appointment appointment;
+  const AppointmentsRow({Key? key, required this.appointment}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      //margin: EdgeInsetsDirectional.only(top: 20, bottom: 15, start: 75, end: 75),
+      child: new InkWell(
+        onTap: () {
+          
+        },
+        child: Column(children: <Widget>[
+        Text(appointment.scheduleDate),
+      ]),
+      )
     );
   }
 }
