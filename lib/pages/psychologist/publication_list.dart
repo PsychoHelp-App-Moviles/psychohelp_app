@@ -24,7 +24,14 @@ class _PublicationListState extends State<PublicationList> {
     return ListView.builder(
       itemCount: publications.length,
       itemBuilder: (context, index) {
-        return PublicationRow(publication: publications[index]);
+        return Container(
+            padding: EdgeInsets.symmetric(horizontal: 15),
+            child: Center(
+                child: Column(
+              children: [
+                PublicationRow(publication: publications[index]),
+              ],
+            )));
       },
     );
   }
@@ -45,11 +52,32 @@ class PublicationRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      child: Column(children: <Widget>[
-        Image.network(publication.photoUrl),
-        Text(publication.title),
-        Text(publication.description),
-      ]),
+      elevation: 8,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+      child: Container(
+        child: Column(children: <Widget>[
+          ClipRRect(
+            borderRadius: BorderRadius.only(
+                topRight: Radius.circular(20), topLeft: Radius.circular(20)),
+            child: Image.network(
+              publication.photoUrl,
+              fit: BoxFit.cover,
+              height: 200,
+              width: double.infinity,
+            ),
+          ),
+          SizedBox(height: 5),
+          Text(publication.title,
+              style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold)),
+          // Padding(
+          //     padding: const EdgeInsets.all(8.8),
+          //     child: Text(publication.title)),
+          Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: Text(publication.description, textAlign: TextAlign.justify),
+          ),
+        ]),
+      ),
     );
   }
 }
