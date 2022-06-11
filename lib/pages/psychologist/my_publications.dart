@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:psychohelp_app/models/publication.dart';
 import 'package:psychohelp_app/pages/psychologist/create_publication.dart';
+import 'package:psychohelp_app/pages/psychologist/edit_publication.dart';
 import 'package:psychohelp_app/utils/http_helper.dart';
 
 class My_publications extends StatefulWidget {
@@ -13,6 +14,14 @@ class My_publications extends StatefulWidget {
 
 class _My_publicationsState extends State<My_publications> {
   List publications = [];
+  Publication publicationInfo = Publication(
+    id: 1,
+    title: "",
+    description: "",
+    tags: "",
+    content: "",
+    photoUrl: "",
+  );
   HttpHelper httpHelper = HttpHelper();
 
   @override
@@ -65,6 +74,41 @@ class PublicationRow extends StatefulWidget {
 }
 
 class _PublicationRowState extends State<PublicationRow> {
+  Publication publicationInfo = Publication(
+    id: 1,
+    title: "",
+    description: "",
+    tags: "",
+    content: "",
+    photoUrl: "",
+  );
+  HttpHelper httpHelper = HttpHelper();
+
+  @override
+  void initState() {
+    httpHelper = HttpHelper();
+    super.initState();
+  }
+
+  Future<void> _navigateAndDisplaySelection(BuildContext context) async {
+    final result = await Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => EditedPublication(publicationInfo),
+        ));
+    setState(() {
+      publicationInfo = result as Publication;
+    });
+  }
+
+  void fetchPublicationById(int id) {
+    httpHelper.fetchPublicationById(id).then((value) {
+      setState(() {
+        this.publicationInfo = value;
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -96,7 +140,11 @@ class _PublicationRowState extends State<PublicationRow> {
           ButtonBar(
             alignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
-              FlatButton(child: Text('Edit'), onPressed: () {}),
+              new FlatButton(
+                  child: Text('Edit'),
+                  onPressed: () {
+                    _navigateAndDisplaySelection(context);
+                  }),
               FlatButton(
                   child: Text(
                     'Delete',

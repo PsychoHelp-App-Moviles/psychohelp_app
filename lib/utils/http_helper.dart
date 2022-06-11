@@ -99,12 +99,12 @@ class HttpHelper {
     return [];
   }
 
-//ESTO ES UN EJEMPLO DE COMO HACER UNA PETICION POST (NO SALIO)
   Future<Publication?> createPublication(String title, String tags,
       String description, String photoUrl, String content, int id) async {
-    final String urlString = "https://psychohelp-open.mybluemix.net/api/v1/publications/psychologists/${id}";
-    Uri url = Uri.parse(urlString);    
-    
+    final String urlString =
+        "https://psychohelp-open.mybluemix.net/api/v1/publications/psychologists/${id}";
+    Uri url = Uri.parse(urlString);
+
     final body = {
       "title": title,
       "tags": tags,
@@ -112,19 +112,54 @@ class HttpHelper {
       "photoUrl": photoUrl,
       "content": content,
     };
-      
-    var headers = {
-      'Content-Type':'application/json',
-    }; 
 
-    final response = await http.post(url, headers: headers, body: jsonEncode(body));
+    var headers = {
+      'Content-Type': 'application/json',
+    };
+
+    final response =
+        await http.post(url, headers: headers, body: jsonEncode(body));
 
     print(response.body);
 
     if (response.statusCode == 201) {
-      final String responseString = response.body;  
-      return publicationFromJson(responseString);  
+      final String responseString = response.body;
+      return publicationFromJson(responseString);
+    } else
+      return null;
+  }
+
+  Future fetchPublicationById(int id) async {
+    String urlString =
+        'https://psychohelp-open.mybluemix.net/api/v1/publications/${id}';
+    Uri url = Uri.parse(urlString);
+
+    http.Response response = await http.get(url);
+
+    if (response.statusCode == HttpStatus.ok) {
+      final jsonResponse = json.decode(response.body);
+      Publication publication = Publication.fromJson(jsonResponse);
+      return publication;
     }
-    else return null;    
+    return null;
+  }
+
+  Future updatePublication(int id, Publication request) async {
+    final String urlString =
+        "https://psychohelp-open.mybluemix.net/api/v1/publications/${id}";
+    Uri url = Uri.parse(urlString);
+
+    var headers = {
+      'Content-Type': 'application/json',
+    };
+
+    final response =
+        await http.put(url, headers: headers, body: jsonEncode(request));
+
+    if (response.statusCode == HttpStatus.ok) {
+      var publication = Publication.fromJson(json.decode(response.body));
+      return publication;
+    } else
+      return null;
   }
 }
