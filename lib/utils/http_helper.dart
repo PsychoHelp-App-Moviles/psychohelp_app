@@ -4,9 +4,42 @@ import 'package:http/http.dart' as http;
 import 'package:psychohelp_app/models/publication.dart';
 import 'package:psychohelp_app/models/patient.dart';
 import 'package:psychohelp_app/models/appointment.dart';
-import 'package:psychohelp_app/pages/patient/appointments.dart';
+import 'package:psychohelp_app/models/psychologist.dart';
+//import 'package:psychohelp_app/pages/patient/appointments.dart';
 
 class HttpHelper {
+  Future<List> fetchPatients() async {
+    String urlString = 'https://psychohelp-open.mybluemix.net/api/v1/patients';
+    Uri url = Uri.parse(urlString);
+
+    http.Response response = await http.get(url);
+
+    if (response.statusCode == HttpStatus.ok) {
+      final jsonResponse = json.decode(response.body);
+      List patients = jsonResponse.map((map) => Patient.fromJson(map)).toList();
+      return patients;
+    }
+
+    return [];
+  }
+
+  Future<List> fetchPsychologist() async {
+    String urlString =
+        'https://psychohelp-open.mybluemix.net/api/v1/psychologists';
+    Uri url = Uri.parse(urlString);
+
+    http.Response response = await http.get(url);
+
+    if (response.statusCode == HttpStatus.ok) {
+      final jsonResponse = json.decode(response.body);
+      List psychologists =
+          jsonResponse.map((map) => Psychologist.fromJson(map)).toList();
+      return psychologists;
+    }
+
+    return [];
+  }
+
   Future<List> fetchPublications() async {
     String urlString =
         'https://psychohelp-open.mybluemix.net/api/v1/publications';
