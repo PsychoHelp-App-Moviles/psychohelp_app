@@ -23,17 +23,6 @@ class _EditedPublicationState extends State<EditedPublication> {
   final TextEditingController controllerPhotoUrl = TextEditingController();
 
   @override
-  void initState() {
-    httpHelper = HttpHelper();
-    controllerTitle.text = widget.publication.title;
-    controllerDescription.text = widget.publication.description;
-    controllerTags.text = widget.publication.tags;
-    controllerContent.text = widget.publication.content;
-    controllerPhotoUrl.text = widget.publication.photoUrl;
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return new Scaffold(
       appBar: new AppBar(
@@ -41,6 +30,18 @@ class _EditedPublicationState extends State<EditedPublication> {
       ),
       body: getBody(),
     );
+  }
+
+  @override
+  void initState() {
+    print(widget.publication.id);
+    httpHelper = HttpHelper();
+    controllerTitle.text = widget.publication.title;
+    controllerDescription.text = widget.publication.description;
+    controllerTags.text = widget.publication.tags;
+    controllerContent.text = widget.publication.content;
+    controllerPhotoUrl.text = widget.publication.photoUrl;
+    super.initState();
   }
 
   Widget getBody() {
