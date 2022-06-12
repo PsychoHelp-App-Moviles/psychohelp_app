@@ -1,3 +1,8 @@
+import 'dart:convert';
+
+Publication publicationFromJson(String str) => Publication.fromJson(json.decode(str));
+String publicationModelToJson(Publication data) => json.encode(data.toJson());
+
 class Publication {
   int id;
   String title;
@@ -24,5 +29,16 @@ class Publication {
       photoUrl: json["photoUrl"],
       content: json["content"],
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      "id": id,
+      "title": title,
+      "tags": tags,
+      "description": description,
+      "photoUrl": photoUrl,
+      "content": content,
+    };
   }
 }
