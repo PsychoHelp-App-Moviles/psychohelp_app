@@ -4,6 +4,7 @@ import 'package:psychohelp_app/pages/psychologist/publication_list.dart';
 class Home_patient extends StatefulWidget {
   @override
   State<Home_patient> createState() => _Home_patientState();
+  static const String routeName = "/home_patient";
 }
 
 class _Home_patientState extends State<Home_patient> {
@@ -30,7 +31,7 @@ class _Home_patientState extends State<Home_patient> {
     ListView listView = new ListView(
       children: <Widget>[
         header,
-        getItem(new Icon(Icons.home), "Home", "/"),
+        getItem(new Icon(Icons.home), "Home", "/home_patient"),
         getItem(
             new Icon(Icons.person_off_outlined), "Profile", "/profile_patient"),
         getItem(new Icon(Icons.people), "List psychologists", "/list_psycho"),

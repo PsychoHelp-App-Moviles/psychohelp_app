@@ -23,6 +23,36 @@ class HttpHelper {
     return [];
   }
 
+  Future<Patient> fetchByPatientEmail(String email) async {
+    String urlString =
+        'https://psychohelp-open.mybluemix.net/api/v1/patients/email/${email}';
+    Uri url = Uri.parse(urlString);
+    http.Response response = await http.get(url);
+
+    if (response.statusCode == HttpStatus.ok) {
+      final jsonResponse = json.decode(response.body);
+      Patient patient = Patient.fromJson(jsonResponse);
+      return patient;
+    } else {
+      throw Exception('Failed to load Patient');
+    }
+  }
+
+  Future<Psychologist> fetchByPsychologistEmail(String email) async {
+    String urlString =
+        'https://psychohelp-open.mybluemix.net/api/v1/psychologists/email/${email}';
+    Uri url = Uri.parse(urlString);
+    http.Response response = await http.get(url);
+
+    if (response.statusCode == HttpStatus.ok) {
+      final jsonResponse = json.decode(response.body);
+      Psychologist psychologist = Psychologist.fromJson(jsonResponse);
+      return psychologist;
+    } else {
+      throw Exception('Failed to load Psychologist');
+    }
+  }
+
   Future<List> fetchPsychologist() async {
     String urlString =
         'https://psychohelp-open.mybluemix.net/api/v1/psychologists';

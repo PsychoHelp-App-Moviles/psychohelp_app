@@ -2,18 +2,17 @@ class Psychologist {
   int id;
   String name;
   String dni;
+  String birthday;
   String email;
-  DateTime birthday;
-  String phone;
   String password;
+  String phone;
   String specialization;
   String formation;
-  String date;
+  String about;
   String gender;
+  String sessionType;
   String img;
   String cmp;
-  String sessionType;
-  String about;
   bool active;
   bool fresh;
 
@@ -21,18 +20,17 @@ class Psychologist {
     required this.id,
     required this.name,
     required this.dni,
-    required this.email,
     required this.birthday,
-    required this.phone,
+    required this.email,
     required this.password,
+    required this.phone,
     required this.specialization,
     required this.formation,
-    required this.date,
+    required this.about,
     required this.gender,
+    required this.sessionType,
     required this.img,
     required this.cmp,
-    required this.sessionType,
-    required this.about,
     required this.active,
     required this.fresh,
   });
@@ -42,18 +40,17 @@ class Psychologist {
         id: json["id"],
         name: json["name"],
         dni: json["dni"],
+        birthday: json["birthdayDate"],
         email: json["email"],
-        birthday: DateTime.parse(json["birthdayDate"]),
-        phone: json["phone"],
         password: json["password"],
+        phone: json["phone"],
         specialization: json["specialization"],
         formation: json["formation"],
-        date: json["date"],
-        gender: json["gender"],
+        about: json["about"],
+        gender: json["genre"],
+        sessionType: json["sessionType"],
         img: json["image"],
         cmp: json["cmp"],
-        sessionType: json["sessionType"],
-        about: json["about"],
         active: json["active"],
         fresh: json["fresh"]);
   }
