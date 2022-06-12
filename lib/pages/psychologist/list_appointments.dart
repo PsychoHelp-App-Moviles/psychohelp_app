@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:psychohelp_app/models/appointment.dart';
+import 'package:psychohelp_app/models/patient.dart';
 import 'package:psychohelp_app/utils/http_helper.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:url_launcher/url_launcher_string.dart';
@@ -11,21 +12,28 @@ class AppointmentList extends StatefulWidget {
 
 class _AppointmentListState extends State<AppointmentList> {
   List appointments = [];
+  List patients = [];
+  DateTime date = DateTime.now();
   HttpHelper httpHelper = HttpHelper();
-
-  launchUrl(String url) async {
-    if (await canLaunchUrlString(url)) {
-      await launchUrlString(url);
-    } else {
-      throw 'Could not launch $url';
-    }
-  }
+  bool _isShown = true;
+  Patient patient = new Patient(
+      id: 0,
+      firstName: '',
+      lastName: '',
+      email: '',
+      phone: '',
+      password: '',
+      date: '',
+      gender: '',
+      img: '');
 
   @override
   void initState() {
     appointments = [];
+    patients = [];
     httpHelper = HttpHelper();
     fetchAppointments();
+    fetchPatients();
     super.initState();
   }
 
@@ -34,6 +42,8 @@ class _AppointmentListState extends State<AppointmentList> {
     return ListView.builder(
       itemCount: appointments.length,
       itemBuilder: (context, index) {
+        Patient patient = patients.firstWhere(
+            (element) => element.id == appointments[index].patientId);
         return Card(
           color: Colors.white,
           child: Padding(
@@ -44,8 +54,28 @@ class _AppointmentListState extends State<AppointmentList> {
                 children: [
                   Align(
                       alignment: Alignment.centerLeft,
-                      child: Text('Cita programada: ' +
-                          appointments[index].scheduleDate)),
+                      child: Column(children: [
+                        RichText(
+                          text: TextSpan(
+                            text: 'Cita programada: ' +
+                                appointments[index].scheduleDate,
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black),
+                          ),
+                        ),
+                        RichText(
+                          text: TextSpan(
+                            text: 'Paciente: ' +
+                                patient.firstName +
+                                ' ' +
+                                patient.lastName,
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black),
+                          ),
+                        )
+                      ])),
                   Align(
                     alignment: Alignment.center,
                     child: MaterialButton(
@@ -59,15 +89,63 @@ class _AppointmentListState extends State<AppointmentList> {
                           height: 20,
                         )),
                   ),
-                  Column(children: [
-                    Align(
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: IconButton(
+                        onPressed: () async {
+                          DateTime? newDate = await showDatePicker(
+                              context: context,
+                              firstDate: date,
+                              initialDate: date,
+                              lastDate: DateTime(
+                                  date.year, date.month, date.day + 14));
+
+                          if (newDate == null) return;
+
+                          setState(() => date = newDate);
+                          print(newDate);
+                        },
+                        icon: Icon(Icons.calendar_month),
+                        color: Colors.blueAccent),
+                  ),
+                  Align(
                       alignment: Alignment.centerRight,
-                      child: MaterialButton(
-                        onPressed: () {},
-                        child: Text('Actualizar'),
-                      ),
-                    )
-                  ]),
+                      child: IconButton(
+                        onPressed: () {
+                          showDialog(
+                              context: context,
+                              builder: (BuildContext ctx) {
+                                return AlertDialog(
+                                  title: const Text('Borrando cita'),
+                                  content: const Text(
+                                      '¿Está seguro de borrar la cita, su paciente se puede morir?'),
+                                  actions: [
+                                    // The "Yes" button
+                                    TextButton(
+                                        onPressed: () {
+                                          // Remove the box
+                                          setState(() {
+                                            _isShown = false;
+                                          });
+                                          deleteAppointmentById(
+                                              appointments[index].id, index);
+                                          // Close the dialog
+                                          Navigator.of(context).pop();
+                                        },
+                                        child: const Text('Yes')),
+                                    TextButton(
+                                        onPressed: () {
+                                          // Close the dialog
+                                          Navigator.of(context).pop();
+                                        },
+                                        child: const Text('No'))
+                                  ],
+                                );
+                              });
+                        },
+                        icon: Icon(Icons.delete),
+                        color: Colors.red,
+                      )),
                 ]),
           ),
         );
@@ -79,6 +157,29 @@ class _AppointmentListState extends State<AppointmentList> {
     httpHelper.fetchAppointmentsByPsychologistId(1).then((value) {
       setState(() {
         this.appointments = value;
+      });
+    });
+  }
+
+  void fetchPatients() {
+    httpHelper.fetchPatients().then((value) {
+      setState(() {
+        this.patients = value;
+      });
+    });
+  }
+
+  void deleteAppointmentById(int id, int index) {
+    httpHelper.deleteAppointmentById(id);
+    setState(() {
+      appointments.removeAt(index);
+    });
+  }
+
+  void fetchPatientById(int id) async {
+    httpHelper.fetchPatientById(id).then((value) {
+      setState(() {
+        this.patient = value;
       });
     });
   }
