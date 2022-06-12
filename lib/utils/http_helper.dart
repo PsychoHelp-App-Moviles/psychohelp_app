@@ -87,20 +87,6 @@ class HttpHelper {
     return [];
   }
 
-  Future<List> fetchPatients() async {
-    String urlString = 'https://psychohelp-open.mybluemix.net/api/v1/patients';
-    Uri url = Uri.parse(urlString);
-    http.Response response = await http.get(url);
-
-    if (response.statusCode == HttpStatus.ok) {
-      final jsonResponse = json.decode(response.body);
-      List patients = jsonResponse.map((map) => Patient.fromJson(map)).toList();
-      return patients;
-    }
-
-    return [];
-  }
-
   Future<Patient> fetchPatientById(int id) async {
     String urlString =
         'https://psychohelp-open.mybluemix.net/api/v1/patients/${id}';
