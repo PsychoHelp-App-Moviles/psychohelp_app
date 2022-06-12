@@ -87,6 +87,46 @@ class HttpHelper {
     return [];
   }
 
+  Future<List> fetchPatients() async {
+    String urlString = 'https://psychohelp-open.mybluemix.net/api/v1/patients';
+    Uri url = Uri.parse(urlString);
+    http.Response response = await http.get(url);
+
+    if (response.statusCode == HttpStatus.ok) {
+      final jsonResponse = json.decode(response.body);
+      List patients = jsonResponse.map((map) => Patient.fromJson(map)).toList();
+      return patients;
+    }
+
+    return [];
+  }
+
+  Future<Patient> fetchPatientById(int id) async {
+    String urlString =
+        'https://psychohelp-open.mybluemix.net/api/v1/patients/${id}';
+    Uri url = Uri.parse(urlString);
+
+    http.Response response = await http.get(url);
+
+    if (response.statusCode == HttpStatus.ok) {
+      final jsonResponse = json.decode(response.body);
+      Patient patient = Patient.fromJson(jsonResponse);
+      return patient;
+    } else {
+      throw Exception('Failed to load patient');
+    }
+  }
+
+  Future<http.Response> deleteAppointmentById(int id) async {
+    final http.Response response = await http.delete(
+      Uri.parse('https://psychohelp-open.mybluemix.net/api/v1/appointment/$id'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+    );
+    return response;
+  }
+
   Future<List> fetchPatientsByPsychologistId(int id) async {
     String urlString =
         'https://psychohelp-open.mybluemix.net/api/v1/appointment/psychologist/${id}/patient';
