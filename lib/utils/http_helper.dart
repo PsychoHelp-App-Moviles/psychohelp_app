@@ -172,9 +172,43 @@ class HttpHelper {
     return [];
   }
 
+  Future fetchAppointmentById(int id) async {
+    String urlString =
+        'https://psychohelp-open.mybluemix.net/api/v1/appointment/${id}';
+    Uri url = Uri.parse(urlString);
+
+    http.Response response = await http.get(url);
+    if (response.statusCode == HttpStatus.ok) {
+      var appointment = Appointment.fromJson(json.decode(response.body));
+      return appointment;
+    }
+    return null;
+  }
+
+  Future updateAppointmentLogbook(int id, Appointment request) async {
+    final String urlString =
+        "https://psychohelp-open.mybluemix.net/api/v1/appointment/${id}";
+    Uri url = Uri.parse(urlString);
+
+    var headers = {
+      'Content-Type': 'application/json',
+    };
+
+    final response =
+        await http.put(url, headers: headers, body: jsonEncode(request));
+
+    print(response.body);
+
+    if (response.statusCode == HttpStatus.ok) {
+      var appointment = Appointment.fromJson(json.decode(response.body));
+      return appointment;
+    } else
+      return null;
+  }
+
   Future<List> fetchAppointmentsByPatientId(int id) async {
     String urlString =
-        'https://psychohelp-open.mybluemix.net/api/v1/appointment/patient/${id}';
+        'https://psychohelp.herokuapp.com/api/v1/appointment/patient/${id}';
     Uri url = Uri.parse(urlString);
 
     http.Response response = await http.get(url);

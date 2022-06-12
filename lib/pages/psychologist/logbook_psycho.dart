@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:psychohelp_app/models/patient.dart';
+import 'package:psychohelp_app/models/appointment.dart';
+import 'package:psychohelp_app/pages/psychologist/edit_logbook_psycho.dart';
 import 'package:psychohelp_app/utils/http_helper.dart';
 
 class Logbook_psycho extends StatefulWidget {
@@ -11,72 +13,231 @@ class Logbook_psycho extends StatefulWidget {
 class _Logbook_psychoState extends State<Logbook_psycho> {
   Patient? patient;
   List appointments = [];
+  Appointment appointmentInfo = Appointment(
+      id: 1,
+      meetUrl: "",
+      motive: "",
+      personalHistory: "",
+      testRealized: "",
+      treatment: "",
+      scheduleDate: "",
+      patientId: 1,
+      psychologistId: 1);
   HttpHelper httpHelper = HttpHelper();
 
   @override
   void initState() {
     appointments = [];
     httpHelper = HttpHelper();
-    fetchAppointments();
     super.initState();
+    Future.delayed(Duration.zero, () {
+      setState(() {
+        patient = ModalRoute.of(context)?.settings.arguments as Patient;
+      });
+      fetchAppointments(patient!.id);
+    });
   }
 
-  @override
-  /*Widget build(BuildContext context) {
-    return ListView.builder(
-      itemCount: appointments.length,
-      itemBuilder: (context, index) {
-        return PublicationRow(publication: appointments[index]);
-      },
+  Future<void> _navigateAndDisplaySelection(BuildContext context) async {
+    final result = await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => Edit_Logbook_Appointment(appointmentInfo),
+      ),
     );
-  }*/
+    setState(() {
+      appointmentInfo = result as Appointment;
+    });
+  }
 
-  void fetchAppointments() {
-    httpHelper.fetchPatientAppointments(patient!.id).then((value) {
+  void fetchAppointments(int id) {
+    httpHelper.fetchPatientAppointments(id).then((value) {
       setState(() {
         this.appointments = value;
       });
     });
   }
 
+  void fetchAppointmentById(int id) {
+    httpHelper.fetchAppointmentById(id).then((value) {
+      setState(() {
+        this.appointmentInfo = value;
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    patient = ModalRoute.of(context)?.settings.arguments as Patient;
     return Scaffold(
-      appBar: new AppBar(
-        title: new Text("Logbook of the patient"),
-      ),
-      body: new Container(
-        margin: EdgeInsetsDirectional.only(start: 5, end: 5, top: 20),
-        child: new Flex(direction: Axis.vertical, children: <Widget>[
-          Align(
-            alignment: Alignment.center,
-            child: Text(
-              "Identification Data",
-              style: TextStyle(fontSize: 20),
+        appBar: new AppBar(
+          title: new Text("Logbook of the patient"),
+        ),
+        body: new Container(
+          margin: EdgeInsetsDirectional.only(start: 15, end: 15, top: 20),
+          child: new Flex(direction: Axis.vertical, children: <Widget>[
+            Column(
+              children: <Widget>[
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    "Identification Data",
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+                ),
+                SizedBox(height: 15),
+                Card(
+                    child: Container(
+                        margin: EdgeInsets.all(10),
+                        child: Column(
+                          children: <Widget>[
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                "Nombre Completo: " +
+                                    patient!.firstName +
+                                    " " +
+                                    patient!.lastName,
+                                style: TextStyle(fontSize: 16),
+                                //set an id for the text
+                              ),
+                            ),
+                            SizedBox(height: 10),
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                "Fecha de Nacimiento: " + patient!.date,
+                                style: TextStyle(fontSize: 16),
+                              ),
+                            ),
+                            SizedBox(height: 10),
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                "Correo electrónico: " + patient!.email,
+                                style: TextStyle(fontSize: 16),
+                              ),
+                            ),
+                            SizedBox(height: 10),
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                "Género: " + patient!.gender,
+                                style: TextStyle(fontSize: 16),
+                              ),
+                            ),
+                            SizedBox(height: 10),
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                "Teléfono: " + patient!.phone,
+                                style: TextStyle(fontSize: 16),
+                              ),
+                            ),
+                          ],
+                        ))),
+                SizedBox(height: 15),
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    "Historial de Sesiones",
+                    style: TextStyle(fontSize: 19, fontWeight: FontWeight.bold),
+                  ),
+                ),
+              ],
             ),
-          ),
-          Align(
-            alignment: Alignment.centerLeft,
-            child: Text(
-              "Identification Data",
-              style: TextStyle(fontSize: 20),
-            ),
-          ),
-          Align(
-            alignment: Alignment.centerLeft,
-            child: Text(
-              "Identification Data",
-              style: TextStyle(fontSize: 20),
-            ),
-          ),
-          Container(
-              margin: EdgeInsetsDirectional.only(
-                  top: 10, bottom: 10, start: 30, end: 30),
-              child: Image.network(patient!.img)),
-          Card(),
-        ]),
-      ),
-    );
+            new Flex(direction: Axis.horizontal, children: <Widget>[
+              new Flexible(
+                  flex: 1,
+                  child: new Container(
+                    width: 100,
+                    margin: EdgeInsetsDirectional.only(
+                        top: 10, bottom: 10, start: 10, end: 15),
+                    child: ListView.builder(
+                      padding: EdgeInsets.only(bottom: 20),
+                      shrinkWrap: true,
+                      itemCount: appointments.length,
+                      itemBuilder: (context, index) {
+                        return Card(
+                            child: new InkWell(
+                          onTap: () {
+                            fetchAppointmentById(appointments[index].id);
+                          },
+                          child: Column(children: <Widget>[
+                            Text(appointments[index].scheduleDate),
+                          ]),
+                        ));
+                      },
+                    ),
+                  )),
+              new Flexible(
+                flex: 2,
+                child: new Container(
+                  width: 400,
+                  child: new Card(
+                    margin:
+                        EdgeInsetsDirectional.only(top: 10, start: 5, end: 5),
+                    child: new Container(
+                      margin: EdgeInsetsDirectional.only(
+                          top: 10, start: 10, end: 10),
+                      child: Column(
+                        children: <Widget>[
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              "Schedule: " + appointmentInfo.scheduleDate,
+                              style: TextStyle(
+                                  fontSize: 18, fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                          SizedBox(height: 15),
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              "Motive: " + appointmentInfo.motive,
+                              style: TextStyle(fontSize: 14),
+                            ),
+                          ),
+                          SizedBox(height: 15),
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              "History: " + appointmentInfo.personalHistory,
+                              style: TextStyle(fontSize: 14),
+                            ),
+                          ),
+                          SizedBox(height: 20),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              new FlatButton(
+                child: Text('Edit'),
+                onPressed: () {
+                  _navigateAndDisplaySelection(context);
+                },
+              )
+            ]),
+          ]),
+        ));
+  }
+}
+
+class AppointmentsRow extends StatelessWidget {
+  final Appointment appointment;
+  const AppointmentsRow({Key? key, required this.appointment})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+        //margin: EdgeInsetsDirectional.only(top: 20, bottom: 15, start: 75, end: 75),
+        child: new InkWell(
+      onTap: () {},
+      child: Column(children: <Widget>[
+        Text(appointment.scheduleDate),
+      ]),
+    ));
   }
 }

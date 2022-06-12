@@ -1,3 +1,10 @@
+import 'dart:convert';
+
+Appointment appointmentFromJson(String str) =>
+    Appointment.fromJson(json.decode(str));
+
+String appointmentToJson(Appointment data) => json.encode(data.toJson());
+
 class Appointment {
   int id;
   String meetUrl;
@@ -32,4 +39,14 @@ class Appointment {
         patientId: json["patientId"],
         psychologistId: json["psychologistId"]);
   }
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "meetUrl": meetUrl,
+        "motive": motive,
+        "personalHistory": personalHistory,
+        "testRealized": testRealized,
+        "treatment": treatment,
+        "scheduleDate": scheduleDate,
+      };
 }
