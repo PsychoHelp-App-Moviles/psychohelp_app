@@ -14,14 +14,6 @@ class My_publications extends StatefulWidget {
 
 class _My_publicationsState extends State<My_publications> {
   List publications = [];
-  Publication publicationInfo = Publication(
-    id: 1,
-    title: "",
-    description: "",
-    tags: "",
-    content: "",
-    photoUrl: "",
-  );
   HttpHelper httpHelper = HttpHelper();
 
   @override
@@ -30,6 +22,14 @@ class _My_publicationsState extends State<My_publications> {
     httpHelper = HttpHelper();
     fetchPublications();
     super.initState();
+  }
+
+  void fetchPublications() {
+    httpHelper.fetchPublicationByPsychoId(1).then((value) {
+      setState(() {
+        this.publications = value;
+      });
+    });
   }
 
   @override
@@ -54,14 +54,6 @@ class _My_publicationsState extends State<My_publications> {
         },
       ),
     );
-  }
-
-  void fetchPublications() {
-    httpHelper.fetchPublicationByPsychoId(1).then((value) {
-      setState(() {
-        this.publications = value;
-      });
-    });
   }
 }
 

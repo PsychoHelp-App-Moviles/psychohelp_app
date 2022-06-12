@@ -92,15 +92,17 @@ class _EditedPublicationState extends State<EditedPublication> {
         FlatButton(
           child: Text('Save'),
           onPressed: () async {
+            // ignore: unused_local_variable
             String title = controllerTitle.text;
+            // ignore: unused_local_variable
             String description = controllerDescription.text;
             String tags = controllerTags.text;
             String content = controllerContent.text;
             String photoUrl = controllerPhotoUrl.text;
             Publication publicationInfo = Publication(
                 id: widget.publication.id,
-                title: title,
-                description: description,
+                title: widget.publication.title,
+                description: widget.publication.description,
                 tags: tags,
                 content: content,
                 photoUrl: photoUrl);
