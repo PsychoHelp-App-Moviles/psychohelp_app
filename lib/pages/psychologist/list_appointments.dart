@@ -97,94 +97,125 @@ class _AppointmentListState extends State<AppointmentList> {
                                   children: [
                                     Column(
                                       mainAxisAlignment:
-                                          MainAxisAlignment.spaceEvenly,
+                                          MainAxisAlignment.spaceAround,
                                       crossAxisAlignment:
                                           CrossAxisAlignment.center,
                                       children: [
-                                        Align(
-                                            alignment: Alignment.topCenter,
-                                            child: ClipRRect(
-                                              borderRadius:
-                                                  BorderRadius.circular(
-                                                      20), // Image border
-                                              child: SizedBox.fromSize(
-                                                size: Size.fromRadius(
-                                                    100), // Image radius
-                                                child: Image.network(
-                                                    patient.img,
-                                                    width: 200,
-                                                    height: 100,
-                                                    fit: BoxFit.cover),
-                                              ),
-                                            )),
-                                        Align(
-                                          alignment: Alignment.bottomLeft,
-                                          child: RichText(
-                                            text: TextSpan(
-                                              text: 'Nombre: ' +
-                                                  patient.firstName +
-                                                  ' ' +
-                                                  patient.lastName,
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceAround,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            Column(children: [
+                                              Align(
+                                                  alignment: Alignment.topLeft,
+                                                  child: ClipRRect(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            20), // Image border
+                                                    child: SizedBox.fromSize(
+                                                      size: Size.fromRadius(
+                                                          60), // Image radius
+                                                      child: Image.network(
+                                                          patient.img,
+                                                          width: 200,
+                                                          height: 100,
+                                                          fit: BoxFit.cover),
+                                                    ),
+                                                  )),
+                                            ]),
+                                            Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.spaceAround,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Align(
+                                                  alignment: Alignment.topLeft,
+                                                  child: RichText(
+                                                    text: TextSpan(
+                                                      text: 'Nombre: ' +
+                                                          patient.firstName +
+                                                          ' ' +
+                                                          patient.lastName,
+                                                      style: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          color: Colors.black),
+                                                    ),
+                                                  ),
+                                                ),
+                                                Align(
+                                                  alignment: Alignment.topLeft,
+                                                  child: RichText(
+                                                      text: TextSpan(
+                                                    text: 'Edad: ' +
+                                                        calculaEdad(
+                                                                patient.date)
+                                                            .toString(),
+                                                    style: TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        color: Colors.black),
+                                                  )),
+                                                ),
+                                                Align(
+                                                  alignment: Alignment.topLeft,
+                                                  child: RichText(
+                                                      text: TextSpan(
+                                                    text: 'Email: ' +
+                                                        patient.email,
+                                                    style: TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        color: Colors.black),
+                                                  )),
+                                                ),
+                                                Align(
+                                                  alignment: Alignment.topLeft,
+                                                  child: RichText(
+                                                      text: TextSpan(
+                                                    text: 'Celular: ' +
+                                                        patient.phone,
+                                                    style: TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        color: Colors.black),
+                                                  )),
+                                                ),
+                                              ],
+                                            )
+                                          ],
+                                        ),
+                                        Padding(
+                                          padding: EdgeInsets.all(12),
+                                          child: Align(
+                                            alignment: Alignment.bottomLeft,
+                                            child: RichText(
+                                                text: TextSpan(
+                                              text: 'Motivo de la consulta: ' +
+                                                  appointments[index].motive,
                                               style: TextStyle(
                                                   fontWeight: FontWeight.bold,
                                                   color: Colors.black),
-                                            ),
+                                            )),
                                           ),
                                         ),
-                                        Align(
-                                          alignment: Alignment.bottomLeft,
-                                          child: RichText(
-                                              text: TextSpan(
-                                            text: 'Edad: ' +
-                                                calculaEdad(patient.date)
-                                                    .toString(),
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                color: Colors.black),
-                                          )),
+                                        Padding(
+                                          padding: EdgeInsets.all(12),
+                                          child: Align(
+                                            alignment: Alignment.bottomLeft,
+                                            child: RichText(
+                                                text: TextSpan(
+                                              text: 'Tratamiento: ' +
+                                                  appointments[index].treatment,
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.black),
+                                            )),
+                                          ),
                                         ),
-                                        Align(
-                                          alignment: Alignment.bottomLeft,
-                                          child: RichText(
-                                              text: TextSpan(
-                                            text: 'Email: ' + patient.email,
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                color: Colors.black),
-                                          )),
-                                        ),
-                                        Align(
-                                          alignment: Alignment.bottomLeft,
-                                          child: RichText(
-                                              text: TextSpan(
-                                            text: 'Celular: ' + patient.phone,
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                color: Colors.black),
-                                          )),
-                                        ),
-                                        Align(
-                                          alignment: Alignment.bottomLeft,
-                                          child: RichText(
-                                              text: TextSpan(
-                                            text: 'Motivo de la consulta: ' +
-                                                appointments[index].motive,
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                color: Colors.black),
-                                          )),
-                                        ),
-                                        Align(
-                                          alignment: Alignment.bottomLeft,
-                                          child: RichText(
-                                              text: TextSpan(
-                                            text: 'Tratamiento: ' +
-                                                appointments[index].treatment,
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                color: Colors.black),
-                                          )),
-                                        )
                                       ],
                                     ),
                                   ],
@@ -213,8 +244,21 @@ class _AppointmentListState extends State<AppointmentList> {
                           setState(() => date = newDate);
                           String newDateString =
                               formatDate(newDate, [dd, '/', mm, '/', yy]);
+                          Appointment appointmentInfo = Appointment(
+                            id: appointments[index].id,
+                            meetUrl: appointments[index].meetUrl,
+                            motive: appointments[index].motive,
+                            personalHistory:
+                                appointments[index].personalHistory,
+                            testRealized: appointments[index].testRealized,
+                            treatment: appointments[index].treatment,
+                            scheduleDate: newDateString,
+                            patientId: appointments[index].patientId,
+                            psychologistId: appointments[index].psychologistId,
+                          );
+
                           updateAppointment(appointments[index].id, index,
-                              newDateString, appointments[index]);
+                              newDateString, appointmentInfo);
                         },
                         icon: Icon(Icons.calendar_month),
                         color: Colors.blueAccent),
@@ -282,7 +326,7 @@ class _AppointmentListState extends State<AppointmentList> {
 
   void updateAppointment(
       int id, int index, String dateTime, Appointment appointment) {
-    httpHelper.updateAppointment(id, appointment, dateTime);
+    httpHelper.updateAppointment(id, appointment);
     setState(() {
       appointments[index].scheduleDate = dateTime.toString();
     });

@@ -88,18 +88,19 @@ class _Edit_Logbook_AppointmentState extends State<Edit_Logbook_Appointment> {
             String treatment = controllerTreatment.text;
 
             Appointment appointmentInfo = Appointment(
-                id: widget.appointment.id,
-                meetUrl: widget.appointment.meetUrl,
-                motive: motive,
-                personalHistory: history,
-                testRealized: testRealized,
-                treatment: treatment,
-                scheduleDate: widget.appointment.scheduleDate,
-                patientId: widget.appointment.patientId,
-                psychologistId: widget.appointment.psychologistId);
-            await httpHelper.updateAppointmentLogbook(
+              id: widget.appointment.id,
+              meetUrl: widget.appointment.meetUrl,
+              motive: motive,
+              personalHistory: history,
+              testRealized: testRealized,
+              treatment: treatment,
+              scheduleDate: widget.appointment.scheduleDate,
+              patientId: widget.appointment.patientId,
+              psychologistId: widget.appointment.psychologistId,
+            );
+            await httpHelper.updateAppointment(
                 widget.appointment.id, appointmentInfo);
-            print(appointmentInfo);
+
             Navigator.pop(context, appointmentInfo);
           },
         ),
