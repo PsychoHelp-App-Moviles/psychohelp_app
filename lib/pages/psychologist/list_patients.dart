@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:psychohelp_app/pages/psychologist/logbook_psycho.dart';
 import 'package:psychohelp_app/utils/http_helper.dart';
 import 'package:psychohelp_app/models/patient.dart';
 
@@ -20,7 +19,7 @@ class _List_patientsState extends State<List_patients> {
     fetchPatients();
     super.initState();
   }
-  
+
   void fetchPatients() {
     httpHelper.fetchPatientsByPsychologistId(1).then((value) {
       setState(() {
@@ -39,9 +38,9 @@ class _List_patientsState extends State<List_patients> {
         child: new ListView.builder(
           itemCount: patients.length,
           itemBuilder: (context, index) {
-        return PatientRow(patient: patients[index]);
-      },
-      ),
+            return PatientRow(patient: patients[index]);
+          },
+        ),
       ),
     );
   }
@@ -54,20 +53,20 @@ class PatientRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: EdgeInsetsDirectional.only(top: 20, bottom: 15, start: 75, end: 75),
-      child: new InkWell(
-        onTap: () {
-          Navigator.pushNamed(context, "/logbook_psycho", arguments: patient);
-        },
-        child: Column(children: <Widget>[
-        Container(
-          margin: EdgeInsetsDirectional.only(top: 10, bottom: 10, start: 30, end: 30),
-          child: Image.network(patient.img)),
-        
-        Text(patient.firstName),
-        Text(patient.lastName),
-      ]),
-      )
-    );
+        margin:
+            EdgeInsetsDirectional.only(top: 20, bottom: 15, start: 75, end: 75),
+        child: new InkWell(
+          onTap: () {
+            Navigator.pushNamed(context, "/logbook_psycho", arguments: patient);
+          },
+          child: Column(children: <Widget>[
+            Container(
+                margin: EdgeInsetsDirectional.only(
+                    top: 10, bottom: 10, start: 30, end: 30),
+                child: Image.network(patient.img)),
+            Text(patient.firstName),
+            Text(patient.lastName),
+          ]),
+        ));
   }
 }

@@ -1,8 +1,9 @@
+import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:psychohelp_app/models/appointment.dart';
 import 'package:psychohelp_app/models/patient.dart';
 import 'package:psychohelp_app/utils/http_helper.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 class AppointmentList extends StatefulWidget {
@@ -13,7 +14,7 @@ class AppointmentList extends StatefulWidget {
 class _AppointmentListState extends State<AppointmentList> {
   List appointments = [];
   List patients = [];
-  DateTime date = DateTime.now();
+
   HttpHelper httpHelper = HttpHelper();
   bool _isShown = true;
   Patient patient = new Patient(
@@ -93,6 +94,9 @@ class _AppointmentListState extends State<AppointmentList> {
                     alignment: Alignment.centerRight,
                     child: IconButton(
                         onPressed: () async {
+                          DateTime date = new DateFormat('dd/MM/yyyy')
+                              .parse(appointments[index].scheduleDate);
+
                           DateTime? newDate = await showDatePicker(
                               context: context,
                               firstDate: date,
@@ -103,7 +107,10 @@ class _AppointmentListState extends State<AppointmentList> {
                           if (newDate == null) return;
 
                           setState(() => date = newDate);
-                          print(newDate);
+                          String newDateString =
+                              formatDate(newDate, [dd, '/', mm, '/', yy]);
+                          updateAppointment(appointments[index].id, index,
+                              newDateString, appointments[index]);
                         },
                         icon: Icon(Icons.calendar_month),
                         color: Colors.blueAccent),
@@ -118,7 +125,7 @@ class _AppointmentListState extends State<AppointmentList> {
                                 return AlertDialog(
                                   title: const Text('Borrando cita'),
                                   content: const Text(
-                                      '¿Está seguro de borrar la cita, su paciente se puede morir?'),
+                                      '¿Está seguro de borrar la cita?'),
                                   actions: [
                                     // The "Yes" button
                                     TextButton(
@@ -166,6 +173,14 @@ class _AppointmentListState extends State<AppointmentList> {
       setState(() {
         this.patients = value;
       });
+    });
+  }
+
+  void updateAppointment(
+      int id, int index, String dateTime, Appointment appointment) {
+    httpHelper.updateAppointment(id, appointment, dateTime);
+    setState(() {
+      appointments[index].scheduleDate = dateTime.toString();
     });
   }
 
