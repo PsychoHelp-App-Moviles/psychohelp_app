@@ -1,7 +1,6 @@
 // ignore_for_file: deprecated_member_use
 
 import 'package:flutter/material.dart';
-import 'package:psychohelp_app/models/appointmentDto.dart';
 import 'package:psychohelp_app/models/appointment.dart';
 import 'package:psychohelp_app/utils/http_helper.dart';
 
@@ -89,16 +88,20 @@ class _Edit_Logbook_AppointmentState extends State<Edit_Logbook_Appointment> {
             String treatment = controllerTreatment.text;
 
             Appointment appointmentInfo = Appointment(
-                id: widget.appointment.id,
-                meetUrl: widget.appointment.meetUrl,
-                motive: motive,
-                personalHistory: history,
-                testRealized: testRealized,
-                treatment: treatment,
-                scheduleDate: widget.appointment.scheduleDate);
+              id: widget.appointment.id,
+              meetUrl: widget.appointment.meetUrl,
+              motive: motive,
+              personalHistory: history,
+              testRealized: testRealized,
+              treatment: treatment,
+              scheduleDate: widget.appointment.scheduleDate,
+              patientId: widget.appointment.patientId,
+              psychologistId: widget.appointment.psychologistId,
+            );
+
             await httpHelper.updateAppointment(
                 widget.appointment.id, appointmentInfo);
-            print(appointmentInfo);
+
             Navigator.pop(context, appointmentInfo);
           },
         ),
