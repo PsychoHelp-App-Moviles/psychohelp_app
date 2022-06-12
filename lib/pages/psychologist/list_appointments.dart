@@ -58,8 +58,7 @@ class _AppointmentListState extends State<AppointmentList> {
                       child: Column(children: [
                         RichText(
                           text: TextSpan(
-                            text: 'Cita programada: ' +
-                                appointments[index].scheduleDate,
+                            text: 'Fecha: ' + appointments[index].scheduleDate,
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 color: Colors.black),
@@ -89,6 +88,14 @@ class _AppointmentListState extends State<AppointmentList> {
                           width: 20,
                           height: 20,
                         )),
+                  ),
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: IconButton(
+                      onPressed: () {},
+                      icon: Icon(Icons.person),
+                      color: Colors.green,
+                    ),
                   ),
                   Align(
                     alignment: Alignment.centerRight,
