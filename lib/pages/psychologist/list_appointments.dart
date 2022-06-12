@@ -64,20 +64,9 @@ class _AppointmentListState extends State<AppointmentList> {
                                 color: Colors.black),
                           ),
                         ),
-                        RichText(
-                          text: TextSpan(
-                            text: 'Paciente: ' +
-                                patient.firstName +
-                                ' ' +
-                                patient.lastName,
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black),
-                          ),
-                        )
                       ])),
                   Align(
-                    alignment: Alignment.center,
+                    alignment: Alignment.centerLeft,
                     child: MaterialButton(
                         onPressed: () {
                           String url = 'https://meet.google.com/new';
@@ -92,7 +81,115 @@ class _AppointmentListState extends State<AppointmentList> {
                   Align(
                     alignment: Alignment.centerRight,
                     child: IconButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        showDialog(
+                            context: context,
+                            builder: (context) => SimpleDialog(
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(32.0))),
+                                  title: Text(
+                                    'Detalles del paciente',
+                                    textAlign: TextAlign.center,
+                                  ),
+                                  contentPadding: EdgeInsets.all(16.0),
+                                  insetPadding: EdgeInsets.all(10.0),
+                                  children: [
+                                    Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        Align(
+                                            alignment: Alignment.topCenter,
+                                            child: ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(
+                                                      20), // Image border
+                                              child: SizedBox.fromSize(
+                                                size: Size.fromRadius(
+                                                    100), // Image radius
+                                                child: Image.network(
+                                                    patient.img,
+                                                    width: 200,
+                                                    height: 100,
+                                                    fit: BoxFit.cover),
+                                              ),
+                                            )),
+                                        Align(
+                                          alignment: Alignment.bottomLeft,
+                                          child: RichText(
+                                            text: TextSpan(
+                                              text: 'Nombre: ' +
+                                                  patient.firstName +
+                                                  ' ' +
+                                                  patient.lastName,
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.black),
+                                            ),
+                                          ),
+                                        ),
+                                        Align(
+                                          alignment: Alignment.bottomLeft,
+                                          child: RichText(
+                                              text: TextSpan(
+                                            text: 'Edad: ' +
+                                                calculaEdad(patient.date)
+                                                    .toString(),
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.black),
+                                          )),
+                                        ),
+                                        Align(
+                                          alignment: Alignment.bottomLeft,
+                                          child: RichText(
+                                              text: TextSpan(
+                                            text: 'Email: ' + patient.email,
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.black),
+                                          )),
+                                        ),
+                                        Align(
+                                          alignment: Alignment.bottomLeft,
+                                          child: RichText(
+                                              text: TextSpan(
+                                            text: 'Celular: ' + patient.phone,
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.black),
+                                          )),
+                                        ),
+                                        Align(
+                                          alignment: Alignment.bottomLeft,
+                                          child: RichText(
+                                              text: TextSpan(
+                                            text: 'Motivo de la consulta: ' +
+                                                appointments[index].motive,
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.black),
+                                          )),
+                                        ),
+                                        Align(
+                                          alignment: Alignment.bottomLeft,
+                                          child: RichText(
+                                              text: TextSpan(
+                                            text: 'Tratamiento: ' +
+                                                appointments[index].treatment,
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.black),
+                                          )),
+                                        )
+                                      ],
+                                    ),
+                                  ],
+                                ));
+                      },
                       icon: Icon(Icons.person),
                       color: Colors.green,
                     ),
@@ -196,6 +293,25 @@ class _AppointmentListState extends State<AppointmentList> {
     setState(() {
       appointments.removeAt(index);
     });
+  }
+
+  int calculaEdad(String birthDateString) {
+    DateTime birthDate =
+        DateTime.parse(birthDateString.split('/').reversed.join());
+    DateTime currentDate = DateTime.now();
+    int age = currentDate.year - birthDate.year;
+    int month1 = currentDate.month;
+    int month2 = birthDate.month;
+    if (month2 > month1) {
+      age--;
+    } else if (month1 == month2) {
+      int day1 = currentDate.day;
+      int day2 = birthDate.day;
+      if (day2 > day1) {
+        age--;
+      }
+    }
+    return age;
   }
 
   void fetchPatientById(int id) async {
