@@ -8,6 +8,24 @@ import 'package:psychohelp_app/models/psychologist.dart';
 //import 'package:psychohelp_app/pages/patient/appointments.dart';
 
 class HttpHelper {
+  Future<http.Response> updateAppointment(
+      int id, Appointment appointment, String newDate) {
+    return http.put(
+      Uri.parse('https://psychohelp-open.mybluemix.net/api/v1/appointment/$id'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, String>{
+        'meetUrl': appointment.meetUrl,
+        'scheduleDate': newDate,
+        'personalHistory': appointment.personalHistory,
+        'motive': appointment.personalHistory,
+        'testRealized': appointment.testRealized,
+        'treatment': appointment.treatment
+      }),
+    );
+  }
+
   Future<List> fetchPatients() async {
     String urlString = 'https://psychohelp-open.mybluemix.net/api/v1/patients';
     Uri url = Uri.parse(urlString);

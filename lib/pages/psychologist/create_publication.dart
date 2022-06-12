@@ -1,7 +1,6 @@
 // ignore_for_file: deprecated_member_use
 
 import 'package:flutter/material.dart';
-import 'package:psychohelp_app/models/publication.dart';
 import 'package:psychohelp_app/utils/http_helper.dart';
 
 class CreatePublication extends StatefulWidget {

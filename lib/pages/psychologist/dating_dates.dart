@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:psychohelp_app/models/appointment.dart';
 import 'package:psychohelp_app/pages/psychologist/list_appointments.dart';
-import 'package:psychohelp_app/pages/psychologist/list_patients.dart';
-import 'package:psychohelp_app/utils/http_helper.dart';
 
 class Dating_dates extends StatefulWidget {
   static const String routeName = "/dating_dates";
@@ -14,10 +11,9 @@ class _Dating_datesState extends State<Dating_dates> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: new AppBar(
-        title: new Text("Dating Dates"),
-      ),
-      body: new AppointmentList()
-    );
+        appBar: new AppBar(
+          title: new Text("Dating Dates"),
+        ),
+        body: new AppointmentList());
   }
 }

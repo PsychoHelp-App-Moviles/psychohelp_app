@@ -37,6 +37,8 @@ dependencies:
   url_launcher: ^6.0.17
   http: ^0.13.4
   path: ^1.8.0
+  date_format: ^2.0.6
+  intl: ^0.17.0
 
 
 dev_dependencies:

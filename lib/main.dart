@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:psychohelp_app/pages/authentication/login.dart';
-import 'package:psychohelp_app/pages/patient/appointments.dart';
 import 'package:psychohelp_app/pages/patient/home_patient.dart';
-import 'package:psychohelp_app/pages/patient/list_psycho.dart';
 import 'package:psychohelp_app/pages/patient/profile_patient.dart';
 import 'package:psychohelp_app/pages/psychologist/dating_dates.dart';
 import 'package:psychohelp_app/pages/psychologist/home_psycho.dart';

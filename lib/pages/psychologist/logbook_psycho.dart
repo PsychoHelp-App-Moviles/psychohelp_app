@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:psychohelp_app/models/patient.dart';
-import 'package:psychohelp_app/models/appointment.dart';
 import 'package:psychohelp_app/utils/http_helper.dart';
+
 class Logbook_psycho extends StatefulWidget {
   static const String routeName = "/logbook_psycho";
   @override
@@ -48,41 +48,35 @@ class _Logbook_psychoState extends State<Logbook_psycho> {
       ),
       body: new Container(
         margin: EdgeInsetsDirectional.only(start: 5, end: 5, top: 20),
-        child: new Flex(
-          direction: Axis.vertical,
-          children: <Widget>[
-            Align(
-              alignment: Alignment.center,
-              child: Text(
-                "Identification Data",
-                style: TextStyle(fontSize: 20),
-              ),
+        child: new Flex(direction: Axis.vertical, children: <Widget>[
+          Align(
+            alignment: Alignment.center,
+            child: Text(
+              "Identification Data",
+              style: TextStyle(fontSize: 20),
             ),
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                "Identification Data",
-                style: TextStyle(fontSize: 20),
-              ),
+          ),
+          Align(
+            alignment: Alignment.centerLeft,
+            child: Text(
+              "Identification Data",
+              style: TextStyle(fontSize: 20),
             ),
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                "Identification Data",
-                style: TextStyle(fontSize: 20),
-              ),
+          ),
+          Align(
+            alignment: Alignment.centerLeft,
+            child: Text(
+              "Identification Data",
+              style: TextStyle(fontSize: 20),
             ),
-            Container(
-              margin: EdgeInsetsDirectional.only(top: 10, bottom: 10, start: 30, end: 30),
+          ),
+          Container(
+              margin: EdgeInsetsDirectional.only(
+                  top: 10, bottom: 10, start: 30, end: 30),
               child: Image.network(patient!.img)),
-            Card(
-
-            ),
-            ]
-        ),
+          Card(),
+        ]),
       ),
     );
   }
 }
-
-
