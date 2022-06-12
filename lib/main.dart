@@ -11,8 +11,11 @@ import 'package:psychohelp_app/pages/psychologist/profile_psycho.dart';
 
 void main() {
   runApp(new MaterialApp(home: new Login(), routes: <String, WidgetBuilder>{
-    Home_patient.routeName: (BuildContext context) => new Home_patient(),
-    Home_psycho.routeName: (BuildContext context) => new Home_psycho(),
+    Home_patient.routeName: (BuildContext context) => new Home_patient(
+          patient: 0,
+        ),
+    Home_psycho.routeName: (BuildContext context) =>
+        new Home_psycho(psychologist: 0),
     Dating_dates.routeName: (BuildContext context) => new Dating_dates(),
     List_patients.routeName: (BuildContext context) => new List_patients(),
     Profile_patient.routeName: (BuildContext context) => new Profile_patient(),

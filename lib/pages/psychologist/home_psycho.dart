@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:psychohelp_app/models/psychologist.dart';
 import 'package:psychohelp_app/pages/psychologist/publication_list.dart';
 
 class Home_psycho extends StatefulWidget {
+  Home_psycho({Key? key, required this.psychologist}) : super(key: key);
   @override
   State<Home_psycho> createState() => _Home_psychoState();
+  int psychologist;
   static const String routeName = "/home_psycho";
 }
 
@@ -47,6 +50,7 @@ class _Home_psychoState extends State<Home_psycho> {
 
   @override
   Widget build(BuildContext context) {
+    print(widget.psychologist);
     return new Scaffold(
       appBar: new AppBar(
         title: new Text("Home_psycho"),

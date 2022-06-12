@@ -39,21 +39,30 @@ class _LoginState extends State<Login> {
       Patient? patient = await getPatientByEmail(email);
       if (patient != null) {
         if (patient.password == password) {
-          Navigator.pushNamed(context, Home_patient.routeName);
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => Home_patient(patient: patient.id),
+              ));
         }
       }
     } catch (e) {
-      print("ERRORSASO PACIENTE MANO XDD");
+      print("Error al logear el paciente");
     }
     try {
       Psychologist? psycho = await getPsychologistByEmail(email);
       if (psycho != null) {
         if (psycho.password == password) {
-          Navigator.pushNamed(context, Home_psycho.routeName);
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => Home_psycho(psychologist: psycho.id),
+            ),
+          );
         }
       }
     } catch (e) {
-      print("ERRORSASO PSICOLOGO MANO XDD");
+      print("Error al logear el psicologo");
     }
   }
 
