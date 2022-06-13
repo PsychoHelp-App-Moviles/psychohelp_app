@@ -148,8 +148,8 @@ class HttpHelper {
     http.Response response = await http.get(url);
     if (response.statusCode == HttpStatus.ok) {
       final jsonResponse = json.decode(response.body);
-      List patients = jsonResponse.map((map) => Patient.fromJson(map)).toList();
-      return patients;
+      List appointments = jsonResponse.map((map) => Appointment.fromJson(map)).toList();
+      return appointments;
     }
     return [];
   }

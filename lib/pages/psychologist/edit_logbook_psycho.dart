@@ -80,7 +80,7 @@ class _Edit_Logbook_AppointmentState extends State<Edit_Logbook_Appointment> {
         ),
         SizedBox(height: 16),
         FlatButton(
-          child: Text('Edit'),
+          child: Text('Edited'),
           onPressed: () async {
             String motive = controllerMotive.text;
             String history = controllerHistory.text;
