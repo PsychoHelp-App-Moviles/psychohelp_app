@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:path/path.dart';
 import 'package:psychohelp_app/models/psychologist.dart';
 import 'package:psychohelp_app/pages/psychologist/publication_list.dart';
 
@@ -11,9 +12,60 @@ class Home_psycho extends StatefulWidget {
 }
 
 class _Home_psychoState extends State<Home_psycho> {
+  late Psychologist psychologist;
+
+  @override
+  void initState() {
+    psychologist = new Psychologist(
+        id: 1,
+        name: "Jose Pain",
+        dni: "1123312",
+        birthday: "string",
+        email: "string",
+        password: "string",
+        phone: "string",
+        specialization: "string",
+        formation: "string",
+        about: "string",
+        gender: "string",
+        sessionType: "string",
+        img: "https://cdn.freestyleko.com/player/sweet_pain.jpg",
+        cmp: "123123",
+        active: true,
+        fresh: true);
+    super.initState();
+  }
+
   Drawer getDrawer(BuildContext context) {
     var header = new DrawerHeader(
-      child: new Text("PsychoHelp"),
+      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        Text("PsychoHelp",
+            style: TextStyle(
+                fontSize: 35.0,
+                fontWeight: FontWeight.bold,
+                color: Colors.white)),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text("Bienvenido,",
+                style: TextStyle(fontSize: 20.0, color: Colors.white)),
+            Container(
+              margin: EdgeInsets.only(top: 4.0),
+              child: Row(
+                children: [
+                  CircleAvatar(
+                    backgroundImage: NetworkImage(psychologist.img),
+                    radius: 20.0,
+                  ),
+                  SizedBox(width: 8.0),
+                  Text(psychologist.name,
+                      style: TextStyle(fontSize: 20.0, color: Colors.white)),
+                ],
+              ),
+            )
+          ],
+        )
+      ]),
       decoration: new BoxDecoration(
         color: Colors.blue,
       ),
@@ -32,14 +84,14 @@ class _Home_psychoState extends State<Home_psycho> {
     }
 
     ListView listView = new ListView(
-      children: <Widget>[
+      children: [
         header,
         getItem(new Icon(Icons.home), "Home", "/home_psycho"),
-        getItem(
-            new Icon(Icons.person_off_outlined), "Profile", "/profile_psycho"),
-        getItem(new Icon(Icons.people), "List patients", "/list_patients"),
-        getItem(new Icon(Icons.date_range), "Dating dates", "/dating_dates"),
-        getItem(new Icon(Icons.public), "My Publications", "/my_publications"),
+        getItem(new Icon(Icons.person), "Profile", "/profile_psycho"),
+        getItem(new Icon(Icons.people), "Patient list", "/list_patients"),
+        getItem(new Icon(Icons.date_range), "My appointments", "/dating_dates"),
+        getItem(new Icon(Icons.public), "My publications", "/my_publications"),
+        getItem(new Icon(Icons.logout), "Logout", "/login"),
       ],
     );
 
@@ -53,7 +105,7 @@ class _Home_psychoState extends State<Home_psycho> {
     print(widget.psychologist);
     return new Scaffold(
       appBar: new AppBar(
-        title: new Text("Home_psycho"),
+        title: new Text("Home psychologist"),
       ),
       body: PublicationList(),
       drawer: new Drawer(
