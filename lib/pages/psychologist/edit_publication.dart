@@ -102,8 +102,8 @@ class _EditedPublicationState extends State<EditedPublication> {
             String photoUrl = controllerPhotoUrl.text;
             Publication publicationInfo = Publication(
                 id: widget.publication.id,
-                title: widget.publication.title,
-                description: widget.publication.description,
+                title: title,
+                description: description,
                 tags: tags,
                 content: content,
                 photoUrl: photoUrl);

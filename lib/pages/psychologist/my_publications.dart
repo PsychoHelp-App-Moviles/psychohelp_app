@@ -39,7 +39,7 @@ class _My_publicationsState extends State<My_publications> {
           builder: (context) => EditedPublication(publicationInfo),
         ));
     setState(() {
-      publicationInfo = result as Publication;
+      fetchPublications();
     });
   }
 
