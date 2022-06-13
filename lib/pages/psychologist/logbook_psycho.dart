@@ -103,9 +103,9 @@ class _Logbook_psychoState extends State<Logbook_psycho> {
                               alignment: Alignment.centerLeft,
                               child: Text(
                                 "Nombre Completo: " +
-                                    patient!.firstName +
+                                    patient.firstName +
                                     " " +
-                                    patient!.lastName,
+                                    patient.lastName,
                                 style: TextStyle(fontSize: 16),
                                 //set an id for the text
                               ),
