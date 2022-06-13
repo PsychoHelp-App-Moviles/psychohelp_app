@@ -210,7 +210,7 @@ class _Logbook_psychoState extends State<Logbook_psycho> {
                   ),
                 ),
               ),
-              new FlatButton(
+              new ElevatedButton(
                 child: Text('Edit'),
                 onPressed: () {
                   _navigateAndDisplaySelection(context);
@@ -219,23 +219,5 @@ class _Logbook_psychoState extends State<Logbook_psycho> {
             ]),
           ]),
         ));
-  }
-}
-
-class AppointmentsRow extends StatelessWidget {
-  final Appointment appointment;
-  const AppointmentsRow({Key? key, required this.appointment})
-      : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-        //margin: EdgeInsetsDirectional.only(top: 20, bottom: 15, start: 75, end: 75),
-        child: new InkWell(
-      onTap: () {},
-      child: Column(children: <Widget>[
-        Text(appointment.scheduleDate),
-      ]),
-    ));
   }
 }
