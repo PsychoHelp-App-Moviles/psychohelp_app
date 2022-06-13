@@ -20,12 +20,9 @@ class _List_patientsState extends State<List_patients> {
     super.initState();
   }
 
-  void fetchPatients() {
-    httpHelper.fetchPatientsByPsychologistId(1).then((value) {
-      setState(() {
-        this.patients = value;
-      });
-    });
+  Future fetchPatients() async {
+    patients = await httpHelper.fetchPatientsByPsychologistId(1);
+    return patients;
   }
 
   @override
@@ -35,10 +32,21 @@ class _List_patientsState extends State<List_patients> {
         title: new Text("List of Patients"),
       ),
       body: new Container(
-        child: new ListView.builder(
-          itemCount: patients.length,
-          itemBuilder: (context, index) {
-            return PatientRow(patient: patients[index]);
+        child: FutureBuilder(
+          future: fetchPatients(),
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              return ListView.builder(
+                itemCount: patients.length,
+                itemBuilder: (context, index) {
+                  return PatientRow(patient: patients[index]);
+                },
+              );
+            } else {
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            }
           },
         ),
       ),
