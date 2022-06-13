@@ -36,12 +36,21 @@ class _List_patientsState extends State<List_patients> {
         title: new Text("List of Patients"),
       ),
       body: new Container(
-        child: new ListView.builder(
-          itemCount: patients.length,
-          itemBuilder: (context, index) {
-        return PatientRow(patient: patients[index]);
-      },
-      ),
+        child: new FutureBuilder(
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              return ListView.builder(
+                itemCount: patients.length,
+                itemBuilder: (context, index) {
+                  return PatientRow(patient: patients[index]);
+                  },),
+            } else {
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+          },
+        )
       ),
     );
   }

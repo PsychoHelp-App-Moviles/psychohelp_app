@@ -11,7 +11,16 @@ class Logbook_psycho extends StatefulWidget {
 }
 
 class _Logbook_psychoState extends State<Logbook_psycho> {
-  Patient? patient;
+  Patient patient = new Patient(
+      id: 0,
+      firstName: '',
+      lastName: '',
+      email: '',
+      phone: '',
+      password: '',
+      date: '',
+      gender: '',
+      img: '');
   List appointments = [];
   Appointment appointmentInfo = Appointment(
       id: 1,
@@ -34,7 +43,7 @@ class _Logbook_psychoState extends State<Logbook_psycho> {
       setState(() {
         patient = ModalRoute.of(context)?.settings.arguments as Patient;
       });
-      fetchAppointments(patient!.id);
+      fetchAppointments(patient.id);
     });
   }
 
@@ -105,7 +114,7 @@ class _Logbook_psychoState extends State<Logbook_psycho> {
                             Align(
                               alignment: Alignment.centerLeft,
                               child: Text(
-                                "Fecha de Nacimiento: " + patient!.date,
+                                "Fecha de Nacimiento: " + patient.date,
                                 style: TextStyle(fontSize: 16),
                               ),
                             ),
@@ -113,7 +122,7 @@ class _Logbook_psychoState extends State<Logbook_psycho> {
                             Align(
                               alignment: Alignment.centerLeft,
                               child: Text(
-                                "Correo electrónico: " + patient!.email,
+                                "Correo electrónico: " + patient.email,
                                 style: TextStyle(fontSize: 16),
                               ),
                             ),
@@ -121,7 +130,7 @@ class _Logbook_psychoState extends State<Logbook_psycho> {
                             Align(
                               alignment: Alignment.centerLeft,
                               child: Text(
-                                "Género: " + patient!.gender,
+                                "Género: " + patient.gender,
                                 style: TextStyle(fontSize: 16),
                               ),
                             ),
@@ -129,7 +138,7 @@ class _Logbook_psychoState extends State<Logbook_psycho> {
                             Align(
                               alignment: Alignment.centerLeft,
                               child: Text(
-                                "Teléfono: " + patient!.phone,
+                                "Teléfono: " + patient.phone,
                                 style: TextStyle(fontSize: 16),
                               ),
                             ),
