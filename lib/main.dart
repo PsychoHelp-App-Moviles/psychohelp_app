@@ -10,7 +10,9 @@ import 'package:psychohelp_app/pages/psychologist/my_publications.dart';
 import 'package:psychohelp_app/pages/psychologist/profile_psycho.dart';
 
 void main() {
-  runApp(new MaterialApp(home: new Login(), routes: <String, WidgetBuilder>{
+  runApp(new MaterialApp(
+    theme: ThemeData(fontFamily: 'Poppins'),
+    home: new Login(), routes: <String, WidgetBuilder>{
     Home_patient.routeName: (BuildContext context) => new Home_patient(
           patient: 0,
         ),

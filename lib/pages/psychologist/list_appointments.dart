@@ -244,8 +244,21 @@ class _AppointmentListState extends State<AppointmentList> {
                           setState(() => date = newDate);
                           String newDateString =
                               formatDate(newDate, [dd, '/', mm, '/', yy]);
+                          Appointment appointmentInfo = Appointment(
+                            id: appointments[index].id,
+                            meetUrl: appointments[index].meetUrl,
+                            motive: appointments[index].motive,
+                            personalHistory:
+                                appointments[index].personalHistory,
+                            testRealized: appointments[index].testRealized,
+                            treatment: appointments[index].treatment,
+                            scheduleDate: newDateString,
+                            patientId: appointments[index].patientId,
+                            psychologistId: appointments[index].psychologistId,
+                          );
+
                           updateAppointment(appointments[index].id, index,
-                              newDateString, appointments[index]);
+                              newDateString, appointmentInfo);
                         },
                         icon: Icon(Icons.calendar_month),
                         color: Colors.blueAccent),
@@ -313,7 +326,7 @@ class _AppointmentListState extends State<AppointmentList> {
 
   void updateAppointment(
       int id, int index, String dateTime, Appointment appointment) {
-    httpHelper.updateAppointment(id, appointment, dateTime);
+    httpHelper.updateAppointment(id, appointment);
     setState(() {
       appointments[index].scheduleDate = dateTime.toString();
     });

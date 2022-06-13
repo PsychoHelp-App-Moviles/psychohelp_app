@@ -21,6 +21,8 @@ class _LoginState extends State<Login> {
 
   @override
   void initState() {
+    myEmail.text = "fano@gmail.com";
+    myPassword.text = "password";
     super.initState();
   }
 

@@ -15,6 +15,14 @@ class My_publications extends StatefulWidget {
 class _My_publicationsState extends State<My_publications> {
   List publications = [];
   HttpHelper httpHelper = HttpHelper();
+  Publication publicationInfo = Publication(
+    id: 1,
+    title: "",
+    description: "",
+    tags: "",
+    content: "",
+    photoUrl: "",
+  );
 
   @override
   void initState() {
@@ -22,6 +30,25 @@ class _My_publicationsState extends State<My_publications> {
     httpHelper = HttpHelper();
     fetchPublications();
     super.initState();
+  }
+
+  Future<void> _navigateAndDisplaySelection(BuildContext context) async {
+    final result = await Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => EditedPublication(publicationInfo),
+        ));
+    setState(() {
+      fetchPublications();
+    });
+  }
+
+  void fetchPublicationById(int id) {
+    httpHelper.fetchPublicationById(id).then((value) {
+      setState(() {
+        this.publicationInfo = value;
+      });
+    });
   }
 
   void fetchPublications() {
@@ -50,102 +77,57 @@ class _My_publicationsState extends State<My_publications> {
       body: ListView.builder(
         itemCount: publications.length,
         itemBuilder: (context, index) {
-          return PublicationRow(publication: publications[index]);
-        },
-      ),
-    );
-  }
-}
-
-class PublicationRow extends StatefulWidget {
-  final Publication publication;
-  const PublicationRow({Key? key, required this.publication}) : super(key: key);
-
-  @override
-  State<PublicationRow> createState() => _PublicationRowState();
-}
-
-class _PublicationRowState extends State<PublicationRow> {
-  Publication publicationInfo = Publication(
-    id: 1,
-    title: "",
-    description: "",
-    tags: "",
-    content: "",
-    photoUrl: "",
-  );
-  HttpHelper httpHelper = HttpHelper();
-
-  @override
-  void initState() {
-    httpHelper = HttpHelper();
-    super.initState();
-  }
-
-  Future<void> _navigateAndDisplaySelection(BuildContext context) async {
-    final result = await Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => EditedPublication(publicationInfo),
-        ));
-    setState(() {
-      publicationInfo = result as Publication;
-    });
-  }
-
-  void fetchPublicationById(int id) {
-    httpHelper.fetchPublicationById(id).then((value) {
-      setState(() {
-        this.publicationInfo = value;
-      });
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      elevation: 8,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-      child: Container(
-        child: Column(children: <Widget>[
-          ClipRRect(
-            borderRadius: BorderRadius.only(
-                topRight: Radius.circular(20), topLeft: Radius.circular(20)),
-            child: Image.network(
-              widget.publication.photoUrl,
-              fit: BoxFit.cover,
-              height: 200,
-              width: double.infinity,
-            ),
-          ),
-          SizedBox(height: 5),
-          Text(widget.publication.title,
-              style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold)),
-          // Padding(
-          //     padding: const EdgeInsets.all(8.8),
-          //     child: Text(publication.title)),
-          Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: Text(widget.publication.description,
-                textAlign: TextAlign.justify),
-          ),
-          ButtonBar(
-            alignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget>[
-              new FlatButton(
-                  child: Text('Edit'),
-                  onPressed: () {
-                    _navigateAndDisplaySelection(context);
-                  }),
-              FlatButton(
-                  child: Text(
-                    'Delete',
-                    style: TextStyle(color: Colors.red),
+          return Card(
+            elevation: 8,
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+            child: Container(
+              child: Column(children: <Widget>[
+                ClipRRect(
+                  borderRadius: BorderRadius.only(
+                      topRight: Radius.circular(20),
+                      topLeft: Radius.circular(20)),
+                  child: Image.network(
+                    publications[index].photoUrl,
+                    fit: BoxFit.cover,
+                    height: 200,
+                    width: double.infinity,
                   ),
-                  onPressed: () {}),
-            ],
-          )
-        ]),
+                ),
+                SizedBox(height: 5),
+                Text(publications[index].title,
+                    style:
+                        TextStyle(fontSize: 17, fontWeight: FontWeight.bold)),
+                // Padding(
+                //     padding: const EdgeInsets.all(8.8),
+                //     child: Text(publication.title)),
+                Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Text(publications[index].description,
+                      textAlign: TextAlign.justify),
+                ),
+                ButtonBar(
+                  alignment: MainAxisAlignment.spaceEvenly,
+                  children: <Widget>[
+                    new FlatButton(
+                        child: Text('Edit'),
+                        onPressed: () {
+                          //fetchPublicationById(publications[index].id);
+                          publicationInfo = publications[index];
+                          _navigateAndDisplaySelection(context);
+                        }),
+                    FlatButton(
+                        child: Text(
+                          'Delete',
+                          style: TextStyle(color: Colors.red),
+                        ),
+                        onPressed: () {}),
+                  ],
+                )
+              ]),
+            ),
+          );
+        },
       ),
     );
   }
