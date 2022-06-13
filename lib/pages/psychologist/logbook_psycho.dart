@@ -59,12 +59,9 @@ class _Logbook_psychoState extends State<Logbook_psycho> {
     });
   }
 
-  void fetchAppointments(int id) {
-    httpHelper.fetchPatientAppointments(id).then((value) {
-      setState(() {
-        this.appointments = value;
-      });
-    });
+  Future fetchAppointments(int id) async {
+    appointments = await httpHelper.fetchAppointmentsByPsychologistId(id);
+    return appointments;
   }
 
   void fetchAppointmentById(int id) {
@@ -158,26 +155,37 @@ class _Logbook_psychoState extends State<Logbook_psycho> {
               new Flexible(
                   flex: 1,
                   child: new Container(
-                    width: 100,
-                    margin: EdgeInsetsDirectional.only(
-                        top: 10, bottom: 10, start: 10, end: 15),
-                    child: ListView.builder(
-                      padding: EdgeInsets.only(bottom: 20),
-                      shrinkWrap: true,
-                      itemCount: appointments.length,
-                      itemBuilder: (context, index) {
-                        return Card(
-                            child: new InkWell(
-                          onTap: () {
-                            fetchAppointmentById(appointments[index].id);
-                          },
-                          child: Column(children: <Widget>[
-                            Text(appointments[index].scheduleDate),
-                          ]),
-                        ));
-                      },
-                    ),
-                  )),
+                      width: 100,
+                      margin: EdgeInsetsDirectional.only(
+                          top: 10, bottom: 10, start: 10, end: 15),
+                      child: FutureBuilder(
+                        future: fetchAppointments(patient.id),
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData) {
+                            return ListView.builder(
+                              padding: EdgeInsets.only(bottom: 20),
+                              shrinkWrap: true,
+                              itemCount: appointments.length,
+                              itemBuilder: (context, index) {
+                                return Card(
+                                    child: new InkWell(
+                                  onTap: () {
+                                    fetchAppointmentById(
+                                        appointments[index].id);
+                                  },
+                                  child: Column(children: <Widget>[
+                                    Text(appointments[index].scheduleDate),
+                                  ]),
+                                ));
+                              },
+                            );
+                          } else {
+                            return Center(
+                              child: CircularProgressIndicator(),
+                            );
+                          }
+                        },
+                      ))),
               new Flexible(
                 flex: 2,
                 child: new Container(
@@ -221,13 +229,14 @@ class _Logbook_psychoState extends State<Logbook_psycho> {
                   ),
                 ),
               ),
-              new ElevatedButton(
-                child: Text('Edit'),
-                onPressed: () {
-                  _navigateAndDisplaySelection(context);
-                },
-              )
             ]),
+            SizedBox(height: 20),
+            new ElevatedButton(
+              child: Text('Edit'),
+              onPressed: () {
+                _navigateAndDisplaySelection(context);
+              },
+            )
           ]),
         ));
   }

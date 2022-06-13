@@ -71,7 +71,22 @@ class PatientRow extends StatelessWidget {
             Container(
                 margin: EdgeInsetsDirectional.only(
                     top: 10, bottom: 10, start: 30, end: 30),
-                child: Image.network(patient.img)),
+                child: Image.network(
+                  patient.img,
+                  fit: BoxFit.fill,
+                  loadingBuilder: (BuildContext context, Widget child,
+                      ImageChunkEvent? loadingProgress) {
+                    if (loadingProgress == null) return child;
+                    return Center(
+                      child: CircularProgressIndicator(
+                        value: loadingProgress.expectedTotalBytes != null
+                            ? loadingProgress.cumulativeBytesLoaded /
+                                loadingProgress.expectedTotalBytes!
+                            : null,
+                      ),
+                    );
+                  },
+                )),
             Text(patient.firstName),
             Text(patient.lastName),
           ]),
