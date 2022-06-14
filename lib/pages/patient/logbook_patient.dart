@@ -1,16 +1,17 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:psychohelp_app/models/patient.dart';
 import 'package:psychohelp_app/models/appointment.dart';
-import 'package:psychohelp_app/pages/psychologist/edit_logbook_psycho.dart';
 import 'package:psychohelp_app/utils/http_helper.dart';
 
-class Logbook_psycho extends StatefulWidget {
-  static const String routeName = "/logbook_psycho";
+class Logbook_patient extends StatefulWidget {
+  static const String routeName = "/logbook_patient";
   @override
-  State<Logbook_psycho> createState() => _Logbook_psychoState();
+  State<Logbook_patient> createState() => _Logbook_patientState();
 }
 
-class _Logbook_psychoState extends State<Logbook_psycho> {
+class _Logbook_patientState extends State<Logbook_patient> {
   Patient patient = new Patient(
       id: 0,
       firstName: '',
@@ -21,6 +22,7 @@ class _Logbook_psychoState extends State<Logbook_psycho> {
       date: '',
       gender: '',
       img: '');
+  int patientId = 0;
   List appointments = [];
   Appointment appointmentInfo = Appointment(
       id: 1,
@@ -41,26 +43,23 @@ class _Logbook_psychoState extends State<Logbook_psycho> {
     super.initState();
     Future.delayed(Duration.zero, () {
       setState(() {
-        patient = ModalRoute.of(context)?.settings.arguments as Patient;
+        patientId = ModalRoute.of(context)?.settings.arguments as int;
       });
-      fetchAppointments(patient.id);
+      fetchAppointments(patientId);
+      fetchPatientById(patientId);
     });
   }
 
-  Future<void> _navigateAndDisplaySelection(BuildContext context) async {
-    final result = await Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => Edit_Logbook_Appointment(appointmentInfo),
-      ),
-    );
-    setState(() {
-      appointmentInfo = result as Appointment;
+  void fetchPatientById(int id) {
+    httpHelper.fetchPatientById(id).then((value) {
+      setState(() {
+        this.patient = value;
+      });
     });
   }
 
   Future fetchAppointments(int id) async {
-    appointments = await httpHelper.fetchAppointmentsByPsychologistId(id);
+    appointments = await httpHelper.fetchAppointmentsByPatientId(id);
     return appointments;
   }
 
@@ -247,13 +246,6 @@ class _Logbook_psychoState extends State<Logbook_psycho> {
                 ),
               ),
             ]),
-            SizedBox(height: 20),
-            new ElevatedButton(
-              child: Text('Edit'),
-              onPressed: () {
-                _navigateAndDisplaySelection(context);
-              },
-            )
           ]),
         ));
   }

@@ -24,7 +24,7 @@ class _Home_patientState extends State<Home_patient> {
         title: new Text(description),
         onTap: () {
           setState(() {
-            Navigator.of(context).pushNamed(route);
+            Navigator.of(context).pushNamed(route, arguments: widget.patient);
           });
         },
       );
@@ -38,6 +38,7 @@ class _Home_patientState extends State<Home_patient> {
             new Icon(Icons.person_off_outlined), "Profile", "/profile_patient"),
         getItem(new Icon(Icons.people), "List psychologists", "/list_psycho"),
         getItem(new Icon(Icons.date_range), "Appointments", "/appointments"),
+        getItem(new Icon(Icons.date_range), "Logbook", "/logbook_patient"),
       ],
     );
 

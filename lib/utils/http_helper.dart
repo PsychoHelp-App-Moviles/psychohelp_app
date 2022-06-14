@@ -148,7 +148,8 @@ class HttpHelper {
     http.Response response = await http.get(url);
     if (response.statusCode == HttpStatus.ok) {
       final jsonResponse = json.decode(response.body);
-      List appointments = jsonResponse.map((map) => Appointment.fromJson(map)).toList();
+      List appointments =
+          jsonResponse.map((map) => Appointment.fromJson(map)).toList();
       return appointments;
     }
     return [];
@@ -188,7 +189,7 @@ class HttpHelper {
 
   Future<List> fetchAppointmentsByPatientId(int id) async {
     String urlString =
-        'https://psychohelp.herokuapp.com/api/v1/appointment/patient/${id}';
+        'https://psychohelp-open.mybluemix.net/api/v1/appointment/patient/${id}';
     Uri url = Uri.parse(urlString);
 
     http.Response response = await http.get(url);
