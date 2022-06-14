@@ -37,49 +37,55 @@ class _Home_psychoState extends State<Home_psycho> {
   }
 
   Drawer getDrawer(BuildContext context) {
-    var header = new DrawerHeader(
-      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        Text("PsychoHelp",
-            style: TextStyle(
-                fontSize: 35.0,
-                fontWeight: FontWeight.bold,
-                color: Colors.white)),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text("Bienvenido,",
-                style: TextStyle(fontSize: 20.0, color: Colors.white)),
-            Container(
-              margin: EdgeInsets.only(top: 4.0),
-              child: Row(
-                children: [
-                  CircleAvatar(
-                    backgroundImage: NetworkImage(psychologist.img),
-                    radius: 20.0,
-                  ),
-                  SizedBox(width: 8.0),
-                  Text(psychologist.name,
-                      style: TextStyle(fontSize: 20.0, color: Colors.white)),
-                ],
-              ),
-            )
-          ],
-        )
-      ]),
+    var header = DrawerHeader(
+      child: Container(
+        padding: EdgeInsets.only(left: 10.0),
+        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          Text("PsychoHelp",
+              style: TextStyle(
+                  fontSize: 35.0,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white)),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text("Bienvenido,",
+                  style: TextStyle(fontSize: 20.0, color: Colors.white)),
+              Container(
+                margin: EdgeInsets.only(top: 4.0),
+                child: Row(
+                  children: [
+                    CircleAvatar(
+                      backgroundImage: NetworkImage(psychologist.img),
+                      radius: 20.0,
+                    ),
+                    SizedBox(width: 8.0),
+                    Text(psychologist.name,
+                        style: TextStyle(fontSize: 20.0, color: Colors.white)),
+                  ],
+                ),
+              )
+            ],
+          )
+        ]),
+      ),
       decoration: new BoxDecoration(
         color: Colors.blue,
       ),
     );
 
-    ListTile getItem(Icon icon, String description, String route) {
-      return new ListTile(
-        leading: icon,
-        title: new Text(description),
-        onTap: () {
-          setState(() {
-            Navigator.of(context).pushNamed(route);
-          });
-        },
+    Container getItem(Icon icon, String description, String route) {
+      return Container(
+        padding: EdgeInsets.only(left: 10.0),
+        child: ListTile(
+          leading: icon,
+          title: new Text(description),
+          onTap: () {
+            setState(() {
+              Navigator.of(context).pushNamed(route);
+            });
+          },
+        ),
       );
     }
 
@@ -102,7 +108,6 @@ class _Home_psychoState extends State<Home_psycho> {
 
   @override
   Widget build(BuildContext context) {
-    print(widget.psychologist);
     return new Scaffold(
       appBar: new AppBar(
         title: new Text("Home psychologist"),

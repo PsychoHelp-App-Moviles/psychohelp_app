@@ -34,7 +34,6 @@ class _EditedPublicationState extends State<EditedPublication> {
 
   @override
   void initState() {
-    print(widget.publication.id);
     httpHelper = HttpHelper();
     controllerTitle.text = widget.publication.title;
     controllerDescription.text = widget.publication.description;
