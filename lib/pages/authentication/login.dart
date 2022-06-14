@@ -92,7 +92,7 @@ class _LoginState extends State<Login> {
           Image.network(
               "https://terapiaapsicologica.com/wp-content/uploads/2020/12/Psychologist-bro.png",
               width: MediaQuery.of(context).size.width * 0.8,
-              height: MediaQuery.of(context).size.height * 0.3),
+              height: MediaQuery.of(context).size.height * 0.28),
           Padding(
             padding: EdgeInsets.only(bottom: 10.0),
             child: Text('Psychohelp',
