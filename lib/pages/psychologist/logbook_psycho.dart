@@ -78,6 +78,7 @@ class _Logbook_psychoState extends State<Logbook_psycho> {
         appBar: new AppBar(
           title: new Text("Logbook of the patient"),
         ),
+        resizeToAvoidBottomInset: false,
         body: new Container(
           margin: EdgeInsetsDirectional.only(start: 15, end: 15, top: 20),
           child: new Flex(direction: Axis.vertical, children: <Widget>[
