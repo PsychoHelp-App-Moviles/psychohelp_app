@@ -242,8 +242,6 @@ class HttpHelper {
     final response =
         await http.post(url, headers: headers, body: jsonEncode(body));
 
-    print(response.body);
-
     if (response.statusCode == 201) {
       final String responseString = response.body;
       return publicationFromJson(responseString);
