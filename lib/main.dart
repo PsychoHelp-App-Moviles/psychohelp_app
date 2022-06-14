@@ -3,6 +3,7 @@ import 'package:psychohelp_app/models/appointment.dart';
 import 'package:psychohelp_app/pages/authentication/login.dart';
 import 'package:psychohelp_app/pages/authentication/register.dart';
 import 'package:psychohelp_app/pages/patient/appointments.dart';
+import 'package:psychohelp_app/pages/patient/dating_dates_patient.dart';
 import 'package:psychohelp_app/pages/patient/home_patient.dart';
 import 'package:psychohelp_app/pages/patient/logbook_patient.dart';
 import 'package:psychohelp_app/pages/patient/list_psycho.dart';
@@ -25,9 +26,10 @@ void main() {
         Home_psycho.routeName: (BuildContext context) =>
             new Home_psycho(psychologist: 0),
         Dating_dates.routeName: (BuildContext context) => new Dating_dates(),
+        Dating_dates_patient.routeName: (BuildContext context) =>
+            new Dating_dates_patient(),
         List_patients.routeName: (BuildContext context) => new List_patients(),
         List_psycho.routeName: (BuildContext context) => new List_psycho(),
-        List_patients.routeName: (BuildContext context) => new List_patients(),
         Appointments.routeName: (BuildContext context) => new Appointments(),
         Profile_patient.routeName: (BuildContext context) =>
             new Profile_patient(),
