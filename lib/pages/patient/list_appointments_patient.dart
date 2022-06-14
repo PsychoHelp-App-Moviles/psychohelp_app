@@ -14,7 +14,6 @@ class AppointmentListPatient extends StatefulWidget {
 
 class _AppointmentListPatientState extends State<AppointmentListPatient> {
   List appointments = [];
-  List patients = [];
 
   HttpHelper httpHelper = HttpHelper();
   bool _isShown = true;
@@ -22,11 +21,8 @@ class _AppointmentListPatientState extends State<AppointmentListPatient> {
   @override
   void initState() {
     appointments = [];
-    patients = [];
     httpHelper = HttpHelper();
     fetchAppointments(widget.patientId);
-    print("asd" + widget.patientId.toString());
-    print(appointments);
     super.initState();
   }
 
