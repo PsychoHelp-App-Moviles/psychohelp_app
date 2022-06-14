@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:psychohelp_app/models/appointment.dart';
 import 'package:psychohelp_app/pages/authentication/login.dart';
+import 'package:psychohelp_app/pages/authentication/register.dart';
+import 'package:psychohelp_app/pages/patient/appointments.dart';
 import 'package:psychohelp_app/pages/patient/home_patient.dart';
 import 'package:psychohelp_app/pages/patient/logbook_patient.dart';
+import 'package:psychohelp_app/pages/patient/list_psycho.dart';
 import 'package:psychohelp_app/pages/patient/profile_patient.dart';
 import 'package:psychohelp_app/pages/psychologist/dating_dates.dart';
 import 'package:psychohelp_app/pages/psychologist/home_psycho.dart';
@@ -22,6 +26,9 @@ void main() {
             new Home_psycho(psychologist: 0),
         Dating_dates.routeName: (BuildContext context) => new Dating_dates(),
         List_patients.routeName: (BuildContext context) => new List_patients(),
+        List_psycho.routeName: (BuildContext context) => new List_psycho(),
+        List_patients.routeName: (BuildContext context) => new List_patients(),
+        Appointments.routeName: (BuildContext context) => new Appointments(),
         Profile_patient.routeName: (BuildContext context) =>
             new Profile_patient(),
         Profile_psycho.routeName: (BuildContext context) =>
@@ -32,11 +39,7 @@ void main() {
             new Logbook_patient(),
         My_publications.routeName: (BuildContext context) =>
             new My_publications(),
+        Login.routeName: (BuildContext context) => new Login(),
+        Register.routeName: (BuildContext context) => new Register(),
       }));
-  // runApp(
-  //     new MaterialApp(home: new Home_patient(), routes: <String, WidgetBuilder>{
-  //   Appointments.routeName: (BuildContext context) => new Appointments(),
-  //   List_psycho.routeName: (BuildContext context) => new List_psycho(),
-  //   Profile_patient.routeName: (BuildContext context) => new Profile_patient(),
-  // }));
 }
