@@ -40,10 +40,6 @@ class _AppointmentListState extends State<AppointmentList> {
 
   @override
   Widget build(BuildContext context) {
-    //return FutureBuilder(
-    //future: fetchAppointments(),
-    //builder: (context, snapshot) {
-    //if (snapshot.hasData) {
     return ListView.builder(
       itemCount: appointments.length,
       itemBuilder: (context, index) {
@@ -322,12 +318,6 @@ class _AppointmentListState extends State<AppointmentList> {
         );
       },
     );
-    /*} else {
-            return Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-        //});*/
   }
 
   Future fetchAppointments() async {
