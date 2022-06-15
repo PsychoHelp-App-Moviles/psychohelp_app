@@ -71,6 +71,7 @@ class _LoginState extends State<Login> {
     try {
       Psychologist? psycho = await getPsychologistByEmail(email);
       if (psycho != null) {
+        saveUserId(psycho.id);
         if (psycho.password == password) {
           Navigator.push(
             context,

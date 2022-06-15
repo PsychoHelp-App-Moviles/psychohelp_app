@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:psychohelp_app/models/psychologist.dart';
 import 'package:psychohelp_app/pages/psychologist/edit_profile_psycho.dart';
 import 'package:psychohelp_app/utils/http_helper.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Profile_psycho extends StatefulWidget {
   static const String routeName = "/profile_psycho";
@@ -13,19 +14,19 @@ class _Profile_psychoState extends State<Profile_psycho> {
   HttpHelper httpHelper = HttpHelper();
   Psychologist psychologist = new Psychologist(
       id: 1,
-      name: "Jose Pain",
-      dni: "1123312",
-      birthday: "string",
-      email: "string",
-      password: "string",
-      phone: "string",
-      specialization: "string",
-      formation: "string",
-      about: "string",
-      gender: "string",
-      sessionType: "string",
-      img: "https://cdn.freestyleko.com/player/sweet_pain.jpg",
-      cmp: "123123",
+      name: "",
+      dni: "",
+      birthday: "",
+      email: "",
+      password: "",
+      phone: "",
+      specialization: "",
+      formation: "",
+      about: "",
+      gender: "",
+      sessionType: "",
+      img: "",
+      cmp: "",
       active: true,
       fresh: true);
 
@@ -33,6 +34,7 @@ class _Profile_psychoState extends State<Profile_psycho> {
   void initState() {
     httpHelper = HttpHelper();
     super.initState();
+    fetchPsychologistById();
   }
 
   Future<void> _navigateAndDisplaySelection(BuildContext context) async {
@@ -43,6 +45,16 @@ class _Profile_psychoState extends State<Profile_psycho> {
         ));
     setState(() {
       fetchPublicationById(psychologist.id);
+    });
+  }
+
+  Future fetchPsychologistById() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final id = prefs.getInt('id');
+    httpHelper.fetchPsychologistById(id!).then((value) {
+      setState(() {
+        this.psychologist = value;
+      });
     });
   }
 

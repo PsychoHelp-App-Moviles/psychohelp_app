@@ -103,6 +103,22 @@ class HttpHelper {
     }
   }
 
+  Future<Psychologist> fetchPsychologistById(int id) async {
+    String urlString =
+        'https://psychohelp-open.mybluemix.net/api/v1/psychologists/${id}';
+    Uri url = Uri.parse(urlString);
+
+    http.Response response = await http.get(url);
+
+    if (response.statusCode == HttpStatus.ok) {
+      final jsonResponse = json.decode(response.body);
+      Psychologist psycho = Psychologist.fromJson(jsonResponse);
+      return psycho;
+    } else {
+      throw Exception('Failed to load psycho');
+    }
+  }
+
   Future<http.Response> deleteAppointmentById(int id) async {
     final http.Response response = await http.delete(
       Uri.parse('https://psychohelp-open.mybluemix.net/api/v1/appointment/$id'),
