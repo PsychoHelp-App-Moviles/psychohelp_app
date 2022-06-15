@@ -36,7 +36,7 @@ class _LoginState extends State<Login> {
   // void initState() {
   //   _passwordVisible = false;
   //   myEmail.text = "santi@gmail.com";
-  //   myPassword.text = "jpe12346";
+  //   myPassword.text = "password";
   //   super.initState();
   // }
 

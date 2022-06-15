@@ -15,6 +15,7 @@ class _Home_patientState extends State<Home_patient> {
 
   @override
   void initState() {
+    print(widget.patient);
     patient = new Patient(
         id: 1,
         firstName: "Santiago",
