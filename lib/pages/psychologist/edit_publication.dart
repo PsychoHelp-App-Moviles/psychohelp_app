@@ -89,7 +89,7 @@ class _EditedPublicationState extends State<EditedPublication> {
           ),
         ),
         SizedBox(height: 16),
-        FlatButton(
+        ElevatedButton(
           child: Text('Save'),
           onPressed: () async {
             // ignore: unused_local_variable

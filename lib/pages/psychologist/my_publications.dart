@@ -112,7 +112,6 @@ class _My_publicationsState extends State<My_publications> {
                     new FlatButton(
                         child: Text('Edit'),
                         onPressed: () {
-                          //fetchPublicationById(publications[index].id);
                           publicationInfo = publications[index];
                           _navigateAndDisplaySelection(context);
                         }),

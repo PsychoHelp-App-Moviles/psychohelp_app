@@ -282,4 +282,42 @@ class HttpHelper {
     } else
       return null;
   }
+
+  Future updatePsychologist(int id, Psychologist request) async {
+    final String urlString =
+        "https://psychohelp-open.mybluemix.net/api/v1/psychologists/${id}";
+    Uri url = Uri.parse(urlString);
+
+    var headers = {
+      'Content-Type': 'application/json',
+    };
+
+    final response =
+        await http.put(url, headers: headers, body: jsonEncode(request));
+
+    if (response.statusCode == HttpStatus.ok) {
+      var psychologist = Psychologist.fromJson(json.decode(response.body));
+      return psychologist;
+    } else
+      return null;
+  }
+
+  Future updatePatient(int id, Patient request) async {
+    final String urlString =
+        "https://psychohelp-open.mybluemix.net/api/v1/patients/${id}";
+    Uri url = Uri.parse(urlString);
+
+    var headers = {
+      'Content-Type': 'application/json',
+    };
+
+    final response =
+        await http.put(url, headers: headers, body: jsonEncode(request));
+
+    if (response.statusCode == HttpStatus.ok) {
+      var patient = Patient.fromJson(json.decode(response.body));
+      return patient;
+    } else
+      return null;
+  }
 }

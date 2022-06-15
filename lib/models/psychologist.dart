@@ -1,3 +1,9 @@
+import 'dart:convert';
+
+Psychologist psychologistFromJson(String str) =>
+    Psychologist.fromJson(json.decode(str));
+String psychologistModelToJson(Psychologist data) => json.encode(data.toJson());
+
 class Psychologist {
   int id;
   String name;
@@ -53,5 +59,26 @@ class Psychologist {
         cmp: json["cmp"],
         active: json["active"],
         fresh: json["fresh"]);
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      "id": id,
+      "name": name,
+      "dni": dni,
+      "birthdayDate": birthday,
+      "email": email,
+      "password": password,
+      "phone": phone,
+      "specialization": specialization,
+      "formation": formation,
+      "about": about,
+      "genre": gender,
+      "sessionType": sessionType,
+      "image": img,
+      "cmp": cmp,
+      "active": active,
+      "fresh": fresh,
+    };
   }
 }

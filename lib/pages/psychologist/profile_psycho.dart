@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:psychohelp_app/models/psychologist.dart';
+import 'package:psychohelp_app/pages/psychologist/edit_profile_psycho.dart';
+import 'package:psychohelp_app/utils/http_helper.dart';
 
 class Profile_psycho extends StatefulWidget {
   static const String routeName = "/profile_psycho";
@@ -8,26 +10,48 @@ class Profile_psycho extends StatefulWidget {
 }
 
 class _Profile_psychoState extends State<Profile_psycho> {
-  late Psychologist psychologist;
+  HttpHelper httpHelper = HttpHelper();
+  Psychologist psychologist = new Psychologist(
+      id: 1,
+      name: "Jose Pain",
+      dni: "1123312",
+      birthday: "string",
+      email: "string",
+      password: "string",
+      phone: "string",
+      specialization: "string",
+      formation: "string",
+      about: "string",
+      gender: "string",
+      sessionType: "string",
+      img: "https://cdn.freestyleko.com/player/sweet_pain.jpg",
+      cmp: "123123",
+      active: true,
+      fresh: true);
+
+  @override
   void initState() {
-    psychologist = new Psychologist(
-        id: 1,
-        name: "Jose Pain",
-        dni: "1123312",
-        birthday: "string",
-        email: "string",
-        password: "string",
-        phone: "string",
-        specialization: "string",
-        formation: "string",
-        about: "string",
-        gender: "string",
-        sessionType: "string",
-        img: "https://cdn.freestyleko.com/player/sweet_pain.jpg",
-        cmp: "123123",
-        active: true,
-        fresh: true);
+    httpHelper = HttpHelper();
     super.initState();
+  }
+
+  Future<void> _navigateAndDisplaySelection(BuildContext context) async {
+    final result = await Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => EditedPsychoProfile(psychologist),
+        ));
+    setState(() {
+      fetchPublicationById(psychologist.id);
+    });
+  }
+
+  void fetchPublicationById(int id) {
+    httpHelper.fetchPublicationById(id).then((value) {
+      setState(() {
+        this.psychologist = value;
+      });
+    });
   }
 
   @override
@@ -100,15 +124,16 @@ class _Profile_psychoState extends State<Profile_psycho> {
                         ),
                         SizedBox(height: 20),
                         ElevatedButton.icon(
-                            onPressed: () {
-                              setState(() => {});
-                            },
-                            icon: Icon(
-                              Icons.edit_outlined,
-                              size: 25,
-                            ),
-                            label: Text("Edit profile",
-                                style: TextStyle(fontSize: 20.0)))
+                          onPressed: () {
+                            _navigateAndDisplaySelection(context);
+                          },
+                          icon: Icon(
+                            Icons.edit_outlined,
+                            size: 25,
+                          ),
+                          label: Text("Edit profile",
+                              style: TextStyle(fontSize: 20.0)),
+                        )
                       ],
                     )
                   ],
