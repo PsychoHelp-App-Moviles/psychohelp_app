@@ -24,11 +24,11 @@ class _LoginState extends State<Login> {
   late bool _passwordVisible;
 
   //Psychologist login credentials
-  //@override
+  // @override
   // void initState() {
   //   _passwordVisible = false;
-  //   myEmail.text = "fano@gmail.com";
-  //   myPassword.text = "password";
+  //   myEmail.text = "gl@gl.com";
+  //   myPassword.text = "123456789";
   //   super.initState();
   // }
 

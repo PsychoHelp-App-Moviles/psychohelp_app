@@ -43,6 +43,14 @@ class _My_publicationsState extends State<My_publications> {
     });
   }
 
+  void deletePublicationById(int id) {
+    httpHelper.deletePublication(id).then((value) {
+      setState(() {
+        fetchPublications();
+      });
+    });
+  }
+
   void fetchPublicationById(int id) {
     httpHelper.fetchPublicationById(id).then((value) {
       setState(() {
@@ -98,9 +106,6 @@ class _My_publicationsState extends State<My_publications> {
                 Text(publications[index].title,
                     style:
                         TextStyle(fontSize: 17, fontWeight: FontWeight.bold)),
-                // Padding(
-                //     padding: const EdgeInsets.all(8.8),
-                //     child: Text(publication.title)),
                 Padding(
                   padding: const EdgeInsets.all(10.0),
                   child: Text(publications[index].description,
@@ -120,7 +125,9 @@ class _My_publicationsState extends State<My_publications> {
                           'Delete',
                           style: TextStyle(color: Colors.red),
                         ),
-                        onPressed: () {}),
+                        onPressed: () {
+                          deletePublicationById(publications[index].id);
+                        }),
                   ],
                 )
               ]),

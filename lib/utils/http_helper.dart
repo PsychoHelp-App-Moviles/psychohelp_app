@@ -336,4 +336,17 @@ class HttpHelper {
     } else
       return null;
   }
+
+  Future deletePublication(int id) async {
+    final String urlString =
+        "https://psychohelp-open.mybluemix.net/api/v1/publications/${id}";
+    Uri url = Uri.parse(urlString);
+
+    final response = await http.delete(url);
+
+    if (response.statusCode == HttpStatus.ok) {
+      return true;
+    } else
+      return false;
+  }
 }

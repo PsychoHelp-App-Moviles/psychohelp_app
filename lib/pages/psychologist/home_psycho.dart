@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:path/path.dart';
 import 'package:psychohelp_app/models/psychologist.dart';
 import 'package:psychohelp_app/pages/psychologist/publication_list.dart';
+import 'package:psychohelp_app/utils/http_helper.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Home_psycho extends StatefulWidget {
   Home_psycho({Key? key, required this.psychologist}) : super(key: key);
@@ -12,28 +13,40 @@ class Home_psycho extends StatefulWidget {
 }
 
 class _Home_psychoState extends State<Home_psycho> {
-  late Psychologist psychologist;
+  HttpHelper httpHelper = HttpHelper();
+  Psychologist psychologist = new Psychologist(
+      id: 1,
+      name: "",
+      dni: "",
+      birthday: "",
+      email: "",
+      password: "",
+      phone: "",
+      specialization: "",
+      formation: "",
+      about: "",
+      gender: "",
+      sessionType: "",
+      img: "",
+      cmp: "",
+      active: true,
+      fresh: true);
 
   @override
   void initState() {
-    psychologist = new Psychologist(
-        id: 1,
-        name: "Jose Pain",
-        dni: "1123312",
-        birthday: "string",
-        email: "string",
-        password: "string",
-        phone: "string",
-        specialization: "string",
-        formation: "string",
-        about: "string",
-        gender: "string",
-        sessionType: "string",
-        img: "https://cdn.freestyleko.com/player/sweet_pain.jpg",
-        cmp: "123123",
-        active: true,
-        fresh: true);
+    httpHelper = HttpHelper();
     super.initState();
+    fetchPsychologistById();
+  }
+
+  Future fetchPsychologistById() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final id = prefs.getInt('id');
+    httpHelper.fetchPsychologistById(id!).then((value) {
+      setState(() {
+        this.psychologist = value;
+      });
+    });
   }
 
   Drawer getDrawer(BuildContext context) {

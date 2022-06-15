@@ -36,7 +36,7 @@ class _Profile_psychoState extends State<Profile_psycho> {
   void initState() {
     httpHelper = HttpHelper();
     super.initState();
-    fetchPsychologistById();
+    fetchPsychologistById(psychologist.id);
   }
 
   Future<void> _navigateAndDisplaySelection(BuildContext context) async {
@@ -46,22 +46,14 @@ class _Profile_psychoState extends State<Profile_psycho> {
           builder: (context) => EditedPsychoProfile(psychologist),
         ));
     setState(() {
-      fetchPublicationById(psychologist.id);
+      fetchPsychologistById(psychologist.id);
     });
   }
 
-  Future fetchPsychologistById() async {
+  Future fetchPsychologistById(int id) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     final id = prefs.getInt('id');
     httpHelper.fetchPsychologistById(id!).then((value) {
-      setState(() {
-        this.psychologist = value;
-      });
-    });
-  }
-
-  void fetchPublicationById(int id) {
-    httpHelper.fetchPublicationById(id).then((value) {
       setState(() {
         this.psychologist = value;
       });
@@ -112,6 +104,7 @@ class _Profile_psychoState extends State<Profile_psycho> {
                               padding: EdgeInsets.all(20.0),
                               width: MediaQuery.of(context).size.width * 0.8,
                               child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text("Email: " + psychologist.email,
                                       style: TextStyle(fontSize: 20.0)),
@@ -119,25 +112,32 @@ class _Profile_psychoState extends State<Profile_psycho> {
                                   Text("Phone: " + psychologist.phone,
                                       style: TextStyle(fontSize: 20.0)),
                                   SizedBox(height: 10),
-                                  Text("Birthday: " + psychologist.birthday,
+                                  Text(
+                                      "Birthday: " +
+                                          psychologist.birthday
+                                              .substring(0, 10),
                                       style: TextStyle(fontSize: 20.0)),
                                   SizedBox(height: 10),
                                   Text("Gender: " + psychologist.gender,
                                       style: TextStyle(fontSize: 20.0)),
                                   SizedBox(height: 10),
-                                  Text("Specialization: " + psychologist.gender,
+                                  Text(
+                                      "Specialization: " +
+                                          psychologist.specialization,
                                       style: TextStyle(fontSize: 20.0)),
                                   SizedBox(height: 10),
-                                  Text("Formation: " + psychologist.gender,
+                                  Text("Formation: " + psychologist.formation,
                                       style: TextStyle(fontSize: 20.0)),
                                   SizedBox(height: 10),
-                                  Text("CMP: " + psychologist.gender,
+                                  Text("CMP: " + psychologist.cmp,
                                       style: TextStyle(fontSize: 20.0)),
                                   SizedBox(height: 10),
-                                  Text("Session type: " + psychologist.gender,
+                                  Text(
+                                      "Session type: " +
+                                          psychologist.sessionType,
                                       style: TextStyle(fontSize: 20.0)),
                                   SizedBox(height: 10),
-                                  Text("About: " + psychologist.gender,
+                                  Text("About: " + psychologist.about,
                                       style: TextStyle(fontSize: 20.0)),
                                 ],
                               ),

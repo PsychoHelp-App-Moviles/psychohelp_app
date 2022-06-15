@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:psychohelp_app/models/patient.dart';
+import 'package:psychohelp_app/pages/patient/edit_profile_patient.dart';
 import 'package:psychohelp_app/utils/http_helper.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -10,27 +11,37 @@ class Profile_patient extends StatefulWidget {
 }
 
 class _Profile_patientState extends State<Profile_patient> {
-  Patient patient = new Patient(
-      id: 0,
-      firstName: '',
-      lastName: '',
-      email: '',
-      phone: '',
-      password: '',
-      date: '',
-      gender: '',
-      img: '');
-  int patientId = 0;
   HttpHelper httpHelper = HttpHelper();
+  Patient patient = Patient(
+      id: 1,
+      firstName: "",
+      lastName: "",
+      email: "",
+      phone: "",
+      password: "",
+      date: "",
+      gender: "",
+      img: "");
 
   @override
   void initState() {
     httpHelper = HttpHelper();
     super.initState();
-    fetchPatientById();
+    fetchPatientById(patient.id);
   }
 
-  Future fetchPatientById() async {
+  Future<void> _navigateAndDisplaySelection(BuildContext context) async {
+    final result = await Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => EditPatientProfile(patient),
+        ));
+    setState(() {
+      fetchPatientById(patient.id);
+    });
+  }
+
+  Future fetchPatientById(int id) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     final id = prefs.getInt('id');
     httpHelper.fetchPatientById(id!).then((value) {
@@ -42,68 +53,77 @@ class _Profile_patientState extends State<Profile_patient> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Profile"),
-      ),
-      body: Container(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            CircleAvatar(
-              backgroundImage: NetworkImage(patient.img),
-              radius: 75.0,
-            ),
-            SizedBox(height: 10),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  patient.firstName + " " + patient.lastName,
-                  style: TextStyle(fontSize: 30.0),
-                ),
-              ],
-            ),
-            SizedBox(height: 10),
-            Column(
-              children: [
-                Card(
-                  child: Container(
-                    padding: EdgeInsets.all(20.0),
-                    width: MediaQuery.of(context).size.width * 0.8,
-                    child: Column(
-                      children: [
-                        Text("Email: " + patient.email,
-                            style: TextStyle(fontSize: 20.0)),
-                        SizedBox(height: 10),
-                        Text("Phone: " + patient.phone,
-                            style: TextStyle(fontSize: 20.0)),
-                        SizedBox(height: 10),
-                        Text("Birthday: " + patient.date,
-                            style: TextStyle(fontSize: 20.0)),
-                        SizedBox(height: 10),
-                        Text("Gender: " + patient.gender,
-                            style: TextStyle(fontSize: 20.0)),
-                      ],
+    if (patient.firstName == "") {
+      return Scaffold(
+        body: Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
+    } else {
+      return Scaffold(
+        appBar: AppBar(
+          title: Text("Profile"),
+        ),
+        body: Container(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              CircleAvatar(
+                backgroundImage: NetworkImage(patient.img),
+                radius: 75.0,
+              ),
+              SizedBox(height: 10),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    patient.firstName + " " + patient.lastName,
+                    style: TextStyle(fontSize: 30.0),
+                  ),
+                ],
+              ),
+              SizedBox(height: 10),
+              Column(
+                children: [
+                  Card(
+                    child: Container(
+                      padding: EdgeInsets.all(20.0),
+                      width: MediaQuery.of(context).size.width * 0.8,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text("Email: " + patient.email,
+                              style: TextStyle(fontSize: 20.0)),
+                          SizedBox(height: 10),
+                          Text("Phone: " + patient.phone,
+                              style: TextStyle(fontSize: 20.0)),
+                          SizedBox(height: 10),
+                          Text("Birthday: " + patient.date,
+                              style: TextStyle(fontSize: 20.0)),
+                          SizedBox(height: 10),
+                          Text("Gender: " + patient.gender,
+                              style: TextStyle(fontSize: 20.0)),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-                SizedBox(height: 20),
-                ElevatedButton.icon(
-                    onPressed: () {
-                      setState(() => {});
-                    },
-                    icon: Icon(
-                      Icons.edit_outlined,
-                      size: 25,
-                    ),
-                    label:
-                        Text("Edit profile", style: TextStyle(fontSize: 20.0)))
-              ],
-            )
-          ],
+                  SizedBox(height: 20),
+                  ElevatedButton.icon(
+                      onPressed: () {
+                        _navigateAndDisplaySelection(context);
+                      },
+                      icon: Icon(
+                        Icons.edit_outlined,
+                        size: 25,
+                      ),
+                      label: Text("Edit profile",
+                          style: TextStyle(fontSize: 20.0)))
+                ],
+              )
+            ],
+          ),
         ),
-      ),
-    );
+      );
+    }
   }
 }
