@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:psychohelp_app/models/patient.dart';
 import 'package:psychohelp_app/pages/psychologist/publication_list.dart';
+import 'package:psychohelp_app/utils/http_helper.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Home_patient extends StatefulWidget {
   Home_patient({Key? key, required this.patient}) : super(key: key);
@@ -11,23 +13,34 @@ class Home_patient extends StatefulWidget {
 }
 
 class _Home_patientState extends State<Home_patient> {
-  late Patient patient;
+  //late Patient patient;
+  HttpHelper httpHelper = HttpHelper();
+  Patient patient = new Patient(
+      id: 1,
+      firstName: "Santiago",
+      lastName: "Cuentas",
+      email: "email",
+      phone: "phone",
+      password: "password",
+      date: "date",
+      gender: "gender",
+      img:
+          "https://cdns-images.dzcdn.net/images/artist/8fd2490e2612a5ca852d3026b58465fa/500x500.jpg");
 
   @override
   void initState() {
-    print(widget.patient);
-    patient = new Patient(
-        id: 1,
-        firstName: "Santiago",
-        lastName: "Cuentas",
-        email: "email",
-        phone: "phone",
-        password: "password",
-        date: "date",
-        gender: "gender",
-        img:
-            "https://cdns-images.dzcdn.net/images/artist/8fd2490e2612a5ca852d3026b58465fa/500x500.jpg");
     super.initState();
+    fetchPatientById();
+  }
+
+  Future fetchPatientById() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final id = prefs.getInt('id');
+    httpHelper.fetchPatientById(id!).then((value) {
+      setState(() {
+        this.patient = value;
+      });
+    });
   }
 
   Drawer getDrawer(BuildContext context) {

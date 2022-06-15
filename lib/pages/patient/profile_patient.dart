@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:psychohelp_app/models/patient.dart';
 import 'package:psychohelp_app/utils/http_helper.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Profile_patient extends StatefulWidget {
   static const String routeName = "/profile_patient";
@@ -9,7 +10,6 @@ class Profile_patient extends StatefulWidget {
 }
 
 class _Profile_patientState extends State<Profile_patient> {
-  //late Patient patient;
   Patient patient = new Patient(
       id: 0,
       firstName: '',
@@ -25,29 +25,15 @@ class _Profile_patientState extends State<Profile_patient> {
 
   @override
   void initState() {
-    // patient = new Patient(
-    //     id: 1,
-    //     firstName: "Santiago",
-    //     lastName: "Cuentas",
-    //     email: "email",
-    //     phone: "phone",
-    //     password: "password",
-    //     date: "date",
-    //     gender: "gender",
-    //     img:
-    //         "https://cdns-images.dzcdn.net/images/artist/8fd2490e2612a5ca852d3026b58465fa/500x500.jpg");
     httpHelper = HttpHelper();
     super.initState();
-    Future.delayed(Duration.zero, () {
-      setState(() {
-        patientId = ModalRoute.of(context)?.settings.arguments as int;
-      });
-      fetchPatientById(patientId);
-    });
+    fetchPatientById();
   }
 
-  void fetchPatientById(int id) {
-    httpHelper.fetchPatientById(id).then((value) {
+  Future fetchPatientById() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final id = prefs.getInt('id');
+    httpHelper.fetchPatientById(id!).then((value) {
       setState(() {
         this.patient = value;
       });

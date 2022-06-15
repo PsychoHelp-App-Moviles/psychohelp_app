@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:psychohelp_app/models/appointment.dart';
 import 'package:psychohelp_app/utils/http_helper.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 class AppointmentListPatient extends StatefulWidget {
@@ -22,7 +23,7 @@ class _AppointmentListPatientState extends State<AppointmentListPatient> {
   void initState() {
     appointments = [];
     httpHelper = HttpHelper();
-    fetchAppointments(widget.patientId);
+    fetchAppointments();
     super.initState();
   }
 
@@ -148,8 +149,10 @@ class _AppointmentListPatientState extends State<AppointmentListPatient> {
     );
   }
 
-  void fetchAppointments(int id) {
-    httpHelper.fetchAppointmentsByPatientId(id).then((value) {
+  Future fetchAppointments() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final id = prefs.getInt('id');
+    httpHelper.fetchAppointmentsByPatientId(id!).then((value) {
       setState(() {
         this.appointments = value;
       });

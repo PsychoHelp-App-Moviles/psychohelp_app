@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:psychohelp_app/models/patient.dart';
 import 'package:psychohelp_app/models/appointment.dart';
 import 'package:psychohelp_app/utils/http_helper.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Logbook_patient extends StatefulWidget {
   static const String routeName = "/logbook_patient";
@@ -39,25 +40,28 @@ class _Logbook_patientState extends State<Logbook_patient> {
     appointments = [];
     httpHelper = HttpHelper();
     super.initState();
-    Future.delayed(Duration.zero, () {
-      setState(() {
-        patientId = ModalRoute.of(context)?.settings.arguments as int;
-      });
-      fetchAppointments(patientId);
-      fetchPatientById(patientId);
-    });
+    fetchAppointments();
+    fetchPatientById();
   }
 
-  void fetchPatientById(int id) {
-    httpHelper.fetchPatientById(id).then((value) {
+  Future fetchPatientById() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final id = prefs.getInt('id');
+    httpHelper.fetchPatientById(id!).then((value) {
       setState(() {
         this.patient = value;
       });
     });
   }
 
-  Future fetchAppointments(int id) async {
-    appointments = await httpHelper.fetchAppointmentsByPatientId(id);
+  Future fetchAppointments() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final id = prefs.getInt('id');
+    httpHelper.fetchAppointmentsByPatientId(id!).then((value) {
+      setState(() {
+        this.appointments = value;
+      });
+    });
     return appointments;
   }
 
@@ -157,7 +161,7 @@ class _Logbook_patientState extends State<Logbook_patient> {
                       margin: EdgeInsetsDirectional.only(
                           top: 10, bottom: 10, start: 10, end: 15),
                       child: FutureBuilder(
-                        future: fetchAppointments(patient.id),
+                        future: fetchAppointments(),
                         builder: (context, snapshot) {
                           if (snapshot.hasData) {
                             return ListView.builder(
