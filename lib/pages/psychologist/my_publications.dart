@@ -5,6 +5,7 @@ import 'package:psychohelp_app/models/publication.dart';
 import 'package:psychohelp_app/pages/psychologist/create_publication.dart';
 import 'package:psychohelp_app/pages/psychologist/edit_publication.dart';
 import 'package:psychohelp_app/utils/http_helper.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class My_publications extends StatefulWidget {
   static const String routeName = "/my_publications";
@@ -59,8 +60,10 @@ class _My_publicationsState extends State<My_publications> {
     });
   }
 
-  void fetchPublications() {
-    httpHelper.fetchPublicationByPsychoId(1).then((value) {
+  Future fetchPublications() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final id = prefs.getInt('id');
+    httpHelper.fetchPublicationByPsychoId(id!).then((value) {
       setState(() {
         this.publications = value;
       });
