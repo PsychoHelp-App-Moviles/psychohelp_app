@@ -29,7 +29,7 @@ class _List_patientsState extends State<List_patients> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: new AppBar(
-        title: new Text("List of Patients"),
+        title: new Text("Patients list"),
       ),
       body: new Container(
         child: FutureBuilder(

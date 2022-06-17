@@ -76,7 +76,7 @@ class _Logbook_psychoState extends State<Logbook_psycho> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: new AppBar(
-          title: new Text("Logbook of the patient"),
+          title: new Text("Psychologist logbook"),
         ),
         resizeToAvoidBottomInset: false,
         body: new Container(

@@ -77,7 +77,7 @@ class _Logbook_patientState extends State<Logbook_patient> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: new AppBar(
-          title: new Text("Logbook of the patient"),
+          title: new Text("Patient logbook"),
         ),
         resizeToAvoidBottomInset: false,
         body: new Container(

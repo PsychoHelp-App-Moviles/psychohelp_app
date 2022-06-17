@@ -12,7 +12,7 @@ class _Dating_datesState extends State<Dating_dates> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: new AppBar(
-          title: new Text("Dating Dates"),
+          title: new Text("Appointment list"),
         ),
         body: new AppointmentList());
   }

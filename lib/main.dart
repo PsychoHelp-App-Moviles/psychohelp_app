@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:psychohelp_app/models/appointment.dart';
 import 'package:psychohelp_app/pages/authentication/login.dart';
 import 'package:psychohelp_app/pages/authentication/register.dart';
+import 'package:psychohelp_app/pages/authentication/registerPatient.dart';
+import 'package:psychohelp_app/pages/authentication/registerPsycho.dart';
 import 'package:psychohelp_app/pages/patient/appointments.dart';
 import 'package:psychohelp_app/pages/patient/dating_dates_patient.dart';
 import 'package:psychohelp_app/pages/patient/home_patient.dart';
@@ -43,5 +45,9 @@ void main() {
             new My_publications(),
         Login.routeName: (BuildContext context) => new Login(),
         Register.routeName: (BuildContext context) => new Register(),
+        RegisterPatient.routeName: (BuildContext context) =>
+            new RegisterPatient(),
+        RegisterPsycho.routeName: (BuildContext context) =>
+            new RegisterPsycho(),
       }));
 }
