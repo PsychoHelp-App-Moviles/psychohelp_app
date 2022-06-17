@@ -21,7 +21,7 @@ class _CreatePublicationState extends State<CreatePublication> {
   Widget build(BuildContext context) {
     return new Scaffold(
       appBar: new AppBar(
-        title: new Text('Create Publication'),
+        title: new Text('Create publication'),
       ),
       body: getBody(),
     );
@@ -73,7 +73,7 @@ class _CreatePublicationState extends State<CreatePublication> {
           ),
         ),
         SizedBox(height: 16),
-        FlatButton(
+        ElevatedButton(
           child: Text('Create'),
           onPressed: () async {
             String title = controllerTitle.text;
@@ -82,7 +82,8 @@ class _CreatePublicationState extends State<CreatePublication> {
             String content = controllerContent.text;
             String photoUrl = controllerPhotoUrl.text;
 
-            await httpHelper.createPublication(title, description, tags, photoUrl, content, 1);
+            await httpHelper.createPublication(
+                title, description, tags, photoUrl, content, 1);
             Navigator.pop(context);
           },
         ),

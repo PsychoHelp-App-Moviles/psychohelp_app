@@ -29,124 +29,134 @@ class _AppointmentListPatientState extends State<AppointmentListPatient> {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      itemCount: appointments.length,
-      itemBuilder: (context, index) {
-        return Card(
-          color: Colors.white,
-          child: Padding(
-            padding: EdgeInsets.all(12),
-            child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Align(
-                      alignment: Alignment.centerLeft,
-                      child: Column(children: [
-                        RichText(
-                          text: TextSpan(
-                            text: 'Fecha: ' + appointments[index].scheduleDate,
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black),
+    if (appointments.length == 0) {
+      return Scaffold(
+        body: Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
+    } else {
+      return ListView.builder(
+        itemCount: appointments.length,
+        itemBuilder: (context, index) {
+          return Card(
+            color: Colors.white,
+            child: Padding(
+              padding: EdgeInsets.all(12),
+              child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Align(
+                        alignment: Alignment.centerLeft,
+                        child: Column(children: [
+                          RichText(
+                            text: TextSpan(
+                              text:
+                                  'Fecha: ' + appointments[index].scheduleDate,
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black),
+                            ),
                           ),
-                        ),
-                      ])),
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: MaterialButton(
-                        onPressed: () {
-                          String url = 'https://meet.google.com/new';
-                          launchUrlString(url);
-                        },
-                        child: Image.network(
-                          'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9b/Google_Meet_icon_%282020%29.svg/2491px-Google_Meet_icon_%282020%29.svg.png',
-                          width: 20,
-                          height: 20,
-                        )),
-                  ),
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: IconButton(
-                        onPressed: () async {
-                          DateTime date = new DateFormat('dd/MM/yyyy')
-                              .parse(appointments[index].scheduleDate);
-
-                          DateTime? newDate = await showDatePicker(
-                              context: context,
-                              firstDate: date,
-                              initialDate: date,
-                              lastDate: DateTime(
-                                  date.year, date.month, date.day + 14));
-
-                          if (newDate == null) return;
-
-                          setState(() => date = newDate);
-                          String newDateString =
-                              formatDate(newDate, [dd, '/', mm, '/', yy]);
-                          Appointment appointmentInfo = Appointment(
-                            id: appointments[index].id,
-                            meetUrl: appointments[index].meetUrl,
-                            motive: appointments[index].motive,
-                            personalHistory:
-                                appointments[index].personalHistory,
-                            testRealized: appointments[index].testRealized,
-                            treatment: appointments[index].treatment,
-                            scheduleDate: newDateString,
-                            patientId: appointments[index].patientId,
-                            psychologistId: appointments[index].psychologistId,
-                          );
-
-                          updateAppointment(appointments[index].id, index,
-                              newDateString, appointmentInfo);
-                          //fetchAppointmentNoFuture();
-                        },
-                        icon: Icon(Icons.calendar_month),
-                        color: Colors.blueAccent),
-                  ),
-                  Align(
+                        ])),
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: MaterialButton(
+                          onPressed: () {
+                            String url = 'https://meet.google.com/new';
+                            launchUrlString(url);
+                          },
+                          child: Image.network(
+                            'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9b/Google_Meet_icon_%282020%29.svg/2491px-Google_Meet_icon_%282020%29.svg.png',
+                            width: 20,
+                            height: 20,
+                          )),
+                    ),
+                    Align(
                       alignment: Alignment.centerRight,
                       child: IconButton(
-                        onPressed: () {
-                          showDialog(
-                              context: context,
-                              builder: (BuildContext ctx) {
-                                return AlertDialog(
-                                  title: const Text('Borrando cita'),
-                                  content: const Text(
-                                      '¿Está seguro de borrar la cita?'),
-                                  actions: [
-                                    // The "Yes" button
-                                    TextButton(
-                                        onPressed: () {
-                                          // Remove the box
-                                          setState(() {
-                                            _isShown = false;
-                                          });
-                                          deleteAppointmentById(
-                                              appointments[index].id, index);
-                                          // Close the dialog
-                                          Navigator.of(context).pop();
-                                        },
-                                        child: const Text('Yes')),
-                                    TextButton(
-                                        onPressed: () {
-                                          // Close the dialog
-                                          Navigator.of(context).pop();
-                                        },
-                                        child: const Text('No'))
-                                  ],
-                                );
-                              });
-                        },
-                        icon: Icon(Icons.delete),
-                        color: Colors.red,
-                      )),
-                ]),
-          ),
-        );
-      },
-    );
+                          onPressed: () async {
+                            DateTime date = new DateFormat('dd/MM/yyyy')
+                                .parse(appointments[index].scheduleDate);
+
+                            DateTime? newDate = await showDatePicker(
+                                context: context,
+                                firstDate: date,
+                                initialDate: date,
+                                lastDate: DateTime(
+                                    date.year, date.month, date.day + 14));
+
+                            if (newDate == null) return;
+
+                            setState(() => date = newDate);
+                            String newDateString =
+                                formatDate(newDate, [dd, '/', mm, '/', yy]);
+                            Appointment appointmentInfo = Appointment(
+                              id: appointments[index].id,
+                              meetUrl: appointments[index].meetUrl,
+                              motive: appointments[index].motive,
+                              personalHistory:
+                                  appointments[index].personalHistory,
+                              testRealized: appointments[index].testRealized,
+                              treatment: appointments[index].treatment,
+                              scheduleDate: newDateString,
+                              patientId: appointments[index].patientId,
+                              psychologistId:
+                                  appointments[index].psychologistId,
+                            );
+
+                            updateAppointment(appointments[index].id, index,
+                                newDateString, appointmentInfo);
+                            //fetchAppointmentNoFuture();
+                          },
+                          icon: Icon(Icons.calendar_month),
+                          color: Colors.blueAccent),
+                    ),
+                    Align(
+                        alignment: Alignment.centerRight,
+                        child: IconButton(
+                          onPressed: () {
+                            showDialog(
+                                context: context,
+                                builder: (BuildContext ctx) {
+                                  return AlertDialog(
+                                    title: const Text('Borrando cita'),
+                                    content: const Text(
+                                        '¿Está seguro de borrar la cita?'),
+                                    actions: [
+                                      // The "Yes" button
+                                      TextButton(
+                                          onPressed: () {
+                                            // Remove the box
+                                            setState(() {
+                                              _isShown = false;
+                                            });
+                                            deleteAppointmentById(
+                                                appointments[index].id, index);
+                                            // Close the dialog
+                                            Navigator.of(context).pop();
+                                          },
+                                          child: const Text('Yes')),
+                                      TextButton(
+                                          onPressed: () {
+                                            // Close the dialog
+                                            Navigator.of(context).pop();
+                                          },
+                                          child: const Text('No'))
+                                    ],
+                                  );
+                                });
+                          },
+                          icon: Icon(Icons.delete),
+                          color: Colors.red,
+                        )),
+                  ]),
+            ),
+          );
+        },
+      );
+    }
   }
 
   Future fetchAppointments() async {

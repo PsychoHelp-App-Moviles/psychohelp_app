@@ -64,6 +64,9 @@ class _Profile_psychoState extends State<Profile_psycho> {
   Widget build(BuildContext context) {
     if (psychologist.name == "") {
       return Scaffold(
+        appBar: AppBar(
+          title: Text("Profile"),
+        ),
         body: Center(
           child: CircularProgressIndicator(),
         ),

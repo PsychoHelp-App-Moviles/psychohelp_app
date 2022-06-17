@@ -79,7 +79,7 @@ class _Edit_Logbook_AppointmentState extends State<Edit_Logbook_Appointment> {
           ),
         ),
         SizedBox(height: 16),
-        FlatButton(
+        ElevatedButton(
           child: Text('Edited'),
           onPressed: () async {
             String motive = controllerMotive.text;

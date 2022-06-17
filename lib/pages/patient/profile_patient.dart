@@ -55,6 +55,9 @@ class _Profile_patientState extends State<Profile_patient> {
   Widget build(BuildContext context) {
     if (patient.firstName == "") {
       return Scaffold(
+        appBar: AppBar(
+          title: Text("Profile"),
+        ),
         body: Center(
           child: CircularProgressIndicator(),
         ),

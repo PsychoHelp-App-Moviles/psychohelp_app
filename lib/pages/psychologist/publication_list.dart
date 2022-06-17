@@ -21,20 +21,28 @@ class _PublicationListState extends State<PublicationList> {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      itemCount: publications.length,
-      itemBuilder: (context, index) {
-        return Container(
-            padding: EdgeInsets.symmetric(horizontal: 15),
-            child: Center(
-                child: Column(
-              children: [
-                //PublicationCard(publication: publications[index]),
-                PublicationCard(publication: publications[index]),
-              ],
-            )));
-      },
-    );
+    if (publications.length == 0) {
+      return Scaffold(
+        body: Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
+    } else {
+      return ListView.builder(
+        itemCount: publications.length,
+        itemBuilder: (context, index) {
+          return Container(
+              padding: EdgeInsets.only(top: 15.0, left: 15.0, right: 15.0),
+              child: Center(
+                  child: Column(
+                children: [
+                  //PublicationCard(publication: publications[index]),
+                  PublicationCard(publication: publications[index]),
+                ],
+              )));
+        },
+      );
+    }
   }
 
   void fetchPublications() {
@@ -74,13 +82,18 @@ class _PublicationCardState extends State<PublicationCard> {
             ),
           ),
           SizedBox(height: 5),
-          Text(widget.publication.title,
-              style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold)),
+          Padding(
+            padding: const EdgeInsets.only(top: 10.0, left: 20.0, right: 20.0),
+            child: Text(widget.publication.title,
+                textAlign: TextAlign.justify,
+                style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold)),
+          ),
           // Padding(
           //     padding: const EdgeInsets.all(8.8),
           //     child: Text(publication.title)),
           Padding(
-            padding: const EdgeInsets.all(10.0),
+            padding: const EdgeInsets.only(
+                left: 20.0, right: 20.0, bottom: 15.0, top: 10.0),
             child: Text(widget.publication.description,
                 textAlign: TextAlign.justify),
           ),

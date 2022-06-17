@@ -72,72 +72,91 @@ class _My_publicationsState extends State<My_publications> {
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
-      appBar: new AppBar(
-        title: new Text("My Publications"),
-        actions: <Widget>[
-          FlatButton(
-            child: Icon(Icons.add, color: Colors.white),
-            onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => CreatePublication()));
-            },
-          )
-        ],
-      ),
-      body: ListView.builder(
-        itemCount: publications.length,
-        itemBuilder: (context, index) {
-          return Card(
-            elevation: 8,
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-            child: Container(
-              child: Column(children: <Widget>[
-                ClipRRect(
-                  borderRadius: BorderRadius.only(
-                      topRight: Radius.circular(20),
-                      topLeft: Radius.circular(20)),
-                  child: Image.network(
-                    publications[index].photoUrl,
-                    fit: BoxFit.cover,
-                    height: 200,
-                    width: double.infinity,
+    if (publications.length == 0) {
+      return Scaffold(
+        appBar: new AppBar(
+          title: new Text("My Publications"),
+        ),
+        body: Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
+    } else {
+      return new Scaffold(
+        appBar: new AppBar(
+          title: new Text("My Publications"),
+          actions: <Widget>[
+            FlatButton(
+              child: Icon(Icons.add, color: Colors.white),
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => CreatePublication()));
+              },
+            )
+          ],
+        ),
+        body: ListView.builder(
+          padding: EdgeInsets.only(top: 15.0, left: 15.0, right: 15.0),
+          itemCount: publications.length,
+          itemBuilder: (context, index) {
+            return Card(
+              elevation: 8,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20)),
+              child: Container(
+                child: Column(children: <Widget>[
+                  ClipRRect(
+                    borderRadius: BorderRadius.only(
+                        topRight: Radius.circular(20),
+                        topLeft: Radius.circular(20)),
+                    child: Image.network(
+                      publications[index].photoUrl,
+                      fit: BoxFit.cover,
+                      height: 200,
+                      width: double.infinity,
+                    ),
                   ),
-                ),
-                SizedBox(height: 5),
-                Text(publications[index].title,
-                    style:
-                        TextStyle(fontSize: 17, fontWeight: FontWeight.bold)),
-                Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Text(publications[index].description,
-                      textAlign: TextAlign.justify),
-                ),
-                ButtonBar(
-                  alignment: MainAxisAlignment.spaceEvenly,
-                  children: <Widget>[
-                    new FlatButton(
-                        child: Text('Edit'),
-                        onPressed: () {
-                          publicationInfo = publications[index];
-                          _navigateAndDisplaySelection(context);
-                        }),
-                    FlatButton(
-                        child: Text(
-                          'Delete',
-                          style: TextStyle(color: Colors.red),
-                        ),
-                        onPressed: () {
-                          deletePublicationById(publications[index].id);
-                        }),
-                  ],
-                )
-              ]),
-            ),
-          );
-        },
-      ),
-    );
+                  SizedBox(height: 5),
+                  Padding(
+                    padding: const EdgeInsets.only(
+                        top: 10.0, left: 20.0, right: 20.0),
+                    child: Text(publications[index].title,
+                        style: TextStyle(
+                            fontSize: 17, fontWeight: FontWeight.bold)),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(
+                        left: 20.0, right: 20.0, top: 10.0),
+                    child: Text(publications[index].description,
+                        textAlign: TextAlign.justify),
+                  ),
+                  ButtonBar(
+                    alignment: MainAxisAlignment.spaceEvenly,
+                    children: <Widget>[
+                      new FlatButton(
+                          child: Text('Edit'),
+                          onPressed: () {
+                            publicationInfo = publications[index];
+                            _navigateAndDisplaySelection(context);
+                          }),
+                      FlatButton(
+                          child: Text(
+                            'Delete',
+                            style: TextStyle(color: Colors.red),
+                          ),
+                          onPressed: () {
+                            deletePublicationById(publications[index].id);
+                          }),
+                    ],
+                  )
+                ]),
+              ),
+            );
+          },
+        ),
+      );
+    }
   }
 }

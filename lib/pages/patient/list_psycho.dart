@@ -11,11 +11,11 @@ class _List_psychoState extends State<List_psycho> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: new AppBar(
-        title: new Text("List_psycho"),
+        title: new Text("Psychologists list"),
       ),
       body: new Container(
         child: new Center(
-          child: new Text("List_psycho"),
+          child: new Text("Psychologists list"),
         ),
       ),
     );
