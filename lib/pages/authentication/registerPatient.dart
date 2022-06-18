@@ -202,12 +202,11 @@ class _RegisterPatientState extends State<RegisterPatient> {
                             .toList(),
                         onChanged: (value) {
                           //Do something when changing the item if you want.
-                        },
-                        onSaved: (value) {
                           setState(() {
                             selectedValue = value.toString();
                           });
                         },
+                        onSaved: (value) {},
                       ),
                       SizedBox(height: 16),
                       TextField(
@@ -235,7 +234,7 @@ class _RegisterPatientState extends State<RegisterPatient> {
                           String phone = controllerPhone.text;
                           String gender = selectedValue;
                           String img = controllerImg.text;
-
+                          print(gender);
                           await httpHelper.createPatient(
                             1,
                             firstName,
