@@ -24,13 +24,13 @@ class _LoginState extends State<Login> {
   late bool _passwordVisible;
 
   //Psychologist login credentials
-  @override
-  void initState() {
-    _passwordVisible = false;
-    myEmail.text = "fano@gmail.com";
-    myPassword.text = "password";
-    super.initState();
-  }
+  // @override
+  // void initState() {
+  //   _passwordVisible = false;
+  //   myEmail.text = "fano@gmail.com";
+  //   myPassword.text = "password";
+  //   super.initState();
+  // }
 
   //Patient login credentials
   // @override
@@ -40,6 +40,13 @@ class _LoginState extends State<Login> {
   //   myPassword.text = "jpe12346";
   //   super.initState();
   // }
+
+  // Con nada xd
+  @override
+  void initState() {
+    _passwordVisible = false;
+    super.initState();
+  }
 
   Future<Patient?> getPatientByEmail(email) async {
     var patient = await httpHelper.fetchByPatientEmail(email);
