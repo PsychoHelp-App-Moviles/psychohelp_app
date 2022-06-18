@@ -258,7 +258,7 @@ class HttpHelper {
     final response =
         await http.post(url, headers: headers, body: jsonEncode(body));
 
-    if (response.statusCode == 201) {
+    if (response.statusCode == HttpStatus.ok) {
       final String responseString = response.body;
       return publicationFromJson(responseString);
     } else
@@ -348,5 +348,105 @@ class HttpHelper {
       return true;
     } else
       return false;
+  }
+
+  Future<Psychologist?> createPsychologist(
+    int id,
+    String name,
+    String dni,
+    String birthday,
+    String email,
+    String password,
+    String phone,
+    String specialization,
+    String formation,
+    String about,
+    String gender,
+    String sessionType,
+    String img,
+    String cmp,
+    bool active,
+    bool fresh,
+  ) async {
+    final String urlString =
+        "https://psychohelp-open.mybluemix.net/api/v1/psychologists";
+    Uri url = Uri.parse(urlString);
+
+    final body = {
+      "id": id,
+      "name": name,
+      "dni": dni,
+      "birthdayDate": birthday,
+      "email": email,
+      "password": password,
+      "phone": phone,
+      "specialization": specialization,
+      "formation": formation,
+      "about": about,
+      "genre": gender,
+      "sessionType": sessionType,
+      "image": img,
+      "cmp": cmp,
+      "active": active,
+      "fresh": fresh,
+    };
+    print(body);
+    var headers = {
+      'Content-Type': 'application/json',
+    };
+
+    final response =
+        await http.post(url, headers: headers, body: jsonEncode(body));
+    print(response);
+    if (response.statusCode == HttpStatus.ok) {
+      final String responseString = response.body;
+      print('Psycho creado');
+      return psychologistFromJson(responseString);
+    } else
+      return null;
+  }
+
+  Future<Patient?> createPatient(
+    int id,
+    String firstName,
+    String lastName,
+    String email,
+    String password,
+    String date,
+    String phone,
+    String gender,
+    String img,
+  ) async {
+    final String urlString =
+        "https://psychohelp-open.mybluemix.net/api/v1/patients";
+    Uri url = Uri.parse(urlString);
+
+    final body = {
+      "id": id,
+      "firstName": firstName,
+      "lastName": lastName,
+      "email": email,
+      "phone": phone,
+      "password": password,
+      "date": date,
+      "gender": gender,
+      "img": img,
+    };
+
+    print(body);
+    var headers = {
+      'Content-Type': 'application/json',
+    };
+
+    final response =
+        await http.post(url, headers: headers, body: jsonEncode(body));
+    print(response);
+
+    if (response.statusCode == HttpStatus.ok) {
+      final String responseString = response.body;
+      print('Paciente creado');
+      return patientFromJson(responseString);
+    } else
+      return null;
   }
 }
