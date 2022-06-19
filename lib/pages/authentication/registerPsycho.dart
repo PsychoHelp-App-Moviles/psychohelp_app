@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:psychohelp_app/models/psychologist.dart';
 import 'package:psychohelp_app/pages/authentication/login.dart';
 import 'package:psychohelp_app/utils/http_helper.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
-import 'package:file_picker/file_picker.dart';
 
 class RegisterPsycho extends StatefulWidget {
   static const String routeName = "/psychoRegister";

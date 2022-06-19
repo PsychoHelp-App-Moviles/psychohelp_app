@@ -60,12 +60,11 @@ class _LoginState extends State<Login> {
       Patient? patient = await getPatientByEmail(email);
       if (patient != null) {
         if (patient.password == password) {
-          saveUserId(patient.id);
           savePatientData(patient.id);
           Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => Home_patient(patient: patient.id),
+                builder: (context) => Home_patient(),
               ));
         }
       }
@@ -76,13 +75,12 @@ class _LoginState extends State<Login> {
     try {
       Psychologist? psycho = await getPsychologistByEmail(email);
       if (psycho != null) {
-        saveUserId(psycho.id);
         savePsychologistData(psycho.id);
         if (psycho.password == password) {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => Home_psycho(psychologist: psycho.id),
+              builder: (context) => Home_psycho(),
             ),
           );
         }
@@ -198,33 +196,20 @@ class _LoginState extends State<Login> {
                 ))));
   }
 
-  Future<void> saveUserId(int id) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setInt('id', id);
-  }
-
   Future<void> savePatientData(int id) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     Patient patient = await httpHelper.fetchPatientById(id);
     String user = jsonEncode(patient);
     print(user);
-    prefs.setString('user', user);
+    prefs.setString('patient', user);
     await prefs.setInt('id', id);
-    await prefs.setString('firstName', patient.firstName);
-    await prefs.setString('lastName', patient.lastName);
-    await prefs.setString('phone', patient.phone);
-    await prefs.setString('password', patient.password);
-    await prefs.setString('date', patient.date);
-    await prefs.setString('gender', patient.gender);
-    await prefs.setString('img', patient.img);
-    await prefs.setString('email', patient.email);
   }
 
   Future<void> savePsychologistData(int id) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     Psychologist psychologist = await httpHelper.fetchPsychologistById(id);
     String user = jsonEncode(psychologist);
-    prefs.setString('user', user);
+    prefs.setString('psychologist', user);
     await prefs.setInt('id', id);
   }
 }

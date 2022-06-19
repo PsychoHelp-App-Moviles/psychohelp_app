@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:psychohelp_app/models/appointment.dart';
 import 'package:psychohelp_app/models/patient.dart';
 import 'package:psychohelp_app/utils/http_helper.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 class AppointmentList extends StatefulWidget {
@@ -16,7 +17,6 @@ class _AppointmentListState extends State<AppointmentList> {
   List patients = [];
 
   HttpHelper httpHelper = HttpHelper();
-  bool _isShown = true;
   Patient patient = new Patient(
       id: 0,
       firstName: '',
@@ -33,7 +33,7 @@ class _AppointmentListState extends State<AppointmentList> {
     appointments = [];
     patients = [];
     httpHelper = HttpHelper();
-    fetchAppointmentNoFuture();
+    fetchAppointments();
     fetchPatients();
     super.initState();
   }
@@ -310,9 +310,7 @@ class _AppointmentListState extends State<AppointmentList> {
                                       TextButton(
                                           onPressed: () {
                                             // Remove the box
-                                            setState(() {
-                                              _isShown = false;
-                                            });
+                                            setState(() {});
                                             deleteAppointmentById(
                                                 appointments[index].id, index);
                                             // Close the dialog
@@ -340,13 +338,10 @@ class _AppointmentListState extends State<AppointmentList> {
     }
   }
 
-  Future fetchAppointments() async {
-    appointments = await httpHelper.fetchAppointmentsByPsychologistId(1);
-    return appointments;
-  }
-
-  void fetchAppointmentNoFuture() {
-    httpHelper.fetchAppointmentsByPsychologistId(1).then((value) {
+  void fetchAppointments() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    int id = prefs.getInt('id')!;
+    httpHelper.fetchAppointmentsByPsychologistId(id).then((value) {
       setState(() {
         this.appointments = value;
       });

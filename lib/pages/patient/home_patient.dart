@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:psychohelp_app/models/patient.dart';
 import 'package:psychohelp_app/pages/psychologist/publication_list.dart';
@@ -5,10 +8,9 @@ import 'package:psychohelp_app/utils/http_helper.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Home_patient extends StatefulWidget {
-  Home_patient({Key? key, required this.patient}) : super(key: key);
+  Home_patient({Key? key}) : super(key: key);
   @override
   State<Home_patient> createState() => _Home_patientState();
-  int patient;
   static const String routeName = "/home_patient";
 }
 
@@ -29,16 +31,14 @@ class _Home_patientState extends State<Home_patient> {
   void initState() {
     httpHelper = HttpHelper();
     super.initState();
-    fetchPatientById();
+    fetchPatient();
   }
 
-  Future fetchPatientById() async {
+  Future fetchPatient() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    final id = prefs.getInt('id');
-    httpHelper.fetchPatientById(id!).then((value) {
-      setState(() {
-        this.patient = value;
-      });
+    setState(() {
+      patient = Patient.fromJson(
+          jsonDecode(prefs.getString('patient')!) as Map<String, dynamic>);
     });
   }
 
@@ -62,7 +62,7 @@ class _Home_patientState extends State<Home_patient> {
                 child: Row(
                   children: [
                     CircleAvatar(
-                      backgroundImage: NetworkImage(patient.img),
+                      backgroundImage: CachedNetworkImageProvider(patient.img),
                       radius: 20.0,
                     ),
                     SizedBox(width: 8.0),
@@ -88,7 +88,7 @@ class _Home_patientState extends State<Home_patient> {
           title: new Text(description),
           onTap: () {
             setState(() {
-              Navigator.of(context).pushNamed(route, arguments: widget.patient);
+              Navigator.of(context).pushNamed(route);
             });
           },
         ),
@@ -115,6 +115,7 @@ class _Home_patientState extends State<Home_patient> {
 
   @override
   Widget build(BuildContext context) {
+    fetchPatient();
     return new Scaffold(
       appBar: new AppBar(
         title: new Text("Home patient"),

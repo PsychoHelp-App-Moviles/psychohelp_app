@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:psychohelp_app/models/patient.dart';
 import 'package:psychohelp_app/pages/patient/edit_profile_patient.dart';
@@ -27,7 +30,7 @@ class _Profile_patientState extends State<Profile_patient> {
   void initState() {
     httpHelper = HttpHelper();
     super.initState();
-    fetchPatientById(patient.id);
+    fetchPatient();
   }
 
   Future<void> _navigateAndDisplaySelection(BuildContext context) async {
@@ -37,17 +40,15 @@ class _Profile_patientState extends State<Profile_patient> {
           builder: (context) => EditPatientProfile(patient),
         ));
     setState(() {
-      fetchPatientById(patient.id);
+      patient = result as Patient;
     });
   }
 
-  Future fetchPatientById(int id) async {
+  Future fetchPatient() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    final id = prefs.getInt('id');
-    httpHelper.fetchPatientById(id!).then((value) {
-      setState(() {
-        this.patient = value;
-      });
+    setState(() {
+      patient = Patient.fromJson(
+          jsonDecode(prefs.getString('patient')!) as Map<String, dynamic>);
     });
   }
 
@@ -72,7 +73,7 @@ class _Profile_patientState extends State<Profile_patient> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               CircleAvatar(
-                backgroundImage: NetworkImage(patient.img),
+                backgroundImage: CachedNetworkImageProvider(patient.img),
                 radius: 75.0,
               ),
               SizedBox(height: 10),

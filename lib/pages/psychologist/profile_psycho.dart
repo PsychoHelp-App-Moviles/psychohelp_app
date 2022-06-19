@@ -43,7 +43,7 @@ class _Profile_psychoState extends State<Profile_psycho> {
   }
 
   Future<void> _navigateAndDisplaySelection(BuildContext context) async {
-    final result = await Navigator.push(
+    await Navigator.push(
         context,
         MaterialPageRoute(
           builder: (context) => EditedPsychoProfile(psychologist),

@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -17,7 +18,6 @@ class _AppointmentListPatientState extends State<AppointmentListPatient> {
   List appointments = [];
 
   HttpHelper httpHelper = HttpHelper();
-  bool _isShown = true;
 
   @override
   void initState() {
@@ -67,8 +67,9 @@ class _AppointmentListPatientState extends State<AppointmentListPatient> {
                             String url = 'https://meet.google.com/new';
                             launchUrlString(url);
                           },
-                          child: Image.network(
-                            'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9b/Google_Meet_icon_%282020%29.svg/2491px-Google_Meet_icon_%282020%29.svg.png',
+                          child: CachedNetworkImage(
+                            imageUrl:
+                                'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9b/Google_Meet_icon_%282020%29.svg/2491px-Google_Meet_icon_%282020%29.svg.png',
                             width: 20,
                             height: 20,
                           )),
@@ -130,7 +131,7 @@ class _AppointmentListPatientState extends State<AppointmentListPatient> {
                                           onPressed: () {
                                             // Remove the box
                                             setState(() {
-                                              _isShown = false;
+                                              //appointments.removeAt(index);
                                             });
                                             deleteAppointmentById(
                                                 appointments[index].id, index);

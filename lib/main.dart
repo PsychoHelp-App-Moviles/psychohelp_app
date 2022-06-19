@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:psychohelp_app/models/appointment.dart';
 import 'package:psychohelp_app/pages/authentication/login.dart';
 import 'package:psychohelp_app/pages/authentication/register.dart';
 import 'package:psychohelp_app/pages/authentication/registerPatient.dart';
@@ -23,11 +22,8 @@ void main() {
       theme: ThemeData(fontFamily: 'Poppins'),
       home: new Login(),
       routes: <String, WidgetBuilder>{
-        Home_patient.routeName: (BuildContext context) => new Home_patient(
-              patient: 0,
-            ),
-        Home_psycho.routeName: (BuildContext context) =>
-            new Home_psycho(psychologist: 0),
+        Home_patient.routeName: (BuildContext context) => new Home_patient(),
+        Home_psycho.routeName: (BuildContext context) => new Home_psycho(),
         Dating_dates.routeName: (BuildContext context) => new Dating_dates(),
         Dating_dates_patient.routeName: (BuildContext context) =>
             new Dating_dates_patient(),
