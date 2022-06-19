@@ -65,10 +65,9 @@ class _Logbook_psychoState extends State<Logbook_psycho> {
   }
 
   void fetchAppointmentById(int id) {
-    httpHelper.fetchAppointmentById(id).then((value) {
-      setState(() {
-        this.appointmentInfo = value;
-      });
+    setState(() {
+      appointmentInfo =
+          appointments.firstWhere((appointment) => appointment.id == id);
     });
   }
 

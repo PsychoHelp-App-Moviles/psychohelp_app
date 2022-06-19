@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:psychohelp_app/models/psychologist.dart';
 import 'package:psychohelp_app/pages/psychologist/edit_profile_psycho.dart';
@@ -36,7 +38,7 @@ class _Profile_psychoState extends State<Profile_psycho> {
   void initState() {
     httpHelper = HttpHelper();
     super.initState();
-    fetchPsychologistById(psychologist.id);
+    fetchPsychologist();
   }
 
   Future<void> _navigateAndDisplaySelection(BuildContext context) async {
@@ -46,17 +48,15 @@ class _Profile_psychoState extends State<Profile_psycho> {
           builder: (context) => EditedPsychoProfile(psychologist),
         ));
     setState(() {
-      fetchPsychologistById(psychologist.id);
+      fetchPsychologist();
     });
   }
 
-  Future fetchPsychologistById(int id) async {
+  Future fetchPsychologist() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    final id = prefs.getInt('id');
-    httpHelper.fetchPsychologistById(id!).then((value) {
-      setState(() {
-        this.psychologist = value;
-      });
+    setState(() {
+      psychologist = Psychologist.fromJson(
+          jsonDecode(prefs.getString('user')!) as Map<String, dynamic>);
     });
   }
 

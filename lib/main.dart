@@ -16,6 +16,7 @@ import 'package:psychohelp_app/pages/psychologist/list_patients.dart';
 import 'package:psychohelp_app/pages/psychologist/logbook_psycho.dart';
 import 'package:psychohelp_app/pages/psychologist/my_publications.dart';
 import 'package:psychohelp_app/pages/psychologist/profile_psycho.dart';
+import 'package:psychohelp_app/pages/videocall/call.dart';
 
 void main() {
   runApp(new MaterialApp(
@@ -49,5 +50,6 @@ void main() {
             new RegisterPatient(),
         RegisterPsycho.routeName: (BuildContext context) =>
             new RegisterPsycho(),
+        Call.routeName: (BuildContext context) => new Call(),
       }));
 }

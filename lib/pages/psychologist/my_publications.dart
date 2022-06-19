@@ -1,5 +1,6 @@
 // ignore_for_file: deprecated_member_use
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:psychohelp_app/models/publication.dart';
 import 'package:psychohelp_app/pages/psychologist/create_publication.dart';
@@ -33,29 +34,33 @@ class _My_publicationsState extends State<My_publications> {
     super.initState();
   }
 
-  Future<void> _navigateAndDisplaySelection(BuildContext context) async {
-    final result = await Navigator.push(
+  Future<void> navigateToEdit(BuildContext context) async {
+    await Navigator.push(
         context,
         MaterialPageRoute(
           builder: (context) => EditedPublication(publicationInfo),
+        ));
+    setState(() {
+      //modify the publication
+      fetchPublications();
+    });
+  }
+
+  Future<void> navigateToCreate(BuildContext context) async {
+    await Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => CreatePublication(),
         ));
     setState(() {
       fetchPublications();
     });
   }
 
-  void deletePublicationById(int id) {
+  void deletePublicationById(int id, int index) {
     httpHelper.deletePublication(id).then((value) {
       setState(() {
-        fetchPublications();
-      });
-    });
-  }
-
-  void fetchPublicationById(int id) {
-    httpHelper.fetchPublicationById(id).then((value) {
-      setState(() {
-        this.publicationInfo = value;
+        publications.removeAt(index);
       });
     });
   }
@@ -89,10 +94,7 @@ class _My_publicationsState extends State<My_publications> {
             FlatButton(
               child: Icon(Icons.add, color: Colors.white),
               onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => CreatePublication()));
+                navigateToCreate(context);
               },
             )
           ],
@@ -111,8 +113,8 @@ class _My_publicationsState extends State<My_publications> {
                     borderRadius: BorderRadius.only(
                         topRight: Radius.circular(20),
                         topLeft: Radius.circular(20)),
-                    child: Image.network(
-                      publications[index].photoUrl,
+                    child: CachedNetworkImage(
+                      imageUrl: publications[index].photoUrl,
                       fit: BoxFit.cover,
                       height: 200,
                       width: double.infinity,
@@ -139,7 +141,7 @@ class _My_publicationsState extends State<My_publications> {
                           child: Text('Edit'),
                           onPressed: () {
                             publicationInfo = publications[index];
-                            _navigateAndDisplaySelection(context);
+                            navigateToEdit(context);
                           }),
                       FlatButton(
                           child: Text(
@@ -147,7 +149,8 @@ class _My_publicationsState extends State<My_publications> {
                             style: TextStyle(color: Colors.red),
                           ),
                           onPressed: () {
-                            deletePublicationById(publications[index].id);
+                            deletePublicationById(
+                                publications[index].id, index);
                           }),
                     ],
                   )

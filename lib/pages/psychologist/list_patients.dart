@@ -1,6 +1,8 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:psychohelp_app/utils/http_helper.dart';
 import 'package:psychohelp_app/models/patient.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class List_patients extends StatefulWidget {
   static const String routeName = "/list_patients";
@@ -21,7 +23,9 @@ class _List_patientsState extends State<List_patients> {
   }
 
   Future fetchPatients() async {
-    patients = await httpHelper.fetchPatientsByPsychologistId(1);
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    patients =
+        await httpHelper.fetchPatientsByPsychologistId(prefs.getInt('id')!);
     return patients;
   }
 
@@ -71,21 +75,11 @@ class PatientRow extends StatelessWidget {
             Container(
                 margin: EdgeInsetsDirectional.only(
                     top: 10, bottom: 10, start: 30, end: 30),
-                child: Image.network(
-                  patient.img,
+                child: CachedNetworkImage(
+                  imageUrl: patient.img,
                   fit: BoxFit.fill,
-                  loadingBuilder: (BuildContext context, Widget child,
-                      ImageChunkEvent? loadingProgress) {
-                    if (loadingProgress == null) return child;
-                    return Center(
-                      child: CircularProgressIndicator(
-                        value: loadingProgress.expectedTotalBytes != null
-                            ? loadingProgress.cumulativeBytesLoaded /
-                                loadingProgress.expectedTotalBytes!
-                            : null,
-                      ),
-                    );
-                  },
+                  placeholder: (_, __) =>
+                      Center(child: CircularProgressIndicator()),
                 )),
             Text(patient.firstName),
             Text(patient.lastName),

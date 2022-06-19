@@ -1,6 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:psychohelp_app/models/psychologist.dart';
 import 'package:psychohelp_app/utils/http_helper.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class EditedPsychoProfile extends StatefulWidget {
   const EditedPsychoProfile(this.pyschologist);
@@ -52,6 +55,12 @@ class _EditedPsychoProfileState extends State<EditedPsychoProfile> {
     controllerAbout.text = widget.pyschologist.about;
     controllerImg.text = widget.pyschologist.img;
     super.initState();
+  }
+
+  Future<void> updatePsychologistData(Psychologist psychologist) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String user = jsonEncode(psychologist);
+    prefs.setString('user', user);
   }
 
   Widget getBody() {
@@ -174,6 +183,7 @@ class _EditedPsychoProfileState extends State<EditedPsychoProfile> {
                 fresh: widget.pyschologist.fresh);
             await httpHelper.updatePsychologist(
                 widget.pyschologist.id, psychologistInfo);
+            updatePsychologistData(psychologistInfo);
             Navigator.pop(context, psychologistInfo);
           },
         ),

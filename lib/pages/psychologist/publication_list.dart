@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:psychohelp_app/models/publication.dart';
 import 'package:psychohelp_app/utils/http_helper.dart';
@@ -74,8 +75,8 @@ class _PublicationCardState extends State<PublicationCard> {
           ClipRRect(
             borderRadius: BorderRadius.only(
                 topRight: Radius.circular(20), topLeft: Radius.circular(20)),
-            child: Image.network(
-              widget.publication.photoUrl,
+            child: CachedNetworkImage(
+              imageUrl: widget.publication.photoUrl,
               fit: BoxFit.cover,
               height: 200,
               width: double.infinity,
@@ -117,8 +118,8 @@ class PublicationRow extends StatelessWidget {
           ClipRRect(
             borderRadius: BorderRadius.only(
                 topRight: Radius.circular(20), topLeft: Radius.circular(20)),
-            child: Image.network(
-              publication.photoUrl,
+            child: CachedNetworkImage(
+              imageUrl: publication.photoUrl,
               fit: BoxFit.cover,
               height: 200,
               width: double.infinity,

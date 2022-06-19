@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:psychohelp_app/models/psychologist.dart';
 import 'package:psychohelp_app/pages/authentication/register.dart';
@@ -7,6 +10,7 @@ import 'package:psychohelp_app/pages/psychologist/home_psycho.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../models/patient.dart';
+import '../../utils/http_helper.dart';
 
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
@@ -57,6 +61,7 @@ class _LoginState extends State<Login> {
       if (patient != null) {
         if (patient.password == password) {
           saveUserId(patient.id);
+          savePatientData(patient.id);
           Navigator.push(
               context,
               MaterialPageRoute(
@@ -72,6 +77,7 @@ class _LoginState extends State<Login> {
       Psychologist? psycho = await getPsychologistByEmail(email);
       if (psycho != null) {
         saveUserId(psycho.id);
+        savePsychologistData(psycho.id);
         if (psycho.password == password) {
           Navigator.push(
             context,
@@ -97,8 +103,9 @@ class _LoginState extends State<Login> {
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Image.network(
-                          "https://terapiaapsicologica.com/wp-content/uploads/2020/12/Psychologist-bro.png",
+                      CachedNetworkImage(
+                          imageUrl:
+                              "https://terapiaapsicologica.com/wp-content/uploads/2020/12/Psychologist-bro.png",
                           width: MediaQuery.of(context).size.width * 0.8,
                           height: MediaQuery.of(context).size.height * 0.33),
                       Padding(
@@ -194,5 +201,46 @@ class _LoginState extends State<Login> {
   Future<void> saveUserId(int id) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setInt('id', id);
+  }
+
+  Future<void> savePatientData(int id) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    Patient patient = await httpHelper.fetchPatientById(id);
+    String user = jsonEncode(patient);
+    print(user);
+    prefs.setString('user', user);
+    await prefs.setInt('id', id);
+    await prefs.setString('firstName', patient.firstName);
+    await prefs.setString('lastName', patient.lastName);
+    await prefs.setString('phone', patient.phone);
+    await prefs.setString('password', patient.password);
+    await prefs.setString('date', patient.date);
+    await prefs.setString('gender', patient.gender);
+    await prefs.setString('img', patient.img);
+    await prefs.setString('email', patient.email);
+  }
+
+  Future<void> savePsychologistData(int id) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    Psychologist psychologist = await httpHelper.fetchPsychologistById(id);
+    String user = jsonEncode(psychologist);
+    print(user);
+    prefs.setString('user', user);
+    await prefs.setInt('id', id);
+    await prefs.setString('name', psychologist.name);
+    await prefs.setString('dni', psychologist.dni);
+    await prefs.setString('birthday', psychologist.birthday);
+    await prefs.setString('email', psychologist.email);
+    await prefs.setString('password', psychologist.password);
+    await prefs.setString('phone', psychologist.phone);
+    await prefs.setString('specialization', psychologist.specialization);
+    await prefs.setString('formation', psychologist.formation);
+    await prefs.setString('about', psychologist.about);
+    await prefs.setString('gender', psychologist.gender);
+    await prefs.setString('sessionType', psychologist.sessionType);
+    await prefs.setString('img', psychologist.img);
+    await prefs.setString('cmp', psychologist.cmp);
+    await prefs.setBool('active', psychologist.active);
+    await prefs.setBool('fresh', psychologist.fresh);
   }
 }

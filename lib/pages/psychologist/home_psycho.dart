@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:psychohelp_app/models/psychologist.dart';
 import 'package:psychohelp_app/pages/psychologist/publication_list.dart';
@@ -36,16 +39,14 @@ class _Home_psychoState extends State<Home_psycho> {
   void initState() {
     httpHelper = HttpHelper();
     super.initState();
-    fetchPsychologistById();
+    fetchPsychologist();
   }
 
-  Future fetchPsychologistById() async {
+  Future fetchPsychologist() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    final id = prefs.getInt('id');
-    httpHelper.fetchPsychologistById(id!).then((value) {
-      setState(() {
-        this.psychologist = value;
-      });
+    setState(() {
+      psychologist = Psychologist.fromJson(
+          jsonDecode(prefs.getString('user')!) as Map<String, dynamic>);
     });
   }
 
@@ -69,7 +70,8 @@ class _Home_psychoState extends State<Home_psycho> {
                 child: Row(
                   children: [
                     CircleAvatar(
-                      backgroundImage: NetworkImage(psychologist.img),
+                      backgroundImage:
+                          CachedNetworkImageProvider(psychologist.img),
                       radius: 20.0,
                     ),
                     SizedBox(width: 8.0),
@@ -110,6 +112,7 @@ class _Home_psychoState extends State<Home_psycho> {
         getItem(new Icon(Icons.people), "Patient list", "/list_patients"),
         getItem(new Icon(Icons.date_range), "My appointments", "/dating_dates"),
         getItem(new Icon(Icons.public), "My publications", "/my_publications"),
+        getItem(new Icon(Icons.public), "Videocall", "/call"),
         getItem(new Icon(Icons.logout), "Logout", "/login"),
       ],
     );
