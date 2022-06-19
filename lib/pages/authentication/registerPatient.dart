@@ -234,7 +234,8 @@ class _RegisterPatientState extends State<RegisterPatient> {
                           String date = controllerBirthday.text;
                           String phone = controllerPhone.text;
                           String gender = selectedValue;
-                          String img = controllerImg.text;
+                          String img =
+                              "https://img2.freepng.es/20180714/ro/kisspng-computer-icons-user-membership-vector-5b498fc76f2a07.4607730515315475914553.jpg";
                           await httpHelper.createPatient(
                             1,
                             firstName,
