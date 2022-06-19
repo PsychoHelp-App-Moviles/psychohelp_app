@@ -397,7 +397,6 @@ class HttpHelper {
 
     final response =
         await http.post(url, headers: headers, body: jsonEncode(body));
-    print(response);
     if (response.statusCode == HttpStatus.ok) {
       final String responseString = response.body;
       print('Psycho creado');
@@ -440,7 +439,6 @@ class HttpHelper {
 
     final response =
         await http.post(url, headers: headers, body: jsonEncode(body));
-    print(response);
 
     if (response.statusCode == HttpStatus.ok) {
       final String responseString = response.body;

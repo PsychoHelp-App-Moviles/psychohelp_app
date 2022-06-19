@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:psychohelp_app/models/psychologist.dart';
 import 'package:psychohelp_app/pages/psychologist/edit_profile_psycho.dart';
@@ -86,7 +87,8 @@ class _Profile_psychoState extends State<Profile_psycho> {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       CircleAvatar(
-                        backgroundImage: NetworkImage(psychologist.img),
+                        backgroundImage:
+                            CachedNetworkImageProvider(psychologist.img),
                         radius: 75.0,
                       ),
                       SizedBox(height: 10),

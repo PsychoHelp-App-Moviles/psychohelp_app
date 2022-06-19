@@ -215,10 +215,11 @@ class _RegisterPatientState extends State<RegisterPatient> {
                           contentPadding: EdgeInsets.symmetric(
                               horizontal: 13, vertical: 10),
                           border: OutlineInputBorder(),
-                          hintText: 'Enter your Image URL',
-                          labelText: 'ImageURL',
+                          hintText: 'Enter your Photo URL',
+                          labelText: 'Photo URL',
                         ),
                       ),
+                      SizedBox(height: 16),
                       ElevatedButton(
                         child: Text('Registrarme',
                             style: TextStyle(
@@ -233,8 +234,8 @@ class _RegisterPatientState extends State<RegisterPatient> {
                           String date = controllerBirthday.text;
                           String phone = controllerPhone.text;
                           String gender = selectedValue;
-                          String img = controllerImg.text;
-                          print(gender);
+                          String img =
+                              "https://img2.freepng.es/20180714/ro/kisspng-computer-icons-user-membership-vector-5b498fc76f2a07.4607730515315475914553.jpg";
                           await httpHelper.createPatient(
                             1,
                             firstName,

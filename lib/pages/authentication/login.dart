@@ -224,23 +224,7 @@ class _LoginState extends State<Login> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     Psychologist psychologist = await httpHelper.fetchPsychologistById(id);
     String user = jsonEncode(psychologist);
-    print(user);
     prefs.setString('user', user);
     await prefs.setInt('id', id);
-    await prefs.setString('name', psychologist.name);
-    await prefs.setString('dni', psychologist.dni);
-    await prefs.setString('birthday', psychologist.birthday);
-    await prefs.setString('email', psychologist.email);
-    await prefs.setString('password', psychologist.password);
-    await prefs.setString('phone', psychologist.phone);
-    await prefs.setString('specialization', psychologist.specialization);
-    await prefs.setString('formation', psychologist.formation);
-    await prefs.setString('about', psychologist.about);
-    await prefs.setString('gender', psychologist.gender);
-    await prefs.setString('sessionType', psychologist.sessionType);
-    await prefs.setString('img', psychologist.img);
-    await prefs.setString('cmp', psychologist.cmp);
-    await prefs.setBool('active', psychologist.active);
-    await prefs.setBool('fresh', psychologist.fresh);
   }
 }

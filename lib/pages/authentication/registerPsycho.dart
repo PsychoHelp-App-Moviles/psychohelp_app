@@ -44,8 +44,6 @@ class _RegisterPsychoState extends State<RegisterPsycho> {
       TextEditingController();
   final TextEditingController controllerFormation = TextEditingController();
   final TextEditingController controllerAbout = TextEditingController();
-  //final TextEditingController controllerGender = TextEditingController();
-  //final TextEditingController controllerSessionType = TextEditingController();
   final TextEditingController controllerImg = TextEditingController();
   final TextEditingController controllerCMP = TextEditingController();
 
@@ -140,6 +138,17 @@ class _RegisterPsychoState extends State<RegisterPsycho> {
                       ),
                       SizedBox(height: 16),
                       TextField(
+                        controller: controllerDNI,
+                        keyboardType: TextInputType.number,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          contentPadding: EdgeInsets.symmetric(
+                              horizontal: 13, vertical: 10),
+                          labelText: 'DNI',
+                        ),
+                      ),
+                      SizedBox(height: 16),
+                      TextField(
                         controller: controllerBirthday,
                         decoration: InputDecoration(
                           contentPadding: EdgeInsets.symmetric(
@@ -207,12 +216,11 @@ class _RegisterPsychoState extends State<RegisterPsycho> {
                             .toList(),
                         onChanged: (value) {
                           //Do something when changing the item if you want.
-                        },
-                        onSaved: (value) {
                           setState(() {
                             selectedGenderValue = value.toString();
                           });
                         },
+                        onSaved: (value) {},
                       ),
                       SizedBox(height: 16),
                       TextField(
@@ -283,12 +291,11 @@ class _RegisterPsychoState extends State<RegisterPsycho> {
                             .toList(),
                         onChanged: (value) {
                           //Do something when changing the item if you want.
-                        },
-                        onSaved: (value) {
                           setState(() {
-                            selectedGenderValue = value.toString();
+                            selectedSessionValue = value.toString();
                           });
                         },
+                        onSaved: (value) {},
                       ),
                       SizedBox(height: 16),
                       TextField(
