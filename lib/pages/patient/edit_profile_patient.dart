@@ -1,6 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:psychohelp_app/models/patient.dart';
 import 'package:psychohelp_app/utils/http_helper.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:dropdown_button2/dropdown_button2.dart';
 
 class EditPatientProfile extends StatefulWidget {
   const EditPatientProfile(this.patient);
@@ -14,12 +18,13 @@ class _EditPatientProfileState extends State<EditPatientProfile> {
   HttpHelper httpHelper = HttpHelper();
   Patient? patient;
 
+  DateTime selectedDate = DateTime.now();
+
   final TextEditingController controllerFirtsName = TextEditingController();
   final TextEditingController controllerLastName = TextEditingController();
   final TextEditingController controllerEmail = TextEditingController();
   final TextEditingController controllerPhone = TextEditingController();
-  final TextEditingController controllerBirthday = TextEditingController();
-  final TextEditingController controllerGender = TextEditingController();
+  var controllerBirthday = TextEditingController();
   final TextEditingController controllerImg = TextEditingController();
 
   @override
@@ -40,9 +45,28 @@ class _EditPatientProfileState extends State<EditPatientProfile> {
     controllerEmail.text = widget.patient.email;
     controllerPhone.text = widget.patient.phone;
     controllerBirthday.text = widget.patient.date;
-    controllerGender.text = widget.patient.gender;
     controllerImg.text = widget.patient.img;
     super.initState();
+  }
+
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+        context: context,
+        initialDate: selectedDate,
+        firstDate: DateTime(1920, 1),
+        lastDate: DateTime.now());
+    if (picked != null && picked != selectedDate) {
+      setState(() {
+        selectedDate = picked;
+        controllerBirthday.text = selectedDate.toString().substring(0, 10);
+      });
+    }
+  }
+
+  Future<void> updatePatientData(Patient patient) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String user = jsonEncode(patient);
+    prefs.setString('patient', user);
   }
 
   Widget getBody() {
@@ -54,6 +78,7 @@ class _EditPatientProfileState extends State<EditPatientProfile> {
         TextField(
           controller: controllerFirtsName,
           decoration: InputDecoration(
+            contentPadding: EdgeInsets.symmetric(horizontal: 13, vertical: 10),
             border: OutlineInputBorder(),
             labelText: 'Firstname',
           ),
@@ -62,6 +87,7 @@ class _EditPatientProfileState extends State<EditPatientProfile> {
         TextField(
           controller: controllerLastName,
           decoration: InputDecoration(
+            contentPadding: EdgeInsets.symmetric(horizontal: 13, vertical: 10),
             border: OutlineInputBorder(),
             labelText: 'Lastname',
           ),
@@ -70,6 +96,7 @@ class _EditPatientProfileState extends State<EditPatientProfile> {
         TextField(
           controller: controllerEmail,
           decoration: InputDecoration(
+            contentPadding: EdgeInsets.symmetric(horizontal: 13, vertical: 10),
             border: OutlineInputBorder(),
             labelText: 'Email',
           ),
@@ -77,7 +104,9 @@ class _EditPatientProfileState extends State<EditPatientProfile> {
         SizedBox(height: 16),
         TextField(
           controller: controllerPhone,
+          keyboardType: TextInputType.number,
           decoration: InputDecoration(
+            contentPadding: EdgeInsets.symmetric(horizontal: 13, vertical: 10),
             border: OutlineInputBorder(),
             labelText: 'Phone',
           ),
@@ -86,22 +115,26 @@ class _EditPatientProfileState extends State<EditPatientProfile> {
         TextField(
           controller: controllerBirthday,
           decoration: InputDecoration(
+            contentPadding: EdgeInsets.symmetric(horizontal: 13, vertical: 10),
             border: OutlineInputBorder(),
             labelText: 'Birthday',
-          ),
-        ),
-        SizedBox(height: 16),
-        TextField(
-          controller: controllerGender,
-          decoration: InputDecoration(
-            border: OutlineInputBorder(),
-            labelText: 'Gender',
+            hintText: 'Enter your birthday',
+            suffixIcon: IconButton(
+                splashRadius: 20,
+                icon: Icon(
+                  Icons.date_range,
+                  color: Colors.black,
+                ),
+                onPressed: () {
+                  _selectDate(context);
+                }),
           ),
         ),
         SizedBox(height: 16),
         TextField(
           controller: controllerImg,
           decoration: InputDecoration(
+            contentPadding: EdgeInsets.symmetric(horizontal: 13, vertical: 10),
             border: OutlineInputBorder(),
             labelText: 'ImageURL',
           ),
@@ -115,7 +148,6 @@ class _EditPatientProfileState extends State<EditPatientProfile> {
             String email = controllerEmail.text;
             String phone = controllerPhone.text;
             String birthday = controllerBirthday.text;
-            String gender = controllerGender.text;
             String img = controllerImg.text;
 
             Patient patientInfo = Patient(
@@ -126,9 +158,10 @@ class _EditPatientProfileState extends State<EditPatientProfile> {
                 phone: phone,
                 password: widget.patient.password,
                 date: birthday,
-                gender: gender,
+                gender: widget.patient.gender,
                 img: img);
             await httpHelper.updatePatient(widget.patient.id, patientInfo);
+            updatePatientData(patientInfo);
             Navigator.pop(context, patientInfo);
           },
         ),
