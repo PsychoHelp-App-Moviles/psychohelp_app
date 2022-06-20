@@ -8,8 +8,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 class AppointmentListPatient extends StatefulWidget {
-  const AppointmentListPatient(this.patientId);
-  final int patientId;
   @override
   State<AppointmentListPatient> createState() => _AppointmentListPatientState();
 }

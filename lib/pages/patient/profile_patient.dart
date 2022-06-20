@@ -29,8 +29,8 @@ class _Profile_patientState extends State<Profile_patient> {
   @override
   void initState() {
     httpHelper = HttpHelper();
-    super.initState();
     fetchPatient();
+    super.initState();
   }
 
   Future<void> _navigateAndDisplaySelection(BuildContext context) async {
@@ -50,6 +50,7 @@ class _Profile_patientState extends State<Profile_patient> {
       patient = Patient.fromJson(
           jsonDecode(prefs.getString('patient')!) as Map<String, dynamic>);
     });
+    return patient;
   }
 
   @override

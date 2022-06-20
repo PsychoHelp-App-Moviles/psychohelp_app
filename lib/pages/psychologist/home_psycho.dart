@@ -43,9 +43,10 @@ class _Home_psychoState extends State<Home_psycho> {
 
   Future fetchPsychologist() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
+    final psycho = prefs.getString('psychologist');
     setState(() {
-      psychologist = Psychologist.fromJson(
-          jsonDecode(prefs.getString('psychologist')!) as Map<String, dynamic>);
+      psychologist =
+          Psychologist.fromJson(jsonDecode(psycho!) as Map<String, dynamic>);
     });
   }
 

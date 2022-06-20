@@ -30,15 +30,16 @@ class _Home_patientState extends State<Home_patient> {
   @override
   void initState() {
     httpHelper = HttpHelper();
-    super.initState();
     fetchPatient();
+    super.initState();
   }
 
   Future fetchPatient() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
+    final patientPrefs = prefs.getString('patient');
     setState(() {
-      patient = Patient.fromJson(
-          jsonDecode(prefs.getString('patient')!) as Map<String, dynamic>);
+      patient =
+          Patient.fromJson(jsonDecode(patientPrefs!) as Map<String, dynamic>);
     });
   }
 
