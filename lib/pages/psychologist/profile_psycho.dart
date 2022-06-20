@@ -57,7 +57,7 @@ class _Profile_psychoState extends State<Profile_psycho> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
       psychologist = Psychologist.fromJson(
-          jsonDecode(prefs.getString('user')!) as Map<String, dynamic>);
+          jsonDecode(prefs.getString('psychologist')!) as Map<String, dynamic>);
     });
   }
 

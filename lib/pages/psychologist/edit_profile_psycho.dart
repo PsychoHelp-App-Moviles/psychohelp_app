@@ -60,7 +60,7 @@ class _EditedPsychoProfileState extends State<EditedPsychoProfile> {
   Future<void> updatePsychologistData(Psychologist psychologist) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String user = jsonEncode(psychologist);
-    prefs.setString('user', user);
+    prefs.setString('psychologist', user);
   }
 
   Widget getBody() {

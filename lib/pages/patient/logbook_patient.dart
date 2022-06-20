@@ -50,7 +50,7 @@ class _Logbook_patientState extends State<Logbook_patient> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
       patient = Patient.fromJson(
-          jsonDecode(prefs.getString('user')!) as Map<String, dynamic>);
+          jsonDecode(prefs.getString('patient')!) as Map<String, dynamic>);
     });
   }
 
