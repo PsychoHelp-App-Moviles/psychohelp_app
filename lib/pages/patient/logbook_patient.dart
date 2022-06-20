@@ -66,9 +66,10 @@ class _Logbook_patientState extends State<Logbook_patient> {
   }
 
   void fetchAppointmentById(int id) {
-    setState(() {
-      appointmentInfo =
-          appointments.firstWhere((appointment) => appointment.id == id);
+    httpHelper.fetchAppointmentById(id).then((value) {
+      setState(() {
+        this.appointmentInfo = value;
+      });
     });
   }
 
