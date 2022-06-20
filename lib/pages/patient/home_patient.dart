@@ -36,14 +36,17 @@ class _Home_patientState extends State<Home_patient> {
 
   Future fetchPatient() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    final patientPrefs = prefs.getString('patient');
+    var patientTemp = prefs.getString('patient') ?? "";
     setState(() {
-      patient =
-          Patient.fromJson(jsonDecode(patientPrefs!) as Map<String, dynamic>);
+      if (patientTemp != "") {
+        patient =
+            Patient.fromJson(jsonDecode(patientTemp) as Map<String, dynamic>);
+      }
     });
   }
 
   Drawer getDrawer(BuildContext context) {
+    fetchPatient();
     var header = new DrawerHeader(
       child: Container(
         padding: EdgeInsets.only(left: 10.0),
@@ -116,7 +119,6 @@ class _Home_patientState extends State<Home_patient> {
 
   @override
   Widget build(BuildContext context) {
-    fetchPatient();
     return new Scaffold(
       appBar: new AppBar(
         title: new Text("Home patient"),

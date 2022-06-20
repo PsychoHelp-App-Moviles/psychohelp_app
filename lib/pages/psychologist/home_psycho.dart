@@ -43,14 +43,17 @@ class _Home_psychoState extends State<Home_psycho> {
 
   Future fetchPsychologist() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    final psycho = prefs.getString('psychologist');
+    var psycho = prefs.getString('psychologist') ?? "";
     setState(() {
-      psychologist =
-          Psychologist.fromJson(jsonDecode(psycho!) as Map<String, dynamic>);
+      if (psycho != "") {
+        psychologist =
+            Psychologist.fromJson(jsonDecode(psycho) as Map<String, dynamic>);
+      }
     });
   }
 
   Drawer getDrawer(BuildContext context) {
+    fetchPsychologist();
     var header = DrawerHeader(
       child: Container(
         padding: EdgeInsets.only(left: 10.0),
