@@ -66,7 +66,7 @@ class _Home_patientState extends State<Home_patient> {
                 child: Row(
                   children: [
                     CircleAvatar(
-                      backgroundImage: CachedNetworkImageProvider(patient.img),
+                      backgroundImage: NetworkImage(patient.img),
                       radius: 20.0,
                     ),
                     SizedBox(width: 8.0),

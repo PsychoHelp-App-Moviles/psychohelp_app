@@ -88,8 +88,7 @@ class _AppointmentListState extends State<AppointmentList> {
                       alignment: Alignment.centerLeft,
                       child: MaterialButton(
                           onPressed: () {
-                            String url = 'https://meet.google.com/new';
-                            launchUrlString(url);
+                            Navigator.of(context).pushNamed('/call');
                           },
                           child: Image.network(
                             'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9b/Google_Meet_icon_%282020%29.svg/2491px-Google_Meet_icon_%282020%29.svg.png',

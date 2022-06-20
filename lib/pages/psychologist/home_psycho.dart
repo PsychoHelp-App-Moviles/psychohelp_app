@@ -73,8 +73,7 @@ class _Home_psychoState extends State<Home_psycho> {
                 child: Row(
                   children: [
                     CircleAvatar(
-                      backgroundImage:
-                          CachedNetworkImageProvider(psychologist.img),
+                      backgroundImage: NetworkImage(psychologist.img),
                       radius: 20.0,
                     ),
                     SizedBox(width: 8.0),
