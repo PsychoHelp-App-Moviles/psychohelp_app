@@ -111,7 +111,6 @@ class _Home_psychoState extends State<Home_psycho> {
         getItem(new Icon(Icons.people), "Patient list", "/list_patients"),
         getItem(new Icon(Icons.date_range), "My appointments", "/dating_dates"),
         getItem(new Icon(Icons.public), "My publications", "/my_publications"),
-        getItem(new Icon(Icons.public), "Videocall", "/call"),
         getItem(new Icon(Icons.logout), "Logout", "/login"),
       ],
     );
