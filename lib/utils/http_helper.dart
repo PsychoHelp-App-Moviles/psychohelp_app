@@ -447,4 +447,43 @@ class HttpHelper {
     } else
       return null;
   }
+
+  Future<Appointment?> createAppointment(
+    int id,
+    String meetUrl,
+    String motive,
+    String personalHistory,
+    String testRealized,
+    String treatment,
+    String scheduleDate,
+    int patientId,
+    int psychologistId,
+  ) async {
+    final String urlString =
+        "https://psychohelp-open.mybluemix.net/api/v1/appointment/patient/${patientId}/psychologist/${psychologistId}";
+    Uri url = Uri.parse(urlString);
+
+    final body = {
+      "meetUrl": meetUrl,
+      "motive": motive,
+      "personalHistory": personalHistory,
+      "testRealized": testRealized,
+      "treatment": treatment,
+      "scheduleDate": scheduleDate,
+    };
+
+    var headers = {
+      'Content-Type': 'application/json',
+    };
+
+    final response =
+        await http.post(url, headers: headers, body: jsonEncode(body));
+
+    if (response.statusCode == HttpStatus.ok) {
+      final String responseString = response.body;
+      print('Cita creada');
+      return appointmentFromJson(responseString);
+    } else
+      return null;
+  }
 }
