@@ -1,6 +1,8 @@
 // ignore_for_file: deprecated_member_use
 
+import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:psychohelp_app/utils/http_helper.dart';
 
 class List_psycho extends StatefulWidget {
@@ -11,7 +13,18 @@ class List_psycho extends StatefulWidget {
 
 class _List_psychoState extends State<List_psycho> {
   List psychologists = [];
+  List appointment = [];
   HttpHelper httpHelper = HttpHelper();
+  DateTime selectedDate = DateTime.now();
+
+  var controllerAppointment = TextEditingController();
+  final TextEditingController controllerUrl = TextEditingController();
+  final TextEditingController controllerMotive = TextEditingController();
+  final TextEditingController controllerPersonalHistory =
+      TextEditingController();
+  final TextEditingController controllerTestRealized = TextEditingController();
+  final TextEditingController controllerTreatment = TextEditingController();
+  final TextEditingController controllerScheduleDate = TextEditingController();
 
   @override
   void initState() {
@@ -19,6 +32,20 @@ class _List_psychoState extends State<List_psycho> {
     httpHelper = HttpHelper();
     fetchPsychologists();
     super.initState();
+  }
+
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+        context: context,
+        initialDate: selectedDate,
+        firstDate: DateTime(1920, 1),
+        lastDate: DateTime.now());
+    if (picked != null && picked != selectedDate) {
+      setState(() {
+        selectedDate = picked;
+        controllerAppointment.text = selectedDate.toString().substring(0, 10);
+      });
+    }
   }
 
   void fetchPsychologists() {
@@ -157,9 +184,64 @@ class _List_psychoState extends State<List_psycho> {
                       ),
                       FlatButton(
                         child: Text("Agendar cita"),
-                        onPressed: () {
-                          Navigator.pushNamed(context, "/chat",
-                              arguments: psychologists[index]);
+                        onPressed: () async {
+                          showDialog(
+                              context: context,
+                              builder: (context) => SimpleDialog(
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.all(
+                                      Radius.circular(10.0),
+                                    )),
+                                    title: Text(
+                                      "Detalles del psicólogo",
+                                      textAlign: TextAlign.center,
+                                    ),
+                                    children: <Widget>[
+                                      TextField(
+                                        controller: controllerAppointment,
+                                        decoration: InputDecoration(
+                                          contentPadding: EdgeInsets.symmetric(
+                                              horizontal: 13, vertical: 10),
+                                          border: OutlineInputBorder(),
+                                          labelText: 'Birthday',
+                                          hintText: 'Enter your birthday',
+                                          suffixIcon: IconButton(
+                                              splashRadius: 20,
+                                              icon: Icon(
+                                                Icons.date_range,
+                                                color: Colors.black,
+                                              ),
+                                              onPressed: () {
+                                                _selectDate(context);
+                                              }),
+                                        ),
+                                      ),
+                                      ElevatedButton(
+                                        child: Text("Agendar"),
+                                        onPressed: () async {
+                                          String meetUrl = "string";
+                                          String motive = "string";
+                                          String personalHistory = "string";
+                                          String testRealized = "string";
+                                          String treatment = "string";
+                                          String date =
+                                              controllerAppointment.text;
+
+                                          await httpHelper.createAppointment(
+                                              1,
+                                              meetUrl,
+                                              motive,
+                                              personalHistory,
+                                              testRealized,
+                                              treatment,
+                                              date,
+                                              1,
+                                              1);
+                                          Navigator.pop(context);
+                                        },
+                                      )
+                                    ],
+                                  ));
                         },
                       ),
                     ],
