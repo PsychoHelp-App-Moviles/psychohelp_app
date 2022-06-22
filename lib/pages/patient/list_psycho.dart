@@ -38,8 +38,9 @@ class _List_psychoState extends State<List_psycho> {
     final DateTime? picked = await showDatePicker(
         context: context,
         initialDate: selectedDate,
-        firstDate: DateTime(1920, 1),
-        lastDate: DateTime.now());
+        firstDate: selectedDate,
+        lastDate: DateTime(
+            selectedDate.year, selectedDate.month, selectedDate.day + 7));
     if (picked != null && picked != selectedDate) {
       setState(() {
         selectedDate = picked;
@@ -193,7 +194,7 @@ class _List_psychoState extends State<List_psycho> {
                                       Radius.circular(10.0),
                                     )),
                                     title: Text(
-                                      "Detalles del psicólogo",
+                                      "Detalles de la cita",
                                       textAlign: TextAlign.center,
                                     ),
                                     children: <Widget>[
@@ -203,8 +204,9 @@ class _List_psychoState extends State<List_psycho> {
                                           contentPadding: EdgeInsets.symmetric(
                                               horizontal: 13, vertical: 10),
                                           border: OutlineInputBorder(),
-                                          labelText: 'Birthday',
-                                          hintText: 'Enter your birthday',
+                                          labelText: 'Appointment Date',
+                                          hintText:
+                                              'Enter your Appointment Date',
                                           suffixIcon: IconButton(
                                               splashRadius: 20,
                                               icon: Icon(
