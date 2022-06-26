@@ -41,6 +41,7 @@ class _List_psychoState extends State<List_psycho> {
     psychologists = [];
     httpHelper = HttpHelper();
     fetchPsychologists();
+    getPatientId();
     super.initState();
   }
 

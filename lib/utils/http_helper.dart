@@ -461,8 +461,17 @@ class HttpHelper {
       'Content-Type': 'application/json',
     };
 
+    final body = {
+      "meetUrl": request.meetUrl,
+      "motive": request.motive,
+      "personalHistory": request.personalHistory,
+      "testRealized": request.testRealized,
+      "treatment": request.treatment,
+      "scheduleDate": request.scheduleDate
+    };
+
     final response =
-        await http.post(url, headers: headers, body: jsonEncode(request));
+        await http.post(url, headers: headers, body: jsonEncode(body));
 
     if (response.statusCode == HttpStatus.ok) {
       final String responseString = response.body;
