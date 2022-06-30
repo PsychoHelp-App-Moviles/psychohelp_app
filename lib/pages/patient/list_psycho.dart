@@ -1,7 +1,18 @@
 // ignore_for_file: deprecated_member_use
 
+import 'dart:convert';
+
+import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:intl/intl.dart';
+import 'package:intl/intl_standalone.dart';
+import 'package:psychohelp_app/models/appointment.dart';
 import 'package:psychohelp_app/utils/http_helper.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:psychohelp_app/models/patient.dart';
+
+import '../../controller/payment_controller.dart';
 
 class List_psycho extends StatefulWidget {
   static const String routeName = "/list_psycho";
@@ -11,7 +22,19 @@ class List_psycho extends StatefulWidget {
 
 class _List_psychoState extends State<List_psycho> {
   List psychologists = [];
+  List appointment = [];
+  int patientId = 0;
   HttpHelper httpHelper = HttpHelper();
+  DateTime selectedDate = DateTime.now();
+
+  var controllerAppointment = TextEditingController();
+  final TextEditingController controllerUrl = TextEditingController();
+  final TextEditingController controllerMotive = TextEditingController();
+  final TextEditingController controllerPersonalHistory =
+      TextEditingController();
+  final TextEditingController controllerTestRealized = TextEditingController();
+  final TextEditingController controllerTreatment = TextEditingController();
+  final TextEditingController controllerScheduleDate = TextEditingController();
 
   @override
   void initState() {
@@ -19,6 +42,21 @@ class _List_psychoState extends State<List_psycho> {
     httpHelper = HttpHelper();
     fetchPsychologists();
     super.initState();
+  }
+
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+        context: context,
+        initialDate: selectedDate,
+        firstDate: selectedDate,
+        lastDate: DateTime(
+            selectedDate.year, selectedDate.month, selectedDate.day + 7));
+    if (picked != null && picked != selectedDate) {
+      setState(() {
+        selectedDate = picked;
+        controllerAppointment.text = selectedDate.toString().substring(0, 10);
+      });
+    }
   }
 
   void fetchPsychologists() {
@@ -29,8 +67,18 @@ class _List_psychoState extends State<List_psycho> {
     });
   }
 
+  Future getPatientId() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      final patient = Patient.fromJson(
+          jsonDecode(prefs.getString('patient')!) as Map<String, dynamic>);
+      patientId = patient.id;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    final PaymentController controller = Get.put(PaymentController());
     return Scaffold(
         appBar: new AppBar(
           title: new Text("Psychologists list"),
@@ -157,9 +205,71 @@ class _List_psychoState extends State<List_psycho> {
                       ),
                       FlatButton(
                         child: Text("Agendar cita"),
-                        onPressed: () {
-                          Navigator.pushNamed(context, "/chat",
-                              arguments: psychologists[index]);
+                        onPressed: () async {
+                          showDialog(
+                              context: context,
+                              builder: (context) => SimpleDialog(
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.all(
+                                      Radius.circular(10.0),
+                                    )),
+                                    title: Text(
+                                      "Detalles de la cita",
+                                      textAlign: TextAlign.center,
+                                    ),
+                                    children: <Widget>[
+                                      TextField(
+                                        controller: controllerAppointment,
+                                        decoration: InputDecoration(
+                                          contentPadding: EdgeInsets.symmetric(
+                                              horizontal: 13, vertical: 10),
+                                          border: OutlineInputBorder(),
+                                          labelText: 'Appointment Date',
+                                          hintText:
+                                              'Enter your Appointment Date',
+                                          suffixIcon: IconButton(
+                                              splashRadius: 20,
+                                              icon: Icon(
+                                                Icons.date_range,
+                                                color: Colors.black,
+                                              ),
+                                              onPressed: () {
+                                                _selectDate(context);
+                                              }),
+                                        ),
+                                      ),
+                                      ElevatedButton(
+                                        child: Text("Agendar"),
+                                        onPressed: () async {
+                                          String meetUrl = "string";
+                                          String motive = "string";
+                                          String personalHistory = "string";
+                                          String testRealized = "string";
+                                          String treatment = "string";
+                                          String date =
+                                              controllerAppointment.text;
+                                          Appointment request = Appointment(
+                                              id: 1,
+                                              meetUrl: meetUrl,
+                                              motive: motive,
+                                              personalHistory: personalHistory,
+                                              testRealized: testRealized,
+                                              treatment: treatment,
+                                              scheduleDate: date,
+                                              patientId: patientId,
+                                              psychologistId:
+                                                  psychologists[index].id);
+                                          controller.makePayment(
+                                              amount: '50', currency: 'PEN');
+                                          await httpHelper.createAppointment(
+                                              request,
+                                              patientId,
+                                              psychologists[index].id);
+                                          Navigator.pop(context);
+                                        },
+                                      )
+                                    ],
+                                  ));
                         },
                       ),
                     ],

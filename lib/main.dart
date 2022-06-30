@@ -16,8 +16,11 @@ import 'package:psychohelp_app/pages/psychologist/logbook_psycho.dart';
 import 'package:psychohelp_app/pages/psychologist/my_publications.dart';
 import 'package:psychohelp_app/pages/psychologist/profile_psycho.dart';
 import 'package:psychohelp_app/pages/videocall/call.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 
 void main() {
+  Stripe.publishableKey =
+      'pk_test_51JxFdHE3DueU8pu3V9DMyx0VUOZEFxUGMEjGqsPakEilVuRQQ8FH8wYUb8Valy6DQr4ykdCXhZnuAvLM7UFJZmGt00g9v8mDwj';
   runApp(new MaterialApp(
       theme: ThemeData(fontFamily: 'Poppins'),
       home: new Login(),

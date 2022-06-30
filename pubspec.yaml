@@ -43,6 +43,8 @@ dependencies:
   file_picker: ^3.0.4
   #agora_rtc_engine: ^5.2.0
   #permission_handler: ^8.3.0
+  get:
+  flutter_stripe:
   agora_uikit: ^1.0.2
   cached_network_image: ^3.2.1
 
