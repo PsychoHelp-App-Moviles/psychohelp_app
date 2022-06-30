@@ -55,9 +55,12 @@ class _List_psychoState extends State<List_psycho> {
     if (picked != null && picked != selectedDate) {
       setState(() {
         selectedDate = picked;
-        controllerAppointment.text = selectedDate.toString().substring(0, 10);
+        controllerAppointment.text = formatDate(
+            selectedDate, [dd, '/', mm, '/', yy]);
+        //selectedDate.toString().substring(0, 10);
       });
     }
+
   }
 
   void fetchPsychologists() {

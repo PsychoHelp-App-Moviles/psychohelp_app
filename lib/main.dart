@@ -22,6 +22,7 @@ void main() {
   Stripe.publishableKey =
       'pk_test_51JxFdHE3DueU8pu3V9DMyx0VUOZEFxUGMEjGqsPakEilVuRQQ8FH8wYUb8Valy6DQr4ykdCXhZnuAvLM7UFJZmGt00g9v8mDwj';
   runApp(new MaterialApp(
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(fontFamily: 'Poppins'),
       home: new Login(),
       routes: <String, WidgetBuilder>{
