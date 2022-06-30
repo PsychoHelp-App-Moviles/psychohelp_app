@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:psychohelp_app/utils/http_helper.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class CreatePublication extends StatefulWidget {
   @override
@@ -10,12 +11,27 @@ class CreatePublication extends StatefulWidget {
 
 class _CreatePublicationState extends State<CreatePublication> {
   HttpHelper httpHelper = HttpHelper();
+  int id = 0;
 
   final TextEditingController controllerTitle = TextEditingController();
   final TextEditingController controllerDescription = TextEditingController();
   final TextEditingController controllerTag = TextEditingController();
   final TextEditingController controllerContent = TextEditingController();
   final TextEditingController controllerPhotoUrl = TextEditingController();
+
+  Future fetchPsychologist() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      id = prefs.getInt('id')!;
+    });
+  }
+
+  @override
+  void initState() {
+    httpHelper = HttpHelper();
+    fetchPsychologist();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -83,7 +99,7 @@ class _CreatePublicationState extends State<CreatePublication> {
             String photoUrl = controllerPhotoUrl.text;
 
             await httpHelper.createPublication(
-                title, description, tags, photoUrl, content, 1);
+                title, tags, description, photoUrl, content, id);
             Navigator.pop(context);
           },
         ),
