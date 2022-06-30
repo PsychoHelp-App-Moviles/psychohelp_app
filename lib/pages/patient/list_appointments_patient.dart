@@ -62,8 +62,7 @@ class _AppointmentListPatientState extends State<AppointmentListPatient> {
                       alignment: Alignment.centerLeft,
                       child: MaterialButton(
                           onPressed: () {
-                            String url = 'https://meet.google.com/new';
-                            launchUrlString(url);
+                            Navigator.of(context).pushNamed('/call');
                           },
                           child: CachedNetworkImage(
                             imageUrl:
