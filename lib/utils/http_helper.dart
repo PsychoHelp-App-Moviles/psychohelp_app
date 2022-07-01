@@ -220,6 +220,24 @@ class HttpHelper {
     return [];
   }
 
+  Future<List> fetchAppointmentsByPsychologistAndPatientId(
+      int patientId, int psychoId) async {
+    String urlString =
+        'https://psychohelp-open.mybluemix.net/api/v1/appointment/psychologist/${psychoId}/patient/${patientId}';
+    Uri url = Uri.parse(urlString);
+
+    http.Response response = await http.get(url);
+
+    if (response.statusCode == HttpStatus.ok) {
+      final jsonResponse = json.decode(response.body);
+      List appointments =
+          jsonResponse.map((map) => Appointment.fromJson(map)).toList();
+      return appointments;
+    }
+
+    return [];
+  }
+
   Future<List> fetchPublicationByPsychoId(int id) async {
     String urlString =
         'https://psychohelp-open.mybluemix.net/api/v1/publications/psychologist/${id}';

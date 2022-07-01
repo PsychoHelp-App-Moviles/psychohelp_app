@@ -3,6 +3,7 @@ import 'package:psychohelp_app/models/patient.dart';
 import 'package:psychohelp_app/models/appointment.dart';
 import 'package:psychohelp_app/pages/psychologist/edit_logbook_psycho.dart';
 import 'package:psychohelp_app/utils/http_helper.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Logbook_psycho extends StatefulWidget {
   static const String routeName = "/logbook_psycho";
@@ -59,8 +60,11 @@ class _Logbook_psychoState extends State<Logbook_psycho> {
     });
   }
 
-  Future fetchAppointments(int id) async {
-    appointments = await httpHelper.fetchAppointmentsByPsychologistId(id);
+  Future fetchAppointments(int patientId) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final id = prefs.getInt('id');
+    appointments = await httpHelper.fetchAppointmentsByPsychologistAndPatientId(
+        patientId, id!);
     return appointments;
   }
 
